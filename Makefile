@@ -1,5 +1,5 @@
 INCLUDES = -I/usr/include -Imlx
-MLX_FLAGS = -Lmlx -lmlx -L/usr/lib/X11 -lXext -lX11
+MLX_FLAGS = -Lmlx_linux -lmlx_Linux -L/usr/lib/X11 -Imlx_linux -lXext -lX11 -lm -lz
 NAME = so_long
 C_FLAGS = -Wall -Werror -Wextra
 
@@ -10,5 +10,5 @@ $(NAME) : $(OBJS)
 	cc $(C_FLAGS) -o $(NAME) $(OBJS) $(MLX_FLAGS)
 
 all :
-	cc $(C_FLAGS) main.c $(MLX_FLAGS)
+	cc $(C_FLAGS) main.c $(MLX_FLAGS) -o $(NAME)
 
