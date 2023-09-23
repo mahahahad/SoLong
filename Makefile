@@ -12,3 +12,5 @@ $(NAME) : $(OBJS)
 all :
 	cc $(C_FLAGS) main.c $(MLX_FLAGS) -o $(NAME)
 
+clean :
+	rm -rf $(NAME)
