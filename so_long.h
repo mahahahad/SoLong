@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:04 by maabdull          #+#    #+#             */
-/*   Updated: 2023/10/09 14:40:14 by maabdull         ###   ########.fr       */
+/*   Updated: 2023/10/09 14:52:01 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@
 # include <string.h>
 # include <unistd.h>
 
-// # ifdef __linux__
-// #  include "mlx_linux/mlx.h"
-// #  include <X11/X.h>
-// #  include <X11/keysym.h>
-// # else
-# include "mlx_mac/mlx.h"
-// # endif
+# ifdef __linux__
+#  include "mlx_linux/mlx.h"
+#  include <X11/X.h>
+#  include <X11/keysym.h>
+# else
+#  include "mlx_mac/mlx.h"
+# endif
 
 typedef struct s_player
 {

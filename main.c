@@ -6,32 +6,11 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 14:07:00 by maabdull          #+#    #+#             */
-/*   Updated: 2023/10/09 14:47:07 by maabdull         ###   ########.fr       */
+/*   Updated: 2023/10/09 15:01:00 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-
-// typedef struct s_data
-// {
-// 	void	*mlx_ptr;
-// 	void	*win_ptr;
-// }			t_data;
-
-// typedef struct g_data
-// {
-// 	void	*player;
-// 	void	*empty;
-// 	void	*wall;
-// 	void	*collectable;
-// 	void	*exit;
-// 	int		map;
-// 	int		pos_x;
-// 	int		pos_y;
-// 	int		player_pos_x;
-// 	int		player_pos_y;
-// 	int		moves;
-// }			game_data;
 
 static int	ft_putnbr(int num)
 {
@@ -64,7 +43,7 @@ static int	ft_putstr(char *str)
 	return (len);
 }
 
-int	render_map(t_data *data, t_game *game)
+int	render_map(t_data *data)
 {
 	int		output;
 	char	*buffer;
@@ -73,38 +52,42 @@ int	render_map(t_data *data, t_game *game)
 	buffer = malloc(1);
 	while (output)
 	{
-		output = read(game->map.fd, buffer, 1);
+		output = read(data->game.map.fd, buffer, 1);
 		if (output < 0)
 			return (free(buffer), -1);
 		if (output == 0)
 			break ;
 		if (buffer[0] == '\n')
 		{
-			game->player.pos_x = 0;
-			game->player.pos_y += PLAYER_HEIGHT;
+			data->game.player.pos_x = 0;
+			data->game.player.pos_y += PLAYER_HEIGHT;
 			continue ;
 		}
 		if (buffer[0] == 'P')
 		{
-			game->player.player_pos_x = game->player.pos_x;
-			game->player.player_pos_y = game->player.pos_y;
+			data->game.player.player_pos_x = data->game.player.pos_x;
+			data->game.player.player_pos_y = data->game.player.pos_y;
 			mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-				game->player_texture, game->player.pos_x, game->player.pos_y);
+				data->game.player_texture, data->game.player.pos_x,
+				data->game.player.pos_y);
 		}
 		if (buffer[0] == '0')
 			mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-				game->empty_texture, game->player.pos_x, game->player.pos_y);
+				data->game.empty_texture, data->game.player.pos_x,
+				data->game.player.pos_y);
 		if (buffer[0] == '1')
 			mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-				game->wall_texture, game->player.pos_x, game->player.pos_y);
+				data->game.wall_texture, data->game.player.pos_x,
+				data->game.player.pos_y);
 		if (buffer[0] == 'E')
 			mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-				game->exit_texture, game->player.pos_x, game->player.pos_y);
+				data->game.exit_texture, data->game.player.pos_x,
+				data->game.player.pos_y);
 		if (buffer[0] == 'C')
 			mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-				game->collectable_texture, game->player.pos_x,
-				game->player.pos_y);
-		game->player.pos_x += PLAYER_WIDTH;
+				data->game.collectable_texture, data->game.player.pos_x,
+				data->game.player.pos_y);
+		data->game.player.pos_x += PLAYER_WIDTH;
 	}
 	return (free(buffer), 0);
 }
@@ -157,7 +140,7 @@ static int	handle_keypress(int keysym, t_data *data, t_game *game)
 		else
 		return (1);
 		*/
-	render_map(data, game);
+	render_map(data);
 	game->moves++;
 	ft_putstr("You have made ");
 	ft_putnbr(game->moves);
@@ -253,22 +236,20 @@ int	main(int argc, char *argv[])
 		"so_long");
 	if (!data.win_ptr)
 		return (free(data.mlx_ptr), 1);
-	// game.moves = 0;
-	// game.player->pos_x = 0;
-	// game.player->pos_y = 0;
-	// game.player_texture = mlx_xpm_file_to_image(data.mlx_ptr,
-	// 	"textures/Player.xpm", width, height);
-	// game.empty_texture = mlx_xpm_file_to_image(data.mlx_ptr,
-	// 	"textures/Empty.xpm", width, height);
-	// game.exit_texture = mlx_xpm_file_to_image(data.mlx_ptr,
-	// 	"textures/Spaceship.xpm", width, height);
-	// game.collectable_texture = mlx_xpm_file_to_image(data.mlx_ptr,
-	// 	"textures/Tablet.xpm", width, height);
-	// game.wall_texture = mlx_xpm_file_to_image(data.mlx_ptr,
-	// 	"textures/Border.xpm", width, height);
-	// render_map(&data, &game);
-	// mlx_put_image_to_window(data.mlx_ptr, data.win_ptr, data.player,
-	// 	data.pos_x, data.pos_y);
+	data.game.moves = 0;
+	data.game.player.pos_x = 0;
+	data.game.player.pos_y = 0;
+	data.game.player_texture = mlx_xpm_file_to_image(data.mlx_ptr,
+		"textures/Player.xpm", width, height);
+	data.game.empty_texture = mlx_xpm_file_to_image(data.mlx_ptr,
+		"textures/Empty.xpm", width, height);
+	data.game.exit_texture = mlx_xpm_file_to_image(data.mlx_ptr,
+		"textures/Spaceship.xpm", width, height);
+	data.game.collectable_texture = mlx_xpm_file_to_image(data.mlx_ptr,
+		"textures/Tablet.xpm", width, height);
+	data.game.wall_texture = mlx_xpm_file_to_image(data.mlx_ptr,
+		"textures/Border.xpm", width, height);
+	render_map(&data);
 	mlx_hook(data.win_ptr, 2, 1L << 17, handle_keypress, &data);
 	mlx_hook(data.win_ptr, 17, 1L << 2, handle_destroy, &data);
 	mlx_loop(data.mlx_ptr);
