@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 14:07:00 by maabdull          #+#    #+#             */
-/*   Updated: 2023/10/09 15:01:00 by maabdull         ###   ########.fr       */
+/*   Updated: 2023/11/07 12:23:52 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,16 @@ int	render_map(t_data *data)
 
 	output = 1;
 	buffer = malloc(1);
+	// if (read(data->game.map.fd, buffer, 1) < 0)
+	// {
+	close(data->game.map.fd);
+	data->game.map.fd = open(data->game.map.path, O_RDONLY);
+	// }
 	while (output)
 	{
 		output = read(data->game.map.fd, buffer, 1);
 		if (output < 0)
-			return (free(buffer), -1);
+			return (ft_putstr("Somehow something went wrong\n"), free(buffer), -1);
 		if (output == 0)
 			break ;
 		if (buffer[0] == '\n')
@@ -65,11 +70,26 @@ int	render_map(t_data *data)
 		}
 		if (buffer[0] == 'P')
 		{
-			data->game.player.player_pos_x = data->game.player.pos_x;
-			data->game.player.player_pos_y = data->game.player.pos_y;
-			mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-				data->game.player_texture, data->game.player.pos_x,
-				data->game.player.pos_y);
+			if (data->game.player.player_pos_x != data->game.player.pos_x
+				&& data->game.player.player_pos_x != 0)
+			{
+				ft_putstr("You've moved before\n");
+				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+					data->game.player_texture, data->game.player.player_pos_x,
+					data->game.player.player_pos_y);
+				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+					data->game.empty_texture, data->game.player.pos_x,
+					data->game.player.pos_y);
+				continue ;
+			}
+			else
+			{
+				data->game.player.player_pos_x = data->game.player.pos_x;
+				data->game.player.player_pos_y = data->game.player.pos_y;
+				// mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+				// 	data->game.player_texture, data->game.player.pos_x,
+				// 	data->game.player.pos_y);
+			}
 		}
 		if (buffer[0] == '0')
 			mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
@@ -120,6 +140,10 @@ static int	handle_keypress(int keysym, t_data *data, t_game *game)
 		game->player.player_pos_y += PLAYER_HEIGHT;
 	if (keysym == d)
 		game->player.player_pos_x += PLAYER_WIDTH;
+	ft_putnbr(game->player.player_pos_x);
+	ft_putstr("\n");
+	ft_putnbr(game->player.player_pos_y);
+	ft_putstr("\n");
 	/*
 		else if (keysym == XK_w)
 		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
@@ -227,11 +251,12 @@ int	main(int argc, char *argv[])
 	data.mlx_ptr = mlx_init();
 	if (!data.mlx_ptr)
 		return (1);
-	data.game.map.fd = open(argv[1], O_RDONLY);
+	data.game.map.path = argv[1];
+	data.game.map.fd = open(data.game.map.path, O_RDONLY);
 	map_width = get_map_width(data.game.map.fd) * PLAYER_WIDTH;
 	map_height = get_map_height(data.game.map.fd) * PLAYER_HEIGHT;
 	close(data.game.map.fd);
-	data.game.map.fd = open(argv[1], O_RDONLY);
+	data.game.map.fd = open(data.game.map.path, O_RDONLY);
 	data.win_ptr = mlx_new_window(data.mlx_ptr, map_width, map_height,
 		"so_long");
 	if (!data.win_ptr)
@@ -239,6 +264,8 @@ int	main(int argc, char *argv[])
 	data.game.moves = 0;
 	data.game.player.pos_x = 0;
 	data.game.player.pos_y = 0;
+	data.game.player.player_pos_x = 0;
+	data.game.player.player_pos_y = 0;
 	data.game.player_texture = mlx_xpm_file_to_image(data.mlx_ptr,
 		"textures/Player.xpm", width, height);
 	data.game.empty_texture = mlx_xpm_file_to_image(data.mlx_ptr,

@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:04 by maabdull          #+#    #+#             */
-/*   Updated: 2023/10/09 14:52:01 by maabdull         ###   ########.fr       */
+/*   Updated: 2023/11/07 12:09:22 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_map
 	int			fd;
 	int			height;
 	int			width;
+	char		*path;
 }				t_map;
 
 typedef struct s_game
