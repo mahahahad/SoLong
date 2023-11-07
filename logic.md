@@ -1,7 +1,23 @@
 # Logic
 
-- Read the map file character by character
-- Compare each character to the handled characters and render appropriately
-- If the current character is the player, check if a position for the player exists
-  - If it does, render the player there and render a blank tile in this position
-  - Otherwise, render player normally
+## Intro
+
+- Perform basic checks on user input
+  - Are valid amount of arguments passed
+  - Is map correct file extension
+  - Is map correct (Blocked exits, Blocked collectibles, No player, ...) -> Leads into the rendering process
+- Initialize variables (player, map, game, data)
+
+## Rendering
+
+Because everything has been found to be valid, start the rendering process,
+Note: To prevent garbage and all that, read the map once and retain it's information for ezpz retrieval whenever needed.
+
+- Read the map line by line (get_next_line)
+- Store each line into a linked list { str = "line"; next = NextLine } (Better for stuff because 2 dimensional)
+
+## Movement
+
+- MLX hook to handle key presses,
+- Check if move is valid (NextPos is wall / collectible or whatever)
+- Destroy previous thing and render in that specific position the new stuff

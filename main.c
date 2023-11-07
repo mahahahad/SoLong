@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 14:07:00 by maabdull          #+#    #+#             */
-/*   Updated: 2023/11/07 12:23:52 by maabdull         ###   ########.fr       */
+/*   Updated: 2023/11/07 14:14:50 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ int	render_map(t_data *data)
 	{
 		output = read(data->game.map.fd, buffer, 1);
 		if (output < 0)
-			return (ft_putstr("Somehow something went wrong\n"), free(buffer), -1);
+			return (ft_putstr("Somehow, something went wrong\n"), free(buffer),
+				-1);
 		if (output == 0)
 			break ;
 		if (buffer[0] == '\n')
