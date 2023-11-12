@@ -69,6 +69,25 @@ static int	count_columns(char *map)
 	return (++columns);
 }
 
+/// @brief Gets the width and height of the provided map
+/// @param map The map to measure
+/// @param height The variable that will contain the height
+/// @param width The variable that will contain the width
+void	get_map_size(char *map, int *height, int *width)
+{
+	int	columns;
+	int	rows;
+
+	columns = 0;
+	rows = 0;
+	while (map[columns] != '\n')
+		columns++;
+	while (map[rows] != '\0')
+		rows += columns + 1;
+	*height = columns;
+	*width = rows / columns;
+}
+
 /// @brief Check if the provided map is valid or not
 /// @param map
 // 	The complete map provided as a string
@@ -132,7 +151,13 @@ int	main(int argc, char *argv[])
 	char	*map_full;
 	int		is_map_valid;
 	t_data	data;
+	int		*height;
+	int		*width;
+	int		map_height;
+	int		map_width;
 
+	height = &map_height;
+	width = &map_width;
 	if (argc != 2)
 		return (ft_putstr("Error\nPlease enter the map you would like to use\n"),
 			1);
@@ -148,7 +173,12 @@ int	main(int argc, char *argv[])
 	data.mlx_ptr = mlx_init();
 	if (!data.mlx_ptr)
 		return (1);
-	data.win_ptr = mlx_new_window(data.mlx_ptr, 1024, 1024, "so_long");
+	get_map_size(map_full, height, width);
+	map_height *= PLAYER_HEIGHT;
+	map_width *= PLAYER_WIDTH;
+	printf("%i %i\n", map_height, map_width);
+	data.win_ptr = mlx_new_window(data.mlx_ptr, map_height, map_width,
+		"so_long");
 	if (!data.win_ptr)
 		return (free(data.mlx_ptr), 1);
 	mlx_hook(data.win_ptr, 17, 1L << 2, handle_destroy, &data);
