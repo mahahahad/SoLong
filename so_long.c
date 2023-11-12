@@ -88,6 +88,19 @@ int	check_map(char *map)
 	return (is_valid);
 }
 
+void	render_map(char *map)
+{
+	(void)map;
+}
+
+int	handle_destroy(t_data *data)
+{
+	mlx_destroy_window(data->mlx_ptr, data->win_ptr);
+	free(data->mlx_ptr);
+	exit(0);
+	return (0);
+}
+
 /*
  * Check if arguments are valid
  * Start reading the map if they are
@@ -118,6 +131,7 @@ int	main(int argc, char *argv[])
 {
 	char	*map_full;
 	int		is_map_valid;
+	t_data	data;
 
 	if (argc != 2)
 		return (ft_putstr("Error\nPlease enter the map you would like to use\n"),
@@ -131,5 +145,14 @@ int	main(int argc, char *argv[])
 	is_map_valid = check_map(map_full);
 	if (is_map_valid)
 		return (ft_putstr("Your map is not valid"), 1);
+	data.mlx_ptr = mlx_init();
+	if (!data.mlx_ptr)
+		return (1);
+	data.win_ptr = mlx_new_window(data.mlx_ptr, 1024, 1024, "so_long");
+	if (!data.win_ptr)
+		return (free(data.mlx_ptr), 1);
+	mlx_hook(data.win_ptr, 17, 1L << 2, handle_destroy, &data);
+	mlx_loop(data.mlx_ptr);
+	render_map(map_full);
 	return (0);
 }
