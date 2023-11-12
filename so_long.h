@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:04 by maabdull          #+#    #+#             */
-/*   Updated: 2023/11/07 12:09:22 by maabdull         ###   ########.fr       */
+/*   Updated: 2023/11/12 13:47:32 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,13 @@
 #  define PLAYER_WIDTH 64
 # endif
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
+
 # include <fcntl.h>
 # include <limits.h>
+# include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
@@ -34,6 +39,13 @@
 # else
 #  include "mlx_mac/mlx.h"
 # endif
+
+char			*get_next_line(int fd);
+void			ft_putstr(char *str);
+size_t			ft_strlen(const char *str);
+char			*ft_strdup(const char *str);
+char			*ft_strchr(const char *s, int c);
+char			*ft_strjoin(char *s1, char const *s2);
 
 typedef struct s_player
 {
