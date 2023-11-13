@@ -4,5 +4,6 @@
 - [x] Start reading map
   - [x] Append into full map string
 - [ ] Parse string and validate
-- [ ] Create window
-- [ ] Render textures
+	- [x] Partial validation
+- [x] Create window
+- [x] Render textures

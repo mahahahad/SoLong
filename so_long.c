@@ -134,8 +134,12 @@ void	render_map(char *map, t_data *data)
 			mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
 				data->game.collectable_texture, x, y);
 		if (map[i] == 'P')
+		{
+			data->game.player.player_pos_x = x;
+			data->game.player.player_pos_y = y;
 			mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
 				data->game.player_texture, x, y);
+		}
 		if (map[i] == 'E')
 			mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
 				data->game.exit_texture, x, y);
@@ -154,23 +158,18 @@ int	handle_destroy(t_data *data)
 int	handle_keypress(int keysym, t_data *data)
 {
 	if (keysym == 53)
-		handle_destroy(data);
+		return (handle_destroy(data), 0);
 	if (keysym == 13)
-	{
-		// Check up movement
-	}
+		data->game.player.player_pos_y -= PLAYER_HEIGHT;
 	if (keysym == 0)
-	{
-		// Check left movement
-	}
+		data->game.player.player_pos_x -= PLAYER_WIDTH;
 	if (keysym == 1)
-	{
-		// Check down movement
-	}
+		data->game.player.player_pos_y += PLAYER_HEIGHT;
 	if (keysym == 2)
-	{
-		// Check right movement
-	}
+		data->game.player.player_pos_x += PLAYER_WIDTH;
+	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+		data->game.player_texture, data->game.player.player_pos_x,
+		data->game.player.player_pos_y);
 	return (0);
 }
 
@@ -252,6 +251,8 @@ int	main(int argc, char *argv[])
 		"textures/Empty.xpm", player_width_ptr, player_height_ptr);
 	data.game.exit_texture = mlx_xpm_file_to_image(data.mlx_ptr,
 		"textures/Spaceship.xpm", player_width_ptr, player_height_ptr);
+	data.game.player.player_pos_x = 0;
+	data.game.player.player_pos_y = 0;
 	render_map(map_full, &data);
 	mlx_hook(data.win_ptr, 17, 1L << 2, handle_destroy, &data);
 	mlx_hook(data.win_ptr, 2, 1L << 17, handle_keypress, &data);
