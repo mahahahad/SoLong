@@ -107,9 +107,41 @@ int	check_map(char *map)
 	return (is_valid);
 }
 
-void	render_map(char *map)
+void	render_map(char *map, t_data *data)
 {
-	(void)map;
+	int	i;
+	int	x;
+	int	y;
+
+	i = -1;
+	x = 0;
+	y = 0;
+	while (map[++i] != 0)
+	{
+		if (map[i] == '\n')
+		{
+			x = 0;
+			y += PLAYER_HEIGHT;
+			i++;
+			continue ;
+		}
+		if (map[i] == '1')
+			mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+				data->game.wall_texture, x, y);
+		if (map[i] == '0')
+			mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+				data->game.empty_texture, x, y);
+		if (map[i] == 'C')
+			mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+				data->game.collectable_texture, x, y);
+		if (map[i] == 'P')
+			mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+				data->game.player_texture, x, y);
+		if (map[i] == 'E')
+			mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+				data->game.exit_texture, x, y);
+		x += PLAYER_WIDTH;
+	}
 }
 
 int	handle_destroy(t_data *data)
@@ -151,13 +183,21 @@ int	main(int argc, char *argv[])
 	char	*map_full;
 	int		is_map_valid;
 	t_data	data;
-	int		*height;
-	int		*width;
+	int		*map_height_ptr;
+	int		*map_width_ptr;
 	int		map_height;
 	int		map_width;
+	int		*player_height_ptr;
+	int		*player_width_ptr;
+	int		player_height;
+	int		player_width;
 
-	height = &map_height;
-	width = &map_width;
+	map_height_ptr = &map_height;
+	map_width_ptr = &map_width;
+	player_height = PLAYER_HEIGHT;
+	player_width = PLAYER_WIDTH;
+	player_height_ptr = &player_height;
+	player_width_ptr = &player_width;
 	if (argc != 2)
 		return (ft_putstr("Error\nPlease enter the map you would like to use\n"),
 			1);
@@ -173,7 +213,7 @@ int	main(int argc, char *argv[])
 	data.mlx_ptr = mlx_init();
 	if (!data.mlx_ptr)
 		return (1);
-	get_map_size(map_full, height, width);
+	get_map_size(map_full, map_height_ptr, map_width_ptr);
 	map_height *= PLAYER_HEIGHT;
 	map_width *= PLAYER_WIDTH;
 	printf("%i %i\n", map_height, map_width);
@@ -181,8 +221,18 @@ int	main(int argc, char *argv[])
 		"so_long");
 	if (!data.win_ptr)
 		return (free(data.mlx_ptr), 1);
+	data.game.player_texture = mlx_xpm_file_to_image(data.mlx_ptr,
+		"textures/Player.xpm", player_width_ptr, player_height_ptr);
+	data.game.wall_texture = mlx_xpm_file_to_image(data.mlx_ptr,
+		"textures/Border.xpm", player_width_ptr, player_height_ptr);
+	data.game.collectable_texture = mlx_xpm_file_to_image(data.mlx_ptr,
+		"textures/Tablet.xpm", player_width_ptr, player_height_ptr);
+	data.game.empty_texture = mlx_xpm_file_to_image(data.mlx_ptr,
+		"textures/Empty.xpm", player_width_ptr, player_height_ptr);
+	data.game.exit_texture = mlx_xpm_file_to_image(data.mlx_ptr,
+		"textures/Spaceship.xpm", player_width_ptr, player_height_ptr);
+	render_map(map_full, &data);
 	mlx_hook(data.win_ptr, 17, 1L << 2, handle_destroy, &data);
 	mlx_loop(data.mlx_ptr);
-	render_map(map_full);
 	return (0);
 }
