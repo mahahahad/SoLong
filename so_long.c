@@ -151,6 +151,29 @@ int	handle_destroy(t_data *data)
 	return (0);
 }
 
+int	handle_keypress(int keysym, t_data *data)
+{
+	if (keysym == 53)
+		handle_destroy(data);
+	if (keysym == 13)
+	{
+		// Check up movement
+	}
+	if (keysym == 0)
+	{
+		// Check left movement
+	}
+	if (keysym == 1)
+	{
+		// Check down movement
+	}
+	if (keysym == 2)
+	{
+		// Check right movement
+	}
+	return (0);
+}
+
 /*
  * Check if arguments are valid
  * Start reading the map if they are
@@ -231,6 +254,7 @@ int	main(int argc, char *argv[])
 		"textures/Spaceship.xpm", player_width_ptr, player_height_ptr);
 	render_map(map_full, &data);
 	mlx_hook(data.win_ptr, 17, 1L << 2, handle_destroy, &data);
+	mlx_hook(data.win_ptr, 2, 1L << 17, handle_keypress, &data);
 	mlx_loop(data.mlx_ptr);
 	return (0);
 }
