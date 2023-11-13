@@ -159,6 +159,9 @@ int	handle_keypress(int keysym, t_data *data)
 {
 	if (keysym == 53)
 		return (handle_destroy(data), 0);
+	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+		data->game.empty_texture, data->game.player.player_pos_x,
+		data->game.player.player_pos_y);
 	if (keysym == 13)
 		data->game.player.player_pos_y -= PLAYER_HEIGHT;
 	if (keysym == 0)
@@ -241,6 +244,7 @@ int	main(int argc, char *argv[])
 		"so_long");
 	if (!data.win_ptr)
 		return (free(data.mlx_ptr), 1);
+	// Initalize Texture pointers
 	data.game.player_texture = mlx_xpm_file_to_image(data.mlx_ptr,
 		"textures/Player.xpm", player_width_ptr, player_height_ptr);
 	data.game.wall_texture = mlx_xpm_file_to_image(data.mlx_ptr,
@@ -251,11 +255,11 @@ int	main(int argc, char *argv[])
 		"textures/Empty.xpm", player_width_ptr, player_height_ptr);
 	data.game.exit_texture = mlx_xpm_file_to_image(data.mlx_ptr,
 		"textures/Spaceship.xpm", player_width_ptr, player_height_ptr);
-	data.game.player.player_pos_x = 0;
-	data.game.player.player_pos_y = 0;
 	render_map(map_full, &data);
+	// Handle keypress and close window events
 	mlx_hook(data.win_ptr, 17, 1L << 2, handle_destroy, &data);
 	mlx_hook(data.win_ptr, 2, 1L << 17, handle_keypress, &data);
+	// Loop infinitely to avoid closing window until specified by user
 	mlx_loop(data.mlx_ptr);
 	return (0);
 }
