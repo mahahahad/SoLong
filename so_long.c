@@ -122,7 +122,6 @@ void	render_map(char *map, t_data *data)
 		{
 			x = 0;
 			y += PLAYER_HEIGHT;
-			i++;
 			continue ;
 		}
 		if (map[i] == '1')
@@ -216,7 +215,6 @@ int	main(int argc, char *argv[])
 	get_map_size(map_full, map_height_ptr, map_width_ptr);
 	map_height *= PLAYER_HEIGHT;
 	map_width *= PLAYER_WIDTH;
-	printf("%i %i\n", map_height, map_width);
 	data.win_ptr = mlx_new_window(data.mlx_ptr, map_height, map_width,
 		"so_long");
 	if (!data.win_ptr)
