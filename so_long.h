@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:04 by maabdull          #+#    #+#             */
-/*   Updated: 2023/11/12 13:47:32 by maabdull         ###   ########.fr       */
+/*   Updated: 2023/11/13 13:23:02 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,23 @@
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
+# endif
+
+// Key code macros
+# ifndef KEY_ESC
+#  define KEY_ESC 53
+# endif
+# ifndef KEY_W
+#  define KEY_W 13
+# endif
+# ifndef KEY_A
+#  define KEY_A 0
+# endif
+# ifndef KEY_S
+#  define KEY_S 1
+# endif
+# ifndef KEY_D
+#  define KEY_D 2
 # endif
 
 # include <fcntl.h>
@@ -46,6 +63,7 @@ size_t			ft_strlen(const char *str);
 char			*ft_strdup(const char *str);
 char			*ft_strchr(const char *s, int c);
 char			*ft_strjoin(char *s1, char const *s2);
+char			**ft_split(char const *s, char c);
 
 typedef struct s_player
 {
@@ -53,6 +71,7 @@ typedef struct s_player
 	int			pos_y;
 	int			player_pos_x;
 	int			player_pos_y;
+	int			index;
 }				t_player;
 
 typedef struct s_map
@@ -60,7 +79,9 @@ typedef struct s_map
 	int			fd;
 	int			height;
 	int			width;
-	char		*path;
+	char		**full;
+	int			rows;
+	int			columns;
 }				t_map;
 
 typedef struct s_game

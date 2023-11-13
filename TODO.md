@@ -7,3 +7,4 @@
 	- [x] Partial validation
 - [x] Create window
 - [x] Render textures
+- [ ] Refactor structures and remove unused code
