@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:04 by maabdull          #+#    #+#             */
-/*   Updated: 2023/11/14 10:45:50 by maabdull         ###   ########.fr       */
+/*   Updated: 2023/11/14 11:12:05 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,21 @@
 # endif
 # ifndef KEY_D
 #  define KEY_D 2
+# endif
+# ifndef KEY_Q
+#  define KEY_Q 12
+# endif
+# ifndef KEY_ARROW_UP
+#  define KEY_ARROW_UP 126
+# endif
+# ifndef KEY_ARROW_LEFT
+#  define KEY_ARROW_LEFT 123
+# endif
+# ifndef KEY_ARROW_DOWN
+#  define KEY_ARROW_DOWN 125
+# endif
+# ifndef KEY_ARROW_RIGHT
+#  define KEY_ARROW_RIGHT 124
 # endif
 
 # include <fcntl.h>

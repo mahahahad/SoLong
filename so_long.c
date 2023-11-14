@@ -209,12 +209,12 @@ int	handle_destroy(t_data *data)
 // TODO: FIX THIS
 int	handle_keypress(int keysym, t_data *data)
 {
-	if (keysym == KEY_ESC)
+	if (keysym == KEY_ESC || keysym == KEY_Q)
 		return (handle_destroy(data), 0);
 	// ft_putstr(data->game.map.full);
 	// ft_putstr("\n");
 	// data->game.map.full[data->game.player.index] = '0';
-	if (keysym == KEY_W)
+	if (keysym == KEY_W || keysym == KEY_ARROW_UP)
 	{
 		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
 		if (data->game.player.y == 0)
@@ -222,7 +222,7 @@ int	handle_keypress(int keysym, t_data *data)
 		data->game.player.y -= 1;
 		data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
 	}
-	if (keysym == KEY_A)
+	if (keysym == KEY_A || keysym == KEY_ARROW_LEFT)
 	{
 		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
 		if (data->game.player.x == 0)
@@ -230,7 +230,7 @@ int	handle_keypress(int keysym, t_data *data)
 		data->game.player.x -= 1;
 		data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
 	}
-	if (keysym == KEY_S)
+	if (keysym == KEY_S || keysym == KEY_ARROW_DOWN)
 	{
 		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
 		printf("%d %d\n", data->game.player.y, data->game.map.rows);
@@ -239,7 +239,7 @@ int	handle_keypress(int keysym, t_data *data)
 		data->game.player.y += 1;
 		data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
 	}
-	if (keysym == KEY_D)
+	if (keysym == KEY_D || keysym == KEY_ARROW_RIGHT)
 	{
 		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
 		if (data->game.player.x == data->game.map.columns - 1)
@@ -272,8 +272,7 @@ int	handle_keypress(int keysym, t_data *data)
  * Keypress Event
  * Check if move is valid
  * Render player in new position if it is
- *	* Destroy old texture in that position and render player there
- *	* Destroy player texture from old pos and render empty there
+ *	* Render empty in player old position
  * Return and do nothing if it isn't
  */
 
