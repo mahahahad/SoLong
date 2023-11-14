@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:04 by maabdull          #+#    #+#             */
-/*   Updated: 2023/11/14 11:20:46 by maabdull         ###   ########.fr       */
+/*   Updated: 2023/11/14 13:31:36 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 # define SO_LONG_H
 
 # ifndef PLAYER_HEIGHT
-#  define PLAYER_HEIGHT 64
+#  define PLAYER_HEIGHT 63
 # endif
 
 # ifndef PLAYER_WIDTH
-#  define PLAYER_WIDTH 64
+#  define PLAYER_WIDTH 63
 # endif
 
 # ifndef BUFFER_SIZE

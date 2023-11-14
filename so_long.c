@@ -174,6 +174,35 @@ void	render_map(t_data *data)
 	ft_putnbr(data->game.moves);
 	ft_putstr(" moves so far\n");
 }
+void	render_2(t_data *data)
+{
+	int	i[2];
+
+	i[0] = -1;
+	while (++i[0] < data->game.map.rows)
+	{
+		i[1] = -1;
+		while (++i[1] < data->game.map.columns)
+		{
+			if (data->game.map.full[i[0]][i[1]] == '1')
+				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+					data->game.wall_texture, i[0] * PLAYER_WIDTH, i[1]
+					* PLAYER_HEIGHT);
+			else if (data->game.map.full[i[0]][i[1]] == '0')
+				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+					data->game.empty_texture, i[0] * PLAYER_WIDTH, i[1]
+					* PLAYER_HEIGHT);
+			else
+			{
+				data->game.player.x = i[1];
+				data->game.player.y = i[0];
+				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+					data->game.player_texture, i[0] * PLAYER_WIDTH, i[1]
+					* PLAYER_HEIGHT);
+			}
+		}
+	}
+}
 
 /*
 111111
@@ -258,6 +287,7 @@ int	handle_keypress(int keysym, t_data *data)
 	else
 		return (1);
 	data->game.moves++;
+	// render_map(data);
 	render_map(data);
 	return (0);
 }
@@ -319,7 +349,7 @@ int	main(int argc, char *argv[])
 	if (!data.mlx_ptr)
 		return (1);
 	data.win_ptr = mlx_new_window(data.mlx_ptr, data.game.map.columns
-		* PLAYER_WIDTH, data.game.map.rows * PLAYER_HEIGHT, "so_long");
+		* PLAYER_WIDTH, data.game.map.rows * PLAYER_HEIGHT - 1, "so_long");
 	if (!data.win_ptr)
 		return (free(data.mlx_ptr), 1);
 	// Initalize Texture pointers
@@ -334,6 +364,7 @@ int	main(int argc, char *argv[])
 	data.game.exit_texture = mlx_xpm_file_to_image(data.mlx_ptr,
 		"textures/Spaceship.xpm", player_width_ptr, player_height_ptr);
 	data.game.moves = 0;
+	// render_map(&data);
 	render_map(&data);
 	// Handle keypress and close window events
 	mlx_hook(data.win_ptr, 17, 1L << 2, handle_destroy, &data);
