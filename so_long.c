@@ -167,7 +167,6 @@ void	render_map(t_data *data)
 					* PLAYER_HEIGHT);
 			x++;
 		}
-		// ft_putstr("Done with a row\n");
 		y++;
 		x = 0;
 	}
@@ -215,24 +214,31 @@ int	handle_keypress(int keysym, t_data *data)
 	// ft_putstr(data->game.map.full);
 	// ft_putstr("\n");
 	// data->game.map.full[data->game.player.index] = '0';
-	// if (keysym == KEY_W)
-	// {
-	// 	data->game.player.index -= (data->game.map.width / PLAYER_WIDTH);
-	// }
-	// if (keysym == KEY_A)
-	// {
-	// 	data->game.player.index -= 1;
-	// }
-	// if (keysym == KEY_S)
-	// {
-	// 	data->game.player.index += data->game.map.height / PLAYER_HEIGHT;
-	// }
-	// if (keysym == KEY_D)
-	// {
-	// 	data->game.player.index += 1;
-	// }
-	// data->game.map.full[data->game.player.index] = 'P';
-	// render_map(data);
+	if (keysym == KEY_W)
+	{
+		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
+		data->game.player.y -= 1;
+		data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
+	}
+	if (keysym == KEY_A)
+	{
+		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
+		data->game.player.x -= 1;
+		data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
+	}
+	if (keysym == KEY_S)
+	{
+		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
+		data->game.player.y += 1;
+		data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
+	}
+	if (keysym == KEY_D)
+	{
+		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
+		data->game.player.x += 1;
+		data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
+	}
+	render_map(data);
 	return (0);
 }
 
