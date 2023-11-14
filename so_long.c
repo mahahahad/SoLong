@@ -217,7 +217,8 @@ int	handle_keypress(int keysym, t_data *data)
 	if (keysym == KEY_W || keysym == KEY_ARROW_UP)
 	{
 		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
-		if (data->game.player.y == 0)
+		if (data->game.player.y == 0 || data->game.map.full[data->game.player.y
+			- 1][data->game.player.x] == '1')
 			return (1);
 		data->game.player.y -= 1;
 		data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
@@ -225,7 +226,9 @@ int	handle_keypress(int keysym, t_data *data)
 	if (keysym == KEY_A || keysym == KEY_ARROW_LEFT)
 	{
 		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
-		if (data->game.player.x == 0)
+		if (data->game.player.x == 0
+			|| data->game.map.full[data->game.player.y][data->game.player.x
+			- 1] == '1')
 			return (1);
 		data->game.player.x -= 1;
 		data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
@@ -234,7 +237,9 @@ int	handle_keypress(int keysym, t_data *data)
 	{
 		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
 		printf("%d %d\n", data->game.player.y, data->game.map.rows);
-		if (data->game.player.y == data->game.map.rows - 1)
+		if (data->game.player.y == data->game.map.rows - 1
+			|| data->game.map.full[data->game.player.y
+			+ 1][data->game.player.x] == '1')
 			return (1);
 		data->game.player.y += 1;
 		data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
@@ -242,7 +247,9 @@ int	handle_keypress(int keysym, t_data *data)
 	if (keysym == KEY_D || keysym == KEY_ARROW_RIGHT)
 	{
 		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
-		if (data->game.player.x == data->game.map.columns - 1)
+		if (data->game.player.x == data->game.map.columns - 1
+			|| data->game.map.full[data->game.player.y][data->game.player.x
+			+ 1] == '1')
 			return (1);
 		data->game.player.x += 1;
 		data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
