@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:04 by maabdull          #+#    #+#             */
-/*   Updated: 2023/11/14 11:12:05 by maabdull         ###   ########.fr       */
+/*   Updated: 2023/11/14 11:20:46 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@
 
 char			*get_next_line(int fd);
 void			ft_putstr(char *str);
+void			ft_putnbr(int n);
 size_t			ft_strlen(const char *str);
 char			*ft_strdup(const char *str);
 char			*ft_strchr(const char *s, int c);

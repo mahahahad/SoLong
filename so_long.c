@@ -170,6 +170,9 @@ void	render_map(t_data *data)
 		y++;
 		x = 0;
 	}
+	ft_putstr("You have made ");
+	ft_putnbr(data->game.moves);
+	ft_putstr(" moves so far\n");
 }
 
 /*
@@ -206,7 +209,6 @@ int	handle_destroy(t_data *data)
 	return (0);
 }
 
-// TODO: FIX THIS
 int	handle_keypress(int keysym, t_data *data)
 {
 	if (keysym == KEY_ESC || keysym == KEY_Q)
@@ -214,7 +216,7 @@ int	handle_keypress(int keysym, t_data *data)
 	// ft_putstr(data->game.map.full);
 	// ft_putstr("\n");
 	// data->game.map.full[data->game.player.index] = '0';
-	if (keysym == KEY_W || keysym == KEY_ARROW_UP)
+	else if (keysym == KEY_W || keysym == KEY_ARROW_UP)
 	{
 		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
 		if (data->game.player.y == 0 || data->game.map.full[data->game.player.y
@@ -223,7 +225,7 @@ int	handle_keypress(int keysym, t_data *data)
 		data->game.player.y -= 1;
 		data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
 	}
-	if (keysym == KEY_A || keysym == KEY_ARROW_LEFT)
+	else if (keysym == KEY_A || keysym == KEY_ARROW_LEFT)
 	{
 		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
 		if (data->game.player.x == 0
@@ -233,10 +235,9 @@ int	handle_keypress(int keysym, t_data *data)
 		data->game.player.x -= 1;
 		data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
 	}
-	if (keysym == KEY_S || keysym == KEY_ARROW_DOWN)
+	else if (keysym == KEY_S || keysym == KEY_ARROW_DOWN)
 	{
 		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
-		printf("%d %d\n", data->game.player.y, data->game.map.rows);
 		if (data->game.player.y == data->game.map.rows - 1
 			|| data->game.map.full[data->game.player.y
 			+ 1][data->game.player.x] == '1')
@@ -244,7 +245,7 @@ int	handle_keypress(int keysym, t_data *data)
 		data->game.player.y += 1;
 		data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
 	}
-	if (keysym == KEY_D || keysym == KEY_ARROW_RIGHT)
+	else if (keysym == KEY_D || keysym == KEY_ARROW_RIGHT)
 	{
 		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
 		if (data->game.player.x == data->game.map.columns - 1
@@ -254,6 +255,9 @@ int	handle_keypress(int keysym, t_data *data)
 		data->game.player.x += 1;
 		data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
 	}
+	else
+		return (1);
+	data->game.moves++;
 	render_map(data);
 	return (0);
 }
@@ -329,6 +333,7 @@ int	main(int argc, char *argv[])
 		"textures/Empty.xpm", player_width_ptr, player_height_ptr);
 	data.game.exit_texture = mlx_xpm_file_to_image(data.mlx_ptr,
 		"textures/Spaceship.xpm", player_width_ptr, player_height_ptr);
+	data.game.moves = 0;
 	render_map(&data);
 	// Handle keypress and close window events
 	mlx_hook(data.win_ptr, 17, 1L << 2, handle_destroy, &data);
