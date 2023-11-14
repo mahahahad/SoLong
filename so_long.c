@@ -217,24 +217,33 @@ int	handle_keypress(int keysym, t_data *data)
 	if (keysym == KEY_W)
 	{
 		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
+		if (data->game.player.y == 0)
+			return (1);
 		data->game.player.y -= 1;
 		data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
 	}
 	if (keysym == KEY_A)
 	{
 		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
+		if (data->game.player.x == 0)
+			return (1);
 		data->game.player.x -= 1;
 		data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
 	}
 	if (keysym == KEY_S)
 	{
 		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
+		printf("%d %d\n", data->game.player.y, data->game.map.rows);
+		if (data->game.player.y == data->game.map.rows - 1)
+			return (1);
 		data->game.player.y += 1;
 		data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
 	}
 	if (keysym == KEY_D)
 	{
 		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
+		if (data->game.player.x == data->game.map.columns - 1)
+			return (1);
 		data->game.player.x += 1;
 		data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
 	}
