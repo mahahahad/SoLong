@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:04 by maabdull          #+#    #+#             */
-/*   Updated: 2023/11/13 13:23:02 by maabdull         ###   ########.fr       */
+/*   Updated: 2023/11/14 10:45:50 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,8 @@ char			**ft_split(char const *s, char c);
 
 typedef struct s_player
 {
-	int			pos_x;
-	int			pos_y;
-	int			player_pos_x;
-	int			player_pos_y;
-	int			index;
+	int			x;
+	int			y;
 }				t_player;
 
 typedef struct s_map

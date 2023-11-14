@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 14:07:00 by maabdull          #+#    #+#             */
-/*   Updated: 2023/11/07 14:14:50 by maabdull         ###   ########.fr       */
+/*   Updated: 2023/11/14 10:37:26 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ static int	handle_keypress(int keysym, t_data *data, t_game *game)
 		else
 		return (1);
 		*/
-	render_map(data);
+	// render_map(data);
 	game->moves++;
 	ft_putstr("You have made ");
 	ft_putnbr(game->moves);
