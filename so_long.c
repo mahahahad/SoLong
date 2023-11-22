@@ -251,6 +251,12 @@ int	handle_keypress(int keysym, t_data *data)
 		if (data->game.player.y == 0 || data->game.map.full[data->game.player.y
 			- 1][data->game.player.x] == '1')
 			return (1);
+		if (data->game.map.full[data->game.player.y
+			- 1][data->game.player.x] == 'E')
+		{
+			ft_putstr("You win!\n");
+			handle_destroy(data);
+		}
 		data->game.player.y -= 1;
 		data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
 	}
