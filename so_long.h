@@ -25,37 +25,33 @@
 #  define BUFFER_SIZE 42
 # endif
 
-// Key code macros
-# ifndef KEY_ESC
+# ifdef __linux__
+// Linux keycodes
+#  define KEY_ESC 65307
+#  define KEY_W 119
+#  define KEY_A 97
+#  define KEY_S 115
+#  define KEY_D 100
+#  define KEY_Q 113
+#  define KEY_ARROW_UP 65362
+#  define KEY_ARROW_LEFT 65361
+#  define KEY_ARROW_DOWN 65364
+#  define KEY_ARROW_RIGHT 65363
+# else
+// macOS key code macros
 #  define KEY_ESC 53
-# endif
-# ifndef KEY_W
 #  define KEY_W 13
-# endif
-# ifndef KEY_A
 #  define KEY_A 0
-# endif
-# ifndef KEY_S
 #  define KEY_S 1
-# endif
-# ifndef KEY_D
 #  define KEY_D 2
-# endif
-# ifndef KEY_Q
 #  define KEY_Q 12
-# endif
-# ifndef KEY_ARROW_UP
 #  define KEY_ARROW_UP 126
-# endif
-# ifndef KEY_ARROW_LEFT
 #  define KEY_ARROW_LEFT 123
-# endif
-# ifndef KEY_ARROW_DOWN
 #  define KEY_ARROW_DOWN 125
-# endif
-# ifndef KEY_ARROW_RIGHT
 #  define KEY_ARROW_RIGHT 124
 # endif
+
+
 
 # include <fcntl.h>
 # include <limits.h>
@@ -66,7 +62,7 @@
 
 # ifdef __linux__
 #  include "mlx_linux/mlx.h"
-#  include <X11/X.h>
+#  include <X11/Xlib.h>
 #  include <X11/keysym.h>
 # else
 #  include "mlx_mac/mlx.h"

@@ -129,11 +129,9 @@ int	check_map(t_data *data)
 
 void	render_map(t_data *data)
 {
-	int	i;
 	int	x;
 	int	y;
 
-	i = -1;
 	x = 0;
 	y = 0;
 	while (y < data->game.map.rows)
@@ -174,47 +172,7 @@ void	render_map(t_data *data)
 	ft_putnbr(data->game.moves);
 	ft_putstr(" moves so far\n");
 }
-void	render_2(t_data *data)
-{
-	int	i[2];
 
-	i[0] = -1;
-	while (++i[0] < data->game.map.rows)
-	{
-		i[1] = -1;
-		while (++i[1] < data->game.map.columns)
-		{
-			if (data->game.map.full[i[0]][i[1]] == '1')
-				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-					data->game.wall_texture, i[0] * PLAYER_WIDTH, i[1]
-					* PLAYER_HEIGHT);
-			else if (data->game.map.full[i[0]][i[1]] == '0')
-				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-					data->game.empty_texture, i[0] * PLAYER_WIDTH, i[1]
-					* PLAYER_HEIGHT);
-			else
-			{
-				data->game.player.x = i[1];
-				data->game.player.y = i[0];
-				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-					data->game.player_texture, i[0] * PLAYER_WIDTH, i[1]
-					* PLAYER_HEIGHT);
-			}
-		}
-	}
-}
-
-/*
-111111
-10P001
-1000E1
-111111
-
-[[1,1,1,1,1,1],
-[1,0,P,0,0,1],
-[1,0,0,0,E,1],
-[1,1,1,1,1,1]]
-*/
 /// @brief Checks if a move is valid based on the key code provided
 /// @param keycode The move to check is valid
 /// @param data The data structure holding all the information related to the game including the map
@@ -374,7 +332,9 @@ int	main(int argc, char *argv[])
 	render_map(&data);
 	// Handle keypress and close window events
 	mlx_hook(data.win_ptr, 17, 1L << 2, handle_destroy, &data);
-	mlx_hook(data.win_ptr, 2, 1L << 17, handle_keypress, &data);
+	// For Linux
+	mlx_hook(data.win_ptr, 2, 1L<<0, handle_keypress, &data);
+	// mlx_key_hook(data.win_ptr, handle_keypress, &data);
 	// Loop infinitely to avoid closing window until specified by user
 	mlx_loop(data.mlx_ptr);
 	return (0);
