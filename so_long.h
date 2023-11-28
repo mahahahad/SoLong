@@ -81,6 +81,7 @@ typedef struct s_player
 {
 	int			x;
 	int			y;
+	int			direction;
 }				t_player;
 
 typedef struct s_map
@@ -95,7 +96,10 @@ typedef struct s_map
 
 typedef struct s_game
 {
-	void		*player_texture;
+	void		*player_up_texture;
+	void		*player_down_texture;
+	void		*player_left_texture;
+	void		*player_right_texture;
 	void		*empty_texture;
 	void		*wall_texture;
 	void		*collectable_texture;

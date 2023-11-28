@@ -155,9 +155,30 @@ void	render_map(t_data *data)
 			{
 				data->game.player.x = x;
 				data->game.player.y = y;
+				if (data->game.player.direction == KEY_W)
+				{
 				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-					data->game.player_texture, x * PLAYER_WIDTH, y
+					data->game.player_up_texture, x * PLAYER_WIDTH, y
 					* PLAYER_HEIGHT);
+				}
+				if (data->game.player.direction == KEY_S)
+				{
+				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+					data->game.player_down_texture, x * PLAYER_WIDTH, y
+					* PLAYER_HEIGHT);
+				}
+				if (data->game.player.direction == KEY_A)
+				{
+				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+					data->game.player_left_texture, x * PLAYER_WIDTH, y
+					* PLAYER_HEIGHT);
+				}
+				if (data->game.player.direction == KEY_D)
+				{
+				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+					data->game.player_right_texture, x * PLAYER_WIDTH, y
+					* PLAYER_HEIGHT);
+				}
 			}
 			if (data->game.map.full[y][x] == 'E')
 				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
@@ -206,6 +227,7 @@ int	handle_keypress(int keysym, t_data *data)
 	else if (keysym == KEY_W || keysym == KEY_ARROW_UP)
 	{
 		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
+		data->game.player.direction = KEY_W;
 		if (data->game.player.y == 0 || data->game.map.full[data->game.player.y
 			- 1][data->game.player.x] == '1')
 			return (1);
@@ -221,6 +243,7 @@ int	handle_keypress(int keysym, t_data *data)
 	else if (keysym == KEY_A || keysym == KEY_ARROW_LEFT)
 	{
 		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
+		data->game.player.direction = KEY_A;
 		if (data->game.player.x == 0
 			|| data->game.map.full[data->game.player.y][data->game.player.x
 			- 1] == '1')
@@ -231,6 +254,7 @@ int	handle_keypress(int keysym, t_data *data)
 	else if (keysym == KEY_S || keysym == KEY_ARROW_DOWN)
 	{
 		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
+		data->game.player.direction = KEY_S;
 		if (data->game.player.y == data->game.map.rows - 1
 			|| data->game.map.full[data->game.player.y
 			+ 1][data->game.player.x] == '1')
@@ -241,6 +265,7 @@ int	handle_keypress(int keysym, t_data *data)
 	else if (keysym == KEY_D || keysym == KEY_ARROW_RIGHT)
 	{
 		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
+		data->game.player.direction = KEY_D;
 		if (data->game.player.x == data->game.map.columns - 1
 			|| data->game.map.full[data->game.player.y][data->game.player.x
 			+ 1] == '1')
@@ -317,8 +342,14 @@ int	main(int argc, char *argv[])
 	if (!data.win_ptr)
 		return (free(data.mlx_ptr), 1);
 	// Initalize Texture pointers
-	data.game.player_texture = mlx_xpm_file_to_image(data.mlx_ptr,
-		"textures/Player.xpm", player_width_ptr, player_height_ptr);
+	data.game.player_up_texture = mlx_xpm_file_to_image(data.mlx_ptr,
+		"textures/PlayerUp.xpm", player_width_ptr, player_height_ptr);
+	data.game.player_down_texture = mlx_xpm_file_to_image(data.mlx_ptr,
+		"textures/PlayerDown.xpm", player_width_ptr, player_height_ptr);
+	data.game.player_left_texture = mlx_xpm_file_to_image(data.mlx_ptr,
+		"textures/PlayerLeft.xpm", player_width_ptr, player_height_ptr);
+	data.game.player_right_texture = mlx_xpm_file_to_image(data.mlx_ptr,
+		"textures/PlayerRight.xpm", player_width_ptr, player_height_ptr);
 	data.game.wall_texture = mlx_xpm_file_to_image(data.mlx_ptr,
 		"textures/Border.xpm", player_width_ptr, player_height_ptr);
 	data.game.collectable_texture = mlx_xpm_file_to_image(data.mlx_ptr,
@@ -328,6 +359,7 @@ int	main(int argc, char *argv[])
 	data.game.exit_texture = mlx_xpm_file_to_image(data.mlx_ptr,
 		"textures/Spaceship.xpm", player_width_ptr, player_height_ptr);
 	data.game.moves = 0;
+	data.game.player.direction = KEY_W;
 	// render_map(&data);
 	render_map(&data);
 	// Handle keypress and close window events
