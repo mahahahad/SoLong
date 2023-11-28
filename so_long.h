@@ -14,11 +14,11 @@
 # define SO_LONG_H
 
 # ifndef PLAYER_HEIGHT
-#  define PLAYER_HEIGHT 63
+#  define PLAYER_HEIGHT 64
 # endif
 
 # ifndef PLAYER_WIDTH
-#  define PLAYER_WIDTH 63
+#  define PLAYER_WIDTH 64
 # endif
 
 # ifndef BUFFER_SIZE
