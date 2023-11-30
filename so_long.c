@@ -217,6 +217,24 @@ int	handle_destroy(t_data *data)
 	return (0);
 }
 
+int	move_to(t_data *data, int new_x, int new_y)
+{
+	// write(1, &data->game.map.full[new_y][new_x], 1);
+	// write(1, "\n", 1);
+	if (data->game.map.full[new_y][new_x] == '1')
+		return (ft_putstr("You stupid there is wall"), 1);
+	else if (data->game.map.full[new_y][new_x] == 'E')
+		return (handle_destroy(data), 0);
+	data->game.map.full[data->game.player.y][data->game.player.x] = '0';
+	data->game.player.x = new_x;
+	data->game.player.y = new_y;
+	data->game.map.full[new_y][new_x] = 'P';
+	render_map(data);
+	// if (data->game.map.full[new_y][new_x] == '0')
+	// 	return (data->game.map.full[new_y][new_x] = 'P', render_map(data), 0);
+	return (0);
+}	
+
 int	handle_keypress(int keysym, t_data *data)
 {
 	if (keysym == KEY_ESC || keysym == KEY_Q)
@@ -226,52 +244,60 @@ int	handle_keypress(int keysym, t_data *data)
 	// data->game.map.full[data->game.player.index] = '0';
 	else if (keysym == KEY_W || keysym == KEY_ARROW_UP)
 	{
-		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
 		data->game.player.direction = KEY_W;
-		if (data->game.player.y == 0 || data->game.map.full[data->game.player.y
-			- 1][data->game.player.x] == '1')
-			return (1);
-		if (data->game.map.full[data->game.player.y
-			- 1][data->game.player.x] == 'E')
-		{
-			ft_putstr("You win!\n");
-			handle_destroy(data);
-		}
-		data->game.player.y -= 1;
-		data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
+		move_to(data, data->game.player.x, data->game.player.y - 1);
+		// data->game.map.full[data->game.player.y][data->game.player.x] = '0';
+		// data->game.player.direction = KEY_W;
+		// if (data->game.player.y == 0 || data->game.map.full[data->game.player.y
+		// 	- 1][data->game.player.x] == '1')
+		// 	return (1);
+		// if (data->game.map.full[data->game.player.y
+		// 	- 1][data->game.player.x] == 'E')
+		// {
+		// 	ft_putstr("You win!\n");
+		// 	handle_destroy(data);
+		// }
+		// data->game.player.y -= 1;
+		// data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
 	}
 	else if (keysym == KEY_A || keysym == KEY_ARROW_LEFT)
 	{
-		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
 		data->game.player.direction = KEY_A;
-		if (data->game.player.x == 0
-			|| data->game.map.full[data->game.player.y][data->game.player.x
-			- 1] == '1')
-			return (1);
-		data->game.player.x -= 1;
-		data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
+		move_to(data, data->game.player.x - 1, data->game.player.y);
+		// data->game.map.full[data->game.player.y][data->game.player.x] = '0';
+		// data->game.player.direction = KEY_A;
+		// if (data->game.player.x == 0
+		// 	|| data->game.map.full[data->game.player.y][data->game.player.x
+		// 	- 1] == '1')
+		// 	return (1);
+		// data->game.player.x -= 1;
+		// data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
 	}
 	else if (keysym == KEY_S || keysym == KEY_ARROW_DOWN)
 	{
-		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
 		data->game.player.direction = KEY_S;
-		if (data->game.player.y == data->game.map.rows - 1
-			|| data->game.map.full[data->game.player.y
-			+ 1][data->game.player.x] == '1')
-			return (1);
-		data->game.player.y += 1;
-		data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
+		move_to(data, data->game.player.x, data->game.player.y + 1);
+		// data->game.map.full[data->game.player.y][data->game.player.x] = '0';
+		// data->game.player.direction = KEY_S;
+		// if (data->game.player.y == data->game.map.rows - 1
+		// 	|| data->game.map.full[data->game.player.y
+		// 	+ 1][data->game.player.x] == '1')
+		// 	return (1);
+		// data->game.player.y += 1;
+		// data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
 	}
 	else if (keysym == KEY_D || keysym == KEY_ARROW_RIGHT)
 	{
-		data->game.map.full[data->game.player.y][data->game.player.x] = '0';
 		data->game.player.direction = KEY_D;
-		if (data->game.player.x == data->game.map.columns - 1
-			|| data->game.map.full[data->game.player.y][data->game.player.x
-			+ 1] == '1')
-			return (1);
-		data->game.player.x += 1;
-		data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
+		move_to(data, data->game.player.x + 1, data->game.player.y);
+		// data->game.map.full[data->game.player.y][data->game.player.x] = '0';
+		// data->game.player.direction = KEY_D;
+		// if (data->game.player.x == data->game.map.columns - 1
+		// 	|| data->game.map.full[data->game.player.y][data->game.player.x
+		// 	+ 1] == '1')
+		// 	return (1);
+		// data->game.player.x += 1;
+		// data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
 	}
 	else
 		return (1);

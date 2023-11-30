@@ -51,8 +51,6 @@
 #  define KEY_ARROW_RIGHT 124
 # endif
 
-
-
 # include <fcntl.h>
 # include <limits.h>
 # include <stdio.h>
