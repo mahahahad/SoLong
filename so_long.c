@@ -77,6 +77,7 @@ char	*read_map(t_data *data)
 	}
 	data->game.map.full = ft_split(map_full, '\n');
 	data->game.map.columns = ft_strlen(data->game.map.full[0]);
+	// TODO: Remove
 	print_arr(data->game.map.full, data->game.map.rows, data->game.map.columns);
 	return (close(fd), map_full);
 }
@@ -137,14 +138,14 @@ int	check_map(t_data *data)
 		}
 		y++;
 	}
-	ft_putnbr(data->game.collectables.total);
-	ft_putstr(" encountered so far\n");
+	if (data->game.collectables.total == 0)
+		return (ft_putstr("Error\nPlease have at least one collectable in the map\n"), exit(1), 1);
 	// map_width = count_columns(map);
 	// if (ft_strlen(map) % map_width == 0)
 	// 	is_valid = 0;
 	// else
 	// 	is_valid = 1;
-	return (1);
+	return (0);
 }
 
 void	render_map(t_data *data)
@@ -366,7 +367,7 @@ int	handle_keypress(int keysym, t_data *data)
 int	main(int argc, char *argv[])
 {
 	char		*map_full;
-	int		is_map_valid;
+	int		is_map_invalid;
 	t_data		data;
 	int		*player_height_ptr;
 	int		*player_width_ptr;
@@ -391,8 +392,8 @@ int	main(int argc, char *argv[])
 	// Initialize collectables
 	data.game.collectables.total = 0;
 	data.game.collectables.collected = 0;
-	is_map_valid = check_map(&data);
-	if (!is_map_valid)
+	is_map_invalid = check_map(&data);
+	if (is_map_invalid)
 		return (ft_putstr("Your map is not valid"), 1);
 	data.mlx_ptr = mlx_init();
 	if (!data.mlx_ptr)
