@@ -92,6 +92,12 @@ typedef struct s_map
 	int			columns;
 }				t_map;
 
+typedef struct s_collectable
+{
+	int	collected;
+	int	total;
+}		t_collectables;
+
 typedef struct s_game
 {
 	void		*player_up_texture;
@@ -102,6 +108,7 @@ typedef struct s_game
 	void		*wall_texture;
 	void		*collectable_texture;
 	void		*exit_texture;
+	t_collectables	collectables;
 	t_player	player;
 	t_map		map;
 	int			moves;

@@ -51,6 +51,7 @@ char	*read_map(t_data *data)
 	char	*map_full;
 	char	*str;
 	int		fd;
+	size_t 	prev_columns;
 
 	str = NULL;
 	map_full = NULL;
@@ -58,12 +59,16 @@ char	*read_map(t_data *data)
 	data->game.map.rows = 0;
 	data->game.map.columns = 0;
 	str = get_next_line(fd);
+	prev_columns = ft_strlen(str);
 	map_full = malloc(1);
 	// TODO: LEAKS
 	map_full = ft_strjoin(map_full, str);
+
 	while (str != NULL)
 	{
 		str = get_next_line(fd);
+		if (ft_strlen(str) && prev_columns != ft_strlen(str))
+			return (ft_putstr("Your map is not rectangular"), NULL);
 		data->game.map.rows++;
 		if (str == NULL)
 			break ;
@@ -109,22 +114,20 @@ char	*read_map(t_data *data)
 // }
 
 /// @brief Check if the provided map is valid or not
-/// @param map
-// 	The complete map provided as a string
+/// @param data
+// 	The data structure containing all the relevant game variables
 /// @return
-// Boolean if map is valid (0) or invalid (1)
+// 	Boolean if map is valid (0) or invalid (1)
 int	check_map(t_data *data)
 {
-	int	is_valid;
 
 	(void)data;
-	is_valid = 1;
 	// map_width = count_columns(map);
 	// if (ft_strlen(map) % map_width == 0)
 	// 	is_valid = 0;
 	// else
 	// 	is_valid = 1;
-	return (is_valid);
+	return (1);
 }
 
 void	render_map(t_data *data)
@@ -148,9 +151,12 @@ void	render_map(t_data *data)
 					data->game.empty_texture, x * PLAYER_WIDTH, y
 					* PLAYER_HEIGHT);
 			if (data->game.map.full[y][x] == 'C')
+			{
+				data->game.collectables.total++;
 				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
 					data->game.collectable_texture, x * PLAYER_WIDTH, y
 					* PLAYER_HEIGHT);
+			}
 			if (data->game.map.full[y][x] == 'P')
 			{
 				data->game.player.x = x;
@@ -189,9 +195,6 @@ void	render_map(t_data *data)
 		y++;
 		x = 0;
 	}
-	ft_putstr("You have made ");
-	ft_putnbr(data->game.moves);
-	ft_putstr(" moves so far\n");
 }
 
 /// @brief Checks if a move is valid based on the key code provided
@@ -217,19 +220,33 @@ int	handle_destroy(t_data *data)
 	return (0);
 }
 
-int	move_to(t_data *data, int new_x, int new_y)
+int	move_to(t_data *data, int new_x, int new_y, int direction)
 {
 	// write(1, &data->game.map.full[new_y][new_x], 1);
 	// write(1, "\n", 1);
 	if (data->game.map.full[new_y][new_x] == '1')
-		return (ft_putstr("You stupid there is wall"), 1);
+		return (1);
+	else if (data->game.map.full[new_y][new_x] == 'C')
+	{
+		ft_putnbr(data->game.collectables.collected++);
+		ft_putstr(" Collectables collected so far");
+	}
 	else if (data->game.map.full[new_y][new_x] == 'E')
-		return (handle_destroy(data), 0);
+	{
+		if (data->game.collectables.collected == data->game.collectables.total)
+			return (handle_destroy(data), 0);
+		else
+			return (1);
+	}
 	data->game.map.full[data->game.player.y][data->game.player.x] = '0';
 	data->game.player.x = new_x;
 	data->game.player.y = new_y;
 	data->game.map.full[new_y][new_x] = 'P';
+	data->game.player.direction = direction;
 	render_map(data);
+	ft_putstr("You have made ");
+	ft_putnbr(data->game.moves++);
+	ft_putstr(" moves so far\n");
 	// if (data->game.map.full[new_y][new_x] == '0')
 	// 	return (data->game.map.full[new_y][new_x] = 'P', render_map(data), 0);
 	return (0);
@@ -244,8 +261,7 @@ int	handle_keypress(int keysym, t_data *data)
 	// data->game.map.full[data->game.player.index] = '0';
 	else if (keysym == KEY_W || keysym == KEY_ARROW_UP)
 	{
-		data->game.player.direction = KEY_W;
-		move_to(data, data->game.player.x, data->game.player.y - 1);
+		move_to(data, data->game.player.x, data->game.player.y - 1, KEY_W);
 		// data->game.map.full[data->game.player.y][data->game.player.x] = '0';
 		// data->game.player.direction = KEY_W;
 		// if (data->game.player.y == 0 || data->game.map.full[data->game.player.y
@@ -262,8 +278,7 @@ int	handle_keypress(int keysym, t_data *data)
 	}
 	else if (keysym == KEY_A || keysym == KEY_ARROW_LEFT)
 	{
-		data->game.player.direction = KEY_A;
-		move_to(data, data->game.player.x - 1, data->game.player.y);
+		move_to(data, data->game.player.x - 1, data->game.player.y, KEY_A);
 		// data->game.map.full[data->game.player.y][data->game.player.x] = '0';
 		// data->game.player.direction = KEY_A;
 		// if (data->game.player.x == 0
@@ -275,8 +290,7 @@ int	handle_keypress(int keysym, t_data *data)
 	}
 	else if (keysym == KEY_S || keysym == KEY_ARROW_DOWN)
 	{
-		data->game.player.direction = KEY_S;
-		move_to(data, data->game.player.x, data->game.player.y + 1);
+		move_to(data, data->game.player.x, data->game.player.y + 1, KEY_S);
 		// data->game.map.full[data->game.player.y][data->game.player.x] = '0';
 		// data->game.player.direction = KEY_S;
 		// if (data->game.player.y == data->game.map.rows - 1
@@ -288,8 +302,7 @@ int	handle_keypress(int keysym, t_data *data)
 	}
 	else if (keysym == KEY_D || keysym == KEY_ARROW_RIGHT)
 	{
-		data->game.player.direction = KEY_D;
-		move_to(data, data->game.player.x + 1, data->game.player.y);
+		move_to(data, data->game.player.x + 1, data->game.player.y, KEY_D);
 		// data->game.map.full[data->game.player.y][data->game.player.x] = '0';
 		// data->game.player.direction = KEY_D;
 		// if (data->game.player.x == data->game.map.columns - 1
@@ -301,9 +314,6 @@ int	handle_keypress(int keysym, t_data *data)
 	}
 	else
 		return (1);
-	data->game.moves++;
-	// render_map(data);
-	render_map(data);
 	return (0);
 }
 
@@ -334,9 +344,9 @@ int	handle_keypress(int keysym, t_data *data)
 
 int	main(int argc, char *argv[])
 {
-	char	*map_full;
+	char		*map_full;
 	int		is_map_valid;
-	t_data	data;
+	t_data		data;
 	int		*player_height_ptr;
 	int		*player_width_ptr;
 	int		player_height;
@@ -367,6 +377,9 @@ int	main(int argc, char *argv[])
 		* PLAYER_WIDTH, data.game.map.rows * PLAYER_HEIGHT - 1, "so_long");
 	if (!data.win_ptr)
 		return (free(data.mlx_ptr), 1);
+	// Initialize collectables
+	data.game.collectables.total = 0;
+	data.game.collectables.collected = 0;
 	// Initalize Texture pointers
 	data.game.player_up_texture = mlx_xpm_file_to_image(data.mlx_ptr,
 		"textures/PlayerUp.xpm", player_width_ptr, player_height_ptr);
