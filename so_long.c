@@ -68,7 +68,7 @@ char	*read_map(t_data *data)
 	{
 		str = get_next_line(fd);
 		if (ft_strlen(str) && prev_columns != ft_strlen(str))
-			return (ft_putstr("Your map is not rectangular"), NULL);
+			return (ft_putstr("Your map is not rectangular\n"), NULL);
 		data->game.map.rows++;
 		if (str == NULL)
 			break ;
@@ -121,7 +121,24 @@ char	*read_map(t_data *data)
 int	check_map(t_data *data)
 {
 
-	(void)data;
+	int 	y;
+	int 	x;
+
+	y = 0;
+	while (y < data->game.map.rows)
+	{
+		x = 0;
+		while (x < data->game.map.columns)
+		{
+			write(1, &data->game.map.full[y][x], 1);
+			if (data->game.map.full[y][x] == 'C')
+				data->game.collectables.total++;
+			x++;
+		}
+		y++;
+	}
+	ft_putnbr(data->game.collectables.total);
+	ft_putstr(" encountered so far\n");
 	// map_width = count_columns(map);
 	// if (ft_strlen(map) % map_width == 0)
 	// 	is_valid = 0;
@@ -152,7 +169,6 @@ void	render_map(t_data *data)
 					* PLAYER_HEIGHT);
 			if (data->game.map.full[y][x] == 'C')
 			{
-				data->game.collectables.total++;
 				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
 					data->game.collectable_texture, x * PLAYER_WIDTH, y
 					* PLAYER_HEIGHT);
@@ -228,13 +244,18 @@ int	move_to(t_data *data, int new_x, int new_y, int direction)
 		return (1);
 	else if (data->game.map.full[new_y][new_x] == 'C')
 	{
-		ft_putnbr(data->game.collectables.collected++);
-		ft_putstr(" Collectables collected so far");
+		ft_putnbr(++data->game.collectables.collected);
+		ft_putstr(" Collectables collected so far\n");
 	}
 	else if (data->game.map.full[new_y][new_x] == 'E')
 	{
+		ft_putstr("You try to exit\n");
+		ft_putnbr(data->game.collectables.collected);
+		ft_putstr(" Collected collecatbles\n");
+		ft_putnbr(data->game.collectables.total);
+		ft_putstr(" Collected total\n");
 		if (data->game.collectables.collected == data->game.collectables.total)
-			return (handle_destroy(data), 0);
+			return (ft_putstr("You win\n"), handle_destroy(data), 0);
 		else
 			return (1);
 	}
@@ -367,6 +388,9 @@ int	main(int argc, char *argv[])
 	if (map_full == NULL)
 		return (ft_putstr("Something went wrong while cooking. Your map couldn't be opened\n"),
 				1);
+	// Initialize collectables
+	data.game.collectables.total = 0;
+	data.game.collectables.collected = 0;
 	is_map_valid = check_map(&data);
 	if (!is_map_valid)
 		return (ft_putstr("Your map is not valid"), 1);
@@ -377,9 +401,6 @@ int	main(int argc, char *argv[])
 		* PLAYER_WIDTH, data.game.map.rows * PLAYER_HEIGHT - 1, "so_long");
 	if (!data.win_ptr)
 		return (free(data.mlx_ptr), 1);
-	// Initialize collectables
-	data.game.collectables.total = 0;
-	data.game.collectables.collected = 0;
 	// Initalize Texture pointers
 	data.game.player_up_texture = mlx_xpm_file_to_image(data.mlx_ptr,
 		"textures/PlayerUp.xpm", player_width_ptr, player_height_ptr);
