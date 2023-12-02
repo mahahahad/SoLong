@@ -133,11 +133,13 @@ int	check_map(t_data *data)
 	while (y < data->game.map.rows)
 	{
 		x = 0;
+		if (data->game.map.full[y][0] != '1' || data->game.map.full[y][data->game.map.columns-1] != '1')
+			return (ft_putstr("Error\nMap must be surrounded by walls\n"), exit(1), 1);
 		while (x < data->game.map.columns)
 		{
 			if ((y == 0 || y == data->game.map.rows - 1) && data->game.map.full[y][x] != '1')
 				return (ft_putstr("Error\nMap must be surrounded by walls\n"), exit(1), 1);
-			if (data->game.map.full[y][x] == 'C')
+			else if (data->game.map.full[y][x] == 'C')
 				data->game.collectables.total++;
 			else if (data->game.map.full[y][x] == 'E')
 				exit_count++;
