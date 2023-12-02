@@ -124,22 +124,36 @@ int	check_map(t_data *data)
 
 	int 	y;
 	int 	x;
+	int	exit_count;
+	int	player_count;
 
 	y = 0;
+	exit_count = 0;
+	player_count = 0;
 	while (y < data->game.map.rows)
 	{
 		x = 0;
 		while (x < data->game.map.columns)
 		{
-			write(1, &data->game.map.full[y][x], 1);
 			if (data->game.map.full[y][x] == 'C')
 				data->game.collectables.total++;
+			else if (data->game.map.full[y][x] == 'E')
+				exit_count++;
+			else if (data->game.map.full[y][x] == 'P')
+				player_count++;
+			else if (data->game.map.full[y][x] != '0' && data->game.map.full[y][x] != '1')
+				return (ft_putstr("Error\nInvalid character detected in map\n"), write(1, &data->game.map.full[y][x], 1), exit(1), 1);
+
 			x++;
 		}
 		y++;
 	}
 	if (data->game.collectables.total == 0)
 		return (ft_putstr("Error\nPlease have at least one collectable in the map\n"), exit(1), 1);
+	if (exit_count != 1)
+		return (ft_putstr("Error\nOnly one exit must be present in the map\n"), exit(1), 1);
+	if (player_count != 1)
+		return (ft_putstr("Error\nOnly one player must be present in the map\n"), exit(1), 1);
 	// map_width = count_columns(map);
 	// if (ft_strlen(map) % map_width == 0)
 	// 	is_valid = 0;
@@ -244,17 +258,9 @@ int	move_to(t_data *data, int new_x, int new_y, int direction)
 	if (data->game.map.full[new_y][new_x] == '1')
 		return (1);
 	else if (data->game.map.full[new_y][new_x] == 'C')
-	{
-		ft_putnbr(++data->game.collectables.collected);
-		ft_putstr(" Collectables collected so far\n");
-	}
+		++data->game.collectables.collected;
 	else if (data->game.map.full[new_y][new_x] == 'E')
 	{
-		ft_putstr("You try to exit\n");
-		ft_putnbr(data->game.collectables.collected);
-		ft_putstr(" Collected collecatbles\n");
-		ft_putnbr(data->game.collectables.total);
-		ft_putstr(" Collected total\n");
 		if (data->game.collectables.collected == data->game.collectables.total)
 			return (ft_putstr("You win\n"), handle_destroy(data), 0);
 		else
