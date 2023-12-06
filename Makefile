@@ -13,6 +13,15 @@ UNAME = $(shell uname)
 ifeq ($(UNAME), Linux)
 	COMPILE_ARGS = $(LINUX_COMPILE)
 endif
+
+DFS : re
+	@rm -f DFS
+	@cc $(C_FLAGS) DFS.c utils.c -g -o DFS
+	@./DFS
+
+re :
+	@rm -rf $(NAME)
+
 all :
 	make -C $(MLX_MAC)
 	cp $(MLX_MAC)/libmlx.dylib .
