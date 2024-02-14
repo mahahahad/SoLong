@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:04 by maabdull          #+#    #+#             */
-/*   Updated: 2023/11/14 13:31:36 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/02/13 23:15:19 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
 # endif
+
+# define WALL '1'
+# define EMPTY '0'
+# define EXIT 'E'
+# define PLAYER 'P'
+# define COLLECTABLE 'C'
 
 # ifdef __linux__
 // Linux keycodes
@@ -66,15 +72,6 @@
 #  include "mlx_mac/mlx.h"
 # endif
 
-char			*get_next_line(int fd);
-void			ft_putstr(char *str);
-void			ft_putnbr(int n);
-size_t			ft_strlen(const char *str);
-char			*ft_strdup(const char *str);
-char			*ft_strchr(const char *s, int c);
-char			*ft_strjoin(char *s1, char const *s2);
-char			**ft_split(char const *s, char c);
-
 typedef struct s_player
 {
 	int			x;
@@ -98,6 +95,10 @@ typedef struct s_collectable
 	int	total;
 }		t_collectables;
 
+/**
+ * @brief Structure that holds all the variables related to the game
+ * 
+ */
 typedef struct s_game
 {
 	void		*player_up_texture;
@@ -120,5 +121,17 @@ typedef struct s_data
 	void		*win_ptr;
 	t_game		game;
 }				t_data;
+
+char	*get_next_line(int fd);
+void	ft_putstr(char *str);
+void	ft_putnbr(int n);
+size_t	ft_strlen(const char *str);
+char	*ft_strdup(const char *str);
+char	*ft_strchr(const char *s, int c);
+char	*ft_strjoin(char *s1, char const *s2);
+char	**ft_split(char const *s, char c);
+char	*read_map(t_data *data);
+void	print_arr(char **arr, int rows, int cols);
+char	*ft_itoa(int n);
 
 #endif

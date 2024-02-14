@@ -28,60 +28,6 @@ static int	check_ext(char *file)
 	return (0);
 }
 
-void	print_arr(char **arr, int rows, int cols)
-{
-	int i, j;
-	for (i = 0; i < rows; i++)
-	{
-		for (j = 0; j < cols; j++)
-		{
-			printf("%c ", arr[i][j]);
-		}
-		printf("\n");
-	}
-}
-
-/// @brief Read the map the file descriptor is pointing to and return it when finished
-/// @param fd
-// The file descriptor that points to the map to read
-/// @return
-// The complete map as a string, seperated by newlines
-char	*read_map(t_data *data)
-{
-	char	*map_full;
-	char	*str;
-	int		fd;
-	size_t 	prev_columns;
-
-	str = NULL;
-	map_full = NULL;
-	fd = data->game.map.fd;
-	data->game.map.rows = 0;
-	data->game.map.columns = 0;
-	str = get_next_line(fd);
-	prev_columns = ft_strlen(str);
-	map_full = malloc(1);
-	// TODO: LEAKS
-	map_full = ft_strjoin(map_full, str);
-
-	while (str != NULL)
-	{
-		str = get_next_line(fd);
-		if (ft_strlen(str) && prev_columns != ft_strlen(str))
-			return (ft_putstr("Your map is not rectangular\n"), NULL);
-		data->game.map.rows++;
-		if (str == NULL)
-			break ;
-		// TODO: LEAKS
-		map_full = ft_strjoin(map_full, str);
-	}
-	data->game.map.full = ft_split(map_full, '\n');
-	data->game.map.columns = ft_strlen(data->game.map.full[0]);
-	// TODO: Remove
-	print_arr(data->game.map.full, data->game.map.rows, data->game.map.columns);
-	return (close(fd), map_full);
-}
-
 /// @brief Count the number of columns in the provided map
 /// @param map The map to count
 /// @return The number of columns INCLUDING THE NEWLINE CHARACTER
@@ -276,6 +222,9 @@ int	move_to(t_data *data, int new_x, int new_y, int direction)
 	data->game.map.full[new_y][new_x] = 'P';
 	data->game.player.direction = direction;
 	render_map(data);
+	char	*str = ft_strjoin("Moves: ", ft_itoa(data->game.moves));
+	mlx_string_put(data->mlx_ptr, data->win_ptr, 24, 24, 16, str);
+	free(str);
 	ft_putstr("You have made ");
 	ft_putnbr(data->game.moves++);
 	ft_putstr(" moves so far\n");
@@ -399,6 +348,7 @@ int	main(int argc, char *argv[])
 	if (map_full == NULL)
 		return (ft_putstr("Something went wrong while cooking. Your map couldn't be opened\n"),
 				1);
+	free(map_full);
 	// Initialize collectables
 	data.game.collectables.total = 0;
 	data.game.collectables.collected = 0;

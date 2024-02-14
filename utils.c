@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 10:48:18 by maabdull          #+#    #+#             */
-/*   Updated: 2023/11/14 11:20:30 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/02/13 23:27:23 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,4 +196,83 @@ char	**ft_split(char const *s, char c)
 	}
 	strings[j] = NULL;
 	return (strings);
+}
+
+static int	count_digits(int n)
+{
+	int	digits;
+
+	digits = 0;
+	if (n < 0)
+	{
+		n = -n;
+		digits++;
+	}
+	while (n)
+	{
+		n /= 10;
+		digits++;
+	}
+	if (!digits)
+		digits = 1;
+	return (digits);
+}
+
+static int	check_sign(int n, char *str)
+{
+	if (n < 0)
+	{
+		n = -n;
+		str[0] = '-';
+	}
+	if (!n)
+		str[0] = '0';
+	return (n);
+}
+
+static int	last_digit(int n)
+{
+	if (n < 0)
+		return (0 - (n % 10));
+	else
+		return (n % 10);
+}
+
+/// @brief
+	// Converts the integer 'n' into a string and returns it
+/// @param n
+	// The integer to convert
+/// @return
+	// The converted string value
+char	*ft_itoa(int n)
+{
+	char	*str;
+	int		i;
+	int		digits;
+
+	digits = count_digits(n);
+	i = digits;
+	str = malloc(digits + 1 * sizeof(char));
+	if (!str)
+		return (NULL);
+	n = check_sign(n, str);
+	while (i-- && n)
+	{
+		str[i] = last_digit(n) + '0';
+		n /= 10;
+	}
+	return (str);
+}
+
+void	print_arr(char **arr, int rows, int cols)
+{
+	int i, j;
+	for (i = 0; i < rows; i++)
+	{
+		for (j = 0; j < cols; j++)
+		{
+			printf("%c ", arr[i][j]);
+		}
+		printf("\n");
+	}
 }
