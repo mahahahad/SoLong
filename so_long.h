@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:04 by maabdull          #+#    #+#             */
-/*   Updated: 2024/02/13 23:15:19 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/02/14 12:51:14 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# include <stdbool.h>
 
 # ifdef __linux__
 #  include "mlx_linux/mlx.h"
@@ -133,5 +134,6 @@ char	**ft_split(char const *s, char c);
 char	*read_map(t_data *data);
 void	print_arr(char **arr, int rows, int cols);
 char	*ft_itoa(int n);
+bool	check_path(char **map);
 
 #endif

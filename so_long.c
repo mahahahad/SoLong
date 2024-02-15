@@ -237,62 +237,14 @@ int	handle_keypress(int keysym, t_data *data)
 {
 	if (keysym == KEY_ESC || keysym == KEY_Q)
 		return (handle_destroy(data), 0);
-	// ft_putstr(data->game.map.full);
-	// ft_putstr("\n");
-	// data->game.map.full[data->game.player.index] = '0';
 	else if (keysym == KEY_W || keysym == KEY_ARROW_UP)
-	{
 		move_to(data, data->game.player.x, data->game.player.y - 1, KEY_W);
-		// data->game.map.full[data->game.player.y][data->game.player.x] = '0';
-		// data->game.player.direction = KEY_W;
-		// if (data->game.player.y == 0 || data->game.map.full[data->game.player.y
-		// 	- 1][data->game.player.x] == '1')
-		// 	return (1);
-		// if (data->game.map.full[data->game.player.y
-		// 	- 1][data->game.player.x] == 'E')
-		// {
-		// 	ft_putstr("You win!\n");
-		// 	handle_destroy(data);
-		// }
-		// data->game.player.y -= 1;
-		// data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
-	}
 	else if (keysym == KEY_A || keysym == KEY_ARROW_LEFT)
-	{
 		move_to(data, data->game.player.x - 1, data->game.player.y, KEY_A);
-		// data->game.map.full[data->game.player.y][data->game.player.x] = '0';
-		// data->game.player.direction = KEY_A;
-		// if (data->game.player.x == 0
-		// 	|| data->game.map.full[data->game.player.y][data->game.player.x
-		// 	- 1] == '1')
-		// 	return (1);
-		// data->game.player.x -= 1;
-		// data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
-	}
 	else if (keysym == KEY_S || keysym == KEY_ARROW_DOWN)
-	{
 		move_to(data, data->game.player.x, data->game.player.y + 1, KEY_S);
-		// data->game.map.full[data->game.player.y][data->game.player.x] = '0';
-		// data->game.player.direction = KEY_S;
-		// if (data->game.player.y == data->game.map.rows - 1
-		// 	|| data->game.map.full[data->game.player.y
-		// 	+ 1][data->game.player.x] == '1')
-		// 	return (1);
-		// data->game.player.y += 1;
-		// data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
-	}
 	else if (keysym == KEY_D || keysym == KEY_ARROW_RIGHT)
-	{
 		move_to(data, data->game.player.x + 1, data->game.player.y, KEY_D);
-		// data->game.map.full[data->game.player.y][data->game.player.x] = '0';
-		// data->game.player.direction = KEY_D;
-		// if (data->game.player.x == data->game.map.columns - 1
-		// 	|| data->game.map.full[data->game.player.y][data->game.player.x
-		// 	+ 1] == '1')
-		// 	return (1);
-		// data->game.player.x += 1;
-		// data->game.map.full[data->game.player.y][data->game.player.x] = 'P';
-	}
 	else
 		return (1);
 	return (0);
@@ -355,6 +307,9 @@ int	main(int argc, char *argv[])
 	is_map_invalid = check_map(&data);
 	if (is_map_invalid)
 		return (ft_putstr("Your map is not valid"), 1);
+	is_map_invalid = check_path(data.game.map.full);
+	if (!is_map_invalid)
+		return (ft_putstr("There is no path to the exit"), 1);
 	data.mlx_ptr = mlx_init();
 	if (!data.mlx_ptr)
 		return (1);

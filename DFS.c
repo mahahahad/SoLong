@@ -2,38 +2,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-bool    check_path(char **map, char **visited, int x, int y)
-{
-    printf("%d, %d: %c\n", x, y, map[y][x]);
-    if (map[y][x] == EXIT)
-        return (true);
-    if (map[y - 1][x] != WALL && visited[y - 1][x] != WALL)
-    {
-        puts("Up");
-        visited[y - 1][x] = WALL;
-        if (check_path(map, visited, x, y - 1))
-            return (true);
-    }
-    if (map[y][x + 1] != WALL && visited[y][x + 1] != WALL)
-    {
-        puts("Right");
-        visited[y][x + 1] = WALL;
-        if (check_path(map,visited, x + 1, y))
-            return (true);
-    }
-    if (map[y + 1][x] != WALL && visited[y + 1][x] != WALL)
-    {
-        puts("Down");
-        visited[y + 1][x] = WALL;
-        if (check_path(map, visited,x, y + 1))
-            return (true);
-    }
-    if (map[y][x - 1] != WALL && visited[y][x - 1] != WALL)
-        return (puts("Left"), visited[y][x - 1] = WALL, check_path(map,visited, x - 1, y));
-    printf("Walls hit from everywhere. Stopping.\n");
-    return (false);
-}
-
 static int	get_tab_size(char **tab)
 {
 	int	i;
@@ -45,27 +13,8 @@ static int	get_tab_size(char **tab)
 }
 
 /**
- * @brief Duplicate an array of strings
- * 
- * @param tab The array containing the strings to be duplicated
- * @return char** A new malloced double pointer which is a duplicate of tab
- */
-char	**ft_strdup_tab(char **tab)
-{
-	int		i;
-	char	**dup_tab;
-
-	i = -1;
-	dup_tab = malloc(get_tab_size(tab) + 1);
-	while (tab[++i])
-		dup_tab[i] = ft_strdup(tab[i]);
-	dup_tab[i] = NULL;
-	return (dup_tab);
-}
-
-/**
  * @brief Creates a 2d array of size row and col.
- * Initializes it with NULL characters
+ * Initializes it with fill_char
  * 
  * @param col 
  * @param row 
@@ -100,21 +49,25 @@ char	**ft_make_2d_arr(int col, int row, char fill_char)
 	return (dup_arr);
 }
 
-void	get_player_pos(t_data *data)
+void	get_player_pos(char **map, int *x, int *y)
 {
 	int	i;
 	int	j;
+	int	rows;
+	int	columns;
 
 	i = 0;
-	while (i < data->game.map.rows)
+	rows = get_tab_size(map);
+	columns = ft_strlen(map[0]);
+	while (i < rows)
 	{
 		j = 0;
-		while (j < data->game.map.columns)
+		while (j < columns)
 		{
-			if (data->game.map.full[i][j] == 'P')
+			if (map[i][j] == 'P')
 			{
-				data->game.player.x = j;
-				data->game.player.y = i;
+				*x = j;
+				*y = i;
 				break ;
 			}
 			j++;
@@ -123,27 +76,66 @@ void	get_player_pos(t_data *data)
 	}
 }
 
-int main(int argc, char *argv[])
+bool    check_tile(char **map, char **visited, int x, int y)
 {
-	t_data	data;
-
-	if (argc != 2)
-		return (1);
-	data.game.map.fd = open(argv[1], O_RDONLY);
-	read_map(&data);
-	char **visited = ft_make_2d_arr(data.game.map.columns, data.game.map.rows, '0');
-    get_player_pos(&data);
-    if (check_path(data.game.map.full, visited, data.game.player.x, data.game.player.y))
-        printf("You have reached the exit\nThere is indeed a valid path.\n");
-    else
-        printf("All paths checked. No path to exit found\n");
-    for (int i = 0; i < data.game.map.rows; i++)
+    if (map[y][x] == EXIT)
+        return (true);
+    if (map[y - 1][x] != WALL && visited[y - 1][x] != WALL)
     {
-        for (int j = 0; j < data.game.map.columns; j++)
-        {
-            printf("%c ", visited[i][j]);
-        }
-        printf("\n");
+        visited[y - 1][x] = WALL;
+        if (check_tile(map, visited, x, y - 1))
+            return (true);
     }
-    return (0);
+    if (map[y][x + 1] != WALL && visited[y][x + 1] != WALL)
+    {
+        visited[y][x + 1] = WALL;
+        if (check_tile(map,visited, x + 1, y))
+            return (true);
+    }
+    if (map[y + 1][x] != WALL && visited[y + 1][x] != WALL)
+    {
+        visited[y + 1][x] = WALL;
+        if (check_tile(map, visited,x, y + 1))
+            return (true);
+    }
+    if (map[y][x - 1] != WALL && visited[y][x - 1] != WALL)
+        return (visited[y][x - 1] = WALL, check_tile(map,visited, x - 1, y));
+    return (false);
 }
+
+/**
+ * @brief Checks whether there is a valid path from the players start position
+ * to the exit. Uses recursion
+ * 
+ * @param map The full map to be checked. Expected in double ptr format
+ *
+ * @return true if there is a valid path from start to finish.
+ * @return false otherwise
+ */
+bool	check_path(char **map)
+{
+	char	**visited;
+	int	player_x;
+	int	player_y;
+
+	player_x = 0;
+	player_y = 0;
+	visited = ft_make_2d_arr(ft_strlen(map[0]), get_tab_size(map), '0');
+	get_player_pos(map, &player_x, &player_y);
+	return (check_tile(map, visited, player_x, player_y));
+}
+
+// int main(int argc, char *argv[])
+// {
+// 	t_data	data;
+
+// 	if (argc != 2)
+// 		return (1);
+// 	data.game.map.fd = open(argv[1], O_RDONLY);
+// 	read_map(&data);
+//     if (check_path(data.game.map.full))
+//         printf("You have reached the exit\nThere is indeed a valid path.\n");
+//     else
+//         printf("All paths checked. No path to exit found\n");
+//     return (0);
+// }
