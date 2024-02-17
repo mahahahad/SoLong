@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:04 by maabdull          #+#    #+#             */
-/*   Updated: 2024/02/14 12:51:14 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/02/17 11:44:05 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,5 +135,6 @@ char	*read_map(t_data *data);
 void	print_arr(char **arr, int rows, int cols);
 char	*ft_itoa(int n);
 bool	check_path(char **map);
+int		ft_strcmp(const char *s1, const char *s2);
 
 #endif

@@ -12,20 +12,18 @@
 
 #include "so_long.h"
 
-static int	check_ext(char *file)
+static bool	is_ext_valid(char *file)
 {
-	char	format[5];
 	int		i;
-	int		j;
 
-	i = strlen(file) - 1;
-	j = 3;
-	strcpy(format, ".ber");
-	while (format[j] == file[i--])
-		j--;
-	if (j < 0)
-		return (1);
-	return (0);
+	i = strlen(file) - 4;
+	if (i <= 0)
+		return (false);
+	while (i--)
+		file++;
+	if (ft_strcmp(file, ".ber") == 0)
+		return (true);
+	return (false);
 }
 
 /// @brief Count the number of columns in the provided map
@@ -196,6 +194,7 @@ void	render_map(t_data *data)
 int	handle_destroy(t_data *data)
 {
 	mlx_destroy_window(data->mlx_ptr, data->win_ptr);
+	free(data->game.map.full);
 	free(data->mlx_ptr);
 	exit(0);
 	return (0);
@@ -292,7 +291,7 @@ int	main(int argc, char *argv[])
 	if (argc != 2)
 		return (ft_putstr("Error\nPlease enter the map you would like to use\n"),
 			1);
-	if (!check_ext(argv[1]))
+	if (!is_ext_valid(argv[1]))
 		return (ft_putstr("Error\nPlease input a map with a .ber file format\n"),
 			1);
 	data.game.map.fd = open(argv[1], O_RDONLY);
@@ -338,6 +337,7 @@ int	main(int argc, char *argv[])
 	data.game.player.direction = KEY_W;
 	// render_map(&data);
 	render_map(&data);
+	mlx_put_image_to_window(data.mlx_ptr, data.win_ptr, data.game.player_up_texture, 20, 20);
 	// Handle keypress and close window events
 	mlx_hook(data.win_ptr, 17, 1L << 2, handle_destroy, &data);
 	// For Linux

@@ -6,7 +6,7 @@ C_FLAGS = -Wall -Werror -Wextra
 MLX_MAC = ./mlx_mac
 SRCS = so_long.c DFS.c utils.c get_next_line.c map.c
 
-LINUX_COMPILE = cc $(C_FLAGS) $(SRCS) ./mlx_linux/libmlx.a -lX11 -I X11 -lXext -o so_long
+LINUX_COMPILE = cc $(C_FLAGS) $(SRCS) ./mlx_linux/libmlx.a -lX11 -I X11 -lXext -o so_long -g
 COMPILE_ARGS = cc $(C_FLAGS) $(SRCS) $(MLX_FLAGS) -o $(NAME) libmlx.dylib -g
 UNAME = $(shell uname)
 

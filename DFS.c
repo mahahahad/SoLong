@@ -30,7 +30,6 @@ char	**ft_make_2d_arr(int col, int row, char fill_char)
 
 	i = 0;
 	string = NULL;
-	dup_arr = NULL;
 	dup_arr = malloc((row + 1) * sizeof(char *));
 	while (i < row)
 	{
@@ -47,6 +46,26 @@ char	**ft_make_2d_arr(int col, int row, char fill_char)
 	}
 	dup_arr[i] = '\0';
 	return (dup_arr);
+}
+
+/**
+ * @brief Frees each string inside the 2d array provided to the function,
+ * followed by freeing the entire array itself
+ * 
+ * @param arr 
+ */
+void	ft_free_2d_arr(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		arr[i] = NULL;
+		i++;
+	}
+	free(arr);
 }
 
 void	get_player_pos(char **map, int *x, int *y)
@@ -115,14 +134,16 @@ bool    check_tile(char **map, char **visited, int x, int y)
 bool	check_path(char **map)
 {
 	char	**visited;
-	int	player_x;
-	int	player_y;
+	int		player_x;
+	int		player_y;
+	bool	res;
 
 	player_x = 0;
 	player_y = 0;
 	visited = ft_make_2d_arr(ft_strlen(map[0]), get_tab_size(map), '0');
 	get_player_pos(map, &player_x, &player_y);
-	return (check_tile(map, visited, player_x, player_y));
+	res = check_tile(map, visited, player_x, player_y);
+	return (ft_free_2d_arr(visited), res);
 }
 
 // int main(int argc, char *argv[])

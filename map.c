@@ -25,6 +25,7 @@ char	*read_map(t_data *data)
 	str = get_next_line(fd);
 	prev_columns = ft_strlen(str);
 	map_full = malloc(1);
+	map_full[0] = '\0';
 	temp = map_full;
 	map_full = ft_strjoin(map_full, str);
 	free(temp);
@@ -42,6 +43,8 @@ char	*read_map(t_data *data)
 			break ;
 		temp = map_full;
 		map_full = ft_strjoin(map_full, str);
+		// free(str);
+		// str = NULL;
 		free(temp);
 		temp = NULL;
 	}
