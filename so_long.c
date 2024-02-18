@@ -125,13 +125,32 @@ int	render_map(t_data *data)
 			// ft_putstr("Printing a row\n");
 			if (data->game.map.full[y][x] == WALL && !walls_rendered)
 			{
-				if ((rand() % 10) <= 5)
-					data->game.textures.wall = data->game.textures.wall->next;
-				else if ((rand() % 3) <= 1)
-					data->game.textures.wall = data->game.textures.wall->next->next;
-				else
-					data->game.textures.wall = data->game.textures.wall->next->next;
-				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.wall->next->texture, x * PLAYER_WIDTH, y  * PLAYER_HEIGHT);
+				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.border->texture, x * PLAYER_WIDTH, y  * PLAYER_HEIGHT);
+				if (y > 0)
+				{
+					if (y == data->game.map.rows - 1)
+						mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.border->next->next->texture, x * PLAYER_WIDTH, y  * PLAYER_HEIGHT);
+					else if (x == 0)
+						mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.border->next->next->next->texture, x * PLAYER_WIDTH, y  * PLAYER_HEIGHT);
+					else if (x == data->game.map.columns - 1)
+						mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.border->next->texture, x * PLAYER_WIDTH, y  * PLAYER_HEIGHT);
+					else
+					{
+
+						if ((rand() % 10) <= 5)
+							data->game.textures.wall = data->game.textures.wall->next;
+						else if ((rand() % 3) <= 1)
+							data->game.textures.wall = data->game.textures.wall->next->next;
+						else
+							data->game.textures.wall = data->game.textures.wall->next->next;
+						mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.wall->next->texture, x * PLAYER_WIDTH, y  * PLAYER_HEIGHT);
+					}
+				}
+				if ((x == 0 && y == 0) || \
+					(x == data->game.map.columns - 1 && y == data->game.map.rows - 1) || \
+					(x == 0 && y == data->game.map.rows - 1) || \
+					(x == data->game.map.columns - 1 && y == 0))
+					mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.border->next->next->next->next->texture, x * PLAYER_WIDTH, y  * PLAYER_HEIGHT);
 			}
 			if (data->game.map.full[y][x] == EMPTY)
 				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
@@ -170,7 +189,7 @@ int	render_map(t_data *data)
 int	update_map(t_data *data)
 {
 	static int	frame;
-	if ((frame % 1666) == 0)
+	if ((frame % 1667) == 0)
 	{
 		data->game.textures.collectible = data->game.textures.collectible->next;
 		data->game.textures.player = data->game.textures.player->next;
@@ -326,6 +345,7 @@ int	main(int argc, char *argv[])
 	data.game.textures.wall = init_animated_sprite(data, "textures/Wall/SpaceRocks");
 	data.game.textures.exit = init_animated_sprite(data, "textures/Exit");
 	data.game.textures.empty = init_animated_sprite(data, "textures/Empty");
+	data.game.textures.border = init_animated_sprite(data, "textures/Border");
 	data.game.moves = 0;
 	render_map(&data);
 	// Handle keypress and close window events
