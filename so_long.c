@@ -112,9 +112,9 @@ int	check_map(t_data *data)
 
 int	render_map(t_data *data)
 {
-	static int	frame;
 	int	x;
 	int	y;
+	static bool	walls_rendered;
 
 	x = 0;
 	y = 0;
@@ -123,15 +123,15 @@ int	render_map(t_data *data)
 		while (x < data->game.map.columns)
 		{
 			// ft_putstr("Printing a row\n");
-			if (data->game.map.full[y][x] == WALL)
+			if (data->game.map.full[y][x] == WALL && !walls_rendered)
 			{
-				if (frame % 2 == 0)
-					mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-						data->game.textures.wall->texture, x * PLAYER_WIDTH, y
-						* PLAYER_HEIGHT);
+				if ((rand() % 10) <= 5)
+					data->game.textures.wall = data->game.textures.wall->next;
+				else if ((rand() % 3) <= 1)
+					data->game.textures.wall = data->game.textures.wall->next->next;
 				else
-					mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.wall->next->texture, x * PLAYER_WIDTH, y  * PLAYER_HEIGHT);
-				frame++;
+					data->game.textures.wall = data->game.textures.wall->next->next;
+				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.wall->next->texture, x * PLAYER_WIDTH, y  * PLAYER_HEIGHT);
 			}
 			if (data->game.map.full[y][x] == EMPTY)
 				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
@@ -160,9 +160,25 @@ int	render_map(t_data *data)
 		y++;
 		x = 0;
 	}
-	usleep(166667);
-	data->game.textures.player = data->game.textures.player->next;
-	data->game.textures.collectible = data->game.textures.collectible->next;
+	walls_rendered = true;
+	// usleep(166667);
+	// data->game.textures.player = data->game.textures.player->next;
+	// data->game.textures.collectible = data->game.textures.collectible->next;
+	return (0);
+}
+
+int	update_map(t_data *data)
+{
+	static int	frame;
+	if ((frame % 1666) == 0)
+	{
+		data->game.textures.collectible = data->game.textures.collectible->next;
+		data->game.textures.player = data->game.textures.player->next;
+	}
+	// else
+		// frame = 0;
+	render_map(data);
+	frame++;
 	return (0);
 }
 
@@ -210,7 +226,7 @@ int	move_to(t_data *data, int new_x, int new_y)
 	data->game.player.y = new_y;
 	data->game.map.full[new_y][new_x] = 'P';
 	data->game.moves++;
-	render_map(data);
+	// render_map(data);
 	char	*str = ft_strjoin("Moves: ", ft_itoa(data->game.moves));
 	mlx_string_put(data->mlx_ptr, data->win_ptr, 24, 24, 16, str);
 	free(str);
@@ -316,7 +332,7 @@ int	main(int argc, char *argv[])
 	mlx_hook(data.win_ptr, 17, 1L << 2, handle_destroy, &data);
 	// For Linux
 	mlx_hook(data.win_ptr, 2, 1L<<0, handle_keypress, &data);
-	mlx_loop_hook(data.mlx_ptr, render_map, &data);
+	mlx_loop_hook(data.mlx_ptr, update_map, &data);
 	// mlx_key_hook(data.win_ptr, handle_keypress, &data);
 	// Loop infinitely to avoid closing window until specified by user
 	mlx_loop(data.mlx_ptr);
