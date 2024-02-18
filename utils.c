@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 10:48:18 by maabdull          #+#    #+#             */
-/*   Updated: 2024/02/17 11:43:47 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/02/18 18:44:51 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,6 +239,48 @@ static int	last_digit(int n)
 }
 
 /// @brief
+	// Fills 'n' bytes of 's' with the 0 character
+	// Like memset but with 0 instead of a specific user provided character
+/// @param s
+	// The string to replace
+/// @param n
+	// The number of characters to replace
+void	ft_bzero(void *s, size_t n)
+{
+	unsigned char	*str;
+	size_t			i;
+
+	str = (unsigned char *) s;
+	i = 0;
+	if (n)
+		while (i != n)
+			str[i++] = '\0';
+}
+
+/// @brief
+	// Dynamically allocate memory for 'count' elements with 'size' size
+/// @param count
+	// The number of elements to allocate
+/// @param size
+	// The size of each element
+/// @return
+	// A void pointer to this newly allocated memory
+void	*ft_calloc(size_t count, size_t size)
+{
+	void	*mem;
+
+	// if (count < 0 || size < 0)
+	// 	return (NULL);
+	if ((size * count) > INT_MAX)
+		return (NULL);
+	mem = malloc(count * size);
+	if (!mem)
+		return (NULL);
+	ft_bzero(mem, count * size);
+	return (mem);
+}
+
+/// @brief
 	// Converts the integer 'n' into a string and returns it
 /// @param n
 	// The integer to convert
@@ -252,7 +294,8 @@ char	*ft_itoa(int n)
 
 	digits = count_digits(n);
 	i = digits;
-	str = malloc(digits + 1 * sizeof(char));
+	str = ft_calloc(digits + 1, sizeof(char));
+	str[0] = '\0';
 	if (!str)
 		return (NULL);
 	n = check_sign(n, str);

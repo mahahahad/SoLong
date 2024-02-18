@@ -50,12 +50,12 @@ static bool	is_ext_valid(char *file)
 
 // 	columns = 0;
 // 	rows = 0;
-// 	while (data->game.map.full[columns] != '\n')
+// 	while (data.game.map.full[columns] != '\n')
 // 		columns++;
 // 	while (map[rows] != '\0')
 // 		rows += columns + 1;
-// 	data->game.map.height = columns;
-// 	data->game.map.width = rows / columns;
+// 	data.game.map.height = columns;
+// 	data.game.map.width = rows / columns;
 // }
 
 /// @brief Check if the provided map is valid or not
@@ -110,8 +110,9 @@ int	check_map(t_data *data)
 	return (0);
 }
 
-void	render_map(t_data *data)
+int	render_map(t_data *data)
 {
+	static int	frame;
 	int	x;
 	int	y;
 
@@ -122,58 +123,47 @@ void	render_map(t_data *data)
 		while (x < data->game.map.columns)
 		{
 			// ft_putstr("Printing a row\n");
-			if (data->game.map.full[y][x] == '1')
+			if (data->game.map.full[y][x] == WALL)
+			{
+				if (frame % 2 == 0)
+					mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+						data->game.textures.wall->texture, x * PLAYER_WIDTH, y
+						* PLAYER_HEIGHT);
+				else
+					mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.wall->next->texture, x * PLAYER_WIDTH, y  * PLAYER_HEIGHT);
+				frame++;
+			}
+			if (data->game.map.full[y][x] == EMPTY)
 				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-					data->game.wall_texture, x * PLAYER_WIDTH, y
+					data->game.textures.empty->texture, x * PLAYER_WIDTH, y
 					* PLAYER_HEIGHT);
-			if (data->game.map.full[y][x] == '0')
-				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-					data->game.empty_texture, x * PLAYER_WIDTH, y
-					* PLAYER_HEIGHT);
-			if (data->game.map.full[y][x] == 'C')
+			if (data->game.map.full[y][x] == COLLECTIBLE)
 			{
 				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-					data->game.collectable_texture, x * PLAYER_WIDTH, y
+					data->game.textures.collectible->texture, x * PLAYER_WIDTH, y
 					* PLAYER_HEIGHT);
 			}
-			if (data->game.map.full[y][x] == 'P')
+			if (data->game.map.full[y][x] == PLAYER)
 			{
 				data->game.player.x = x;
 				data->game.player.y = y;
-				if (data->game.player.direction == KEY_W)
-				{
 				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-					data->game.player_up_texture, x * PLAYER_WIDTH, y
+					data->game.textures.player->texture, x * PLAYER_WIDTH, y
 					* PLAYER_HEIGHT);
-				}
-				if (data->game.player.direction == KEY_S)
-				{
-				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-					data->game.player_down_texture, x * PLAYER_WIDTH, y
-					* PLAYER_HEIGHT);
-				}
-				if (data->game.player.direction == KEY_A)
-				{
-				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-					data->game.player_left_texture, x * PLAYER_WIDTH, y
-					* PLAYER_HEIGHT);
-				}
-				if (data->game.player.direction == KEY_D)
-				{
-				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-					data->game.player_right_texture, x * PLAYER_WIDTH, y
-					* PLAYER_HEIGHT);
-				}
 			}
-			if (data->game.map.full[y][x] == 'E')
+			if (data->game.map.full[y][x] == EXIT)
 				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-					data->game.exit_texture, x * PLAYER_WIDTH, y
+					data->game.textures.exit->texture, x * PLAYER_WIDTH, y
 					* PLAYER_HEIGHT);
 			x++;
 		}
 		y++;
 		x = 0;
 	}
+	usleep(166667);
+	data->game.textures.player = data->game.textures.player->next;
+	data->game.textures.collectible = data->game.textures.collectible->next;
+	return (0);
 }
 
 /// @brief Checks if a move is valid based on the key code provided
@@ -184,7 +174,7 @@ void	render_map(t_data *data)
 // {
 // 	if (keycode == KEY_W)
 // 	{
-// 		if (data->game.map.full[data->game.player.index - (data->game.map.width
+// 		if (data.game.map.full[data.game.player.index - (data.game.map.width
 // 				/ PLAYER_WIDTH) + 1] == '1')
 // 			return (1);
 // 	}
@@ -200,9 +190,9 @@ int	handle_destroy(t_data *data)
 	return (0);
 }
 
-int	move_to(t_data *data, int new_x, int new_y, int direction)
+int	move_to(t_data *data, int new_x, int new_y)
 {
-	// write(1, &data->game.map.full[new_y][new_x], 1);
+	// write(1, &data.game.map.full[new_y][new_x], 1);
 	// write(1, "\n", 1);
 	if (data->game.map.full[new_y][new_x] == '1')
 		return (1);
@@ -211,7 +201,7 @@ int	move_to(t_data *data, int new_x, int new_y, int direction)
 	else if (data->game.map.full[new_y][new_x] == 'E')
 	{
 		if (data->game.collectables.collected == data->game.collectables.total)
-			return (ft_putstr("You win\n"), handle_destroy(data), 0);
+			return (ft_putstr("W's in the shaaaat!!!\n"), handle_destroy(data), 0);
 		else
 			return (1);
 	}
@@ -219,16 +209,16 @@ int	move_to(t_data *data, int new_x, int new_y, int direction)
 	data->game.player.x = new_x;
 	data->game.player.y = new_y;
 	data->game.map.full[new_y][new_x] = 'P';
-	data->game.player.direction = direction;
+	data->game.moves++;
 	render_map(data);
 	char	*str = ft_strjoin("Moves: ", ft_itoa(data->game.moves));
 	mlx_string_put(data->mlx_ptr, data->win_ptr, 24, 24, 16, str);
 	free(str);
 	ft_putstr("You have made ");
-	ft_putnbr(data->game.moves++);
+	ft_putnbr(data->game.moves);
 	ft_putstr(" moves so far\n");
-	// if (data->game.map.full[new_y][new_x] == '0')
-	// 	return (data->game.map.full[new_y][new_x] = 'P', render_map(data), 0);
+	// if (data.game.map.full[new_y][new_x] == '0')
+	// 	return (data.game.map.full[new_y][new_x] = 'P', render_map(data), 0);
 	return (0);
 }	
 
@@ -237,13 +227,13 @@ int	handle_keypress(int keysym, t_data *data)
 	if (keysym == KEY_ESC || keysym == KEY_Q)
 		return (handle_destroy(data), 0);
 	else if (keysym == KEY_W || keysym == KEY_ARROW_UP)
-		move_to(data, data->game.player.x, data->game.player.y - 1, KEY_W);
+		move_to(data, data->game.player.x, data->game.player.y - 1);
 	else if (keysym == KEY_A || keysym == KEY_ARROW_LEFT)
-		move_to(data, data->game.player.x - 1, data->game.player.y, KEY_A);
+		move_to(data, data->game.player.x - 1, data->game.player.y);
 	else if (keysym == KEY_S || keysym == KEY_ARROW_DOWN)
-		move_to(data, data->game.player.x, data->game.player.y + 1, KEY_S);
+		move_to(data, data->game.player.x, data->game.player.y + 1);
 	else if (keysym == KEY_D || keysym == KEY_ARROW_RIGHT)
-		move_to(data, data->game.player.x + 1, data->game.player.y, KEY_D);
+		move_to(data, data->game.player.x + 1, data->game.player.y);
 	else
 		return (1);
 	return (0);
@@ -279,15 +269,13 @@ int	main(int argc, char *argv[])
 	char		*map_full;
 	int		is_map_invalid;
 	t_data		data;
-	int		*player_height_ptr;
-	int		*player_width_ptr;
-	int		player_height;
-	int		player_width;
+	// int		*player_height_ptr;
+	// int		*player_width_ptr;
+	// int		player_height;
+	// int		player_width;
 
-	player_height = PLAYER_HEIGHT;
-	player_width = PLAYER_WIDTH;
-	player_height_ptr = &player_height;
-	player_width_ptr = &player_width;
+	// player_height = PLAYER_HEIGHT;
+	// player_width = PLAYER_WIDTH;
 	if (argc != 2)
 		return (ft_putstr("Error\nPlease enter the map you would like to use\n"),
 			1);
@@ -317,31 +305,18 @@ int	main(int argc, char *argv[])
 	if (!data.win_ptr)
 		return (free(data.mlx_ptr), 1);
 	// Initalize Texture pointers
-	data.game.player_up_texture = mlx_xpm_file_to_image(data.mlx_ptr,
-		"textures/PlayerUp.xpm", player_width_ptr, player_height_ptr);
-	data.game.player_down_texture = mlx_xpm_file_to_image(data.mlx_ptr,
-		"textures/PlayerDown.xpm", player_width_ptr, player_height_ptr);
-	data.game.player_left_texture = mlx_xpm_file_to_image(data.mlx_ptr,
-		"textures/PlayerLeft.xpm", player_width_ptr, player_height_ptr);
-	data.game.player_right_texture = mlx_xpm_file_to_image(data.mlx_ptr,
-		"textures/PlayerRight.xpm", player_width_ptr, player_height_ptr);
-	data.game.wall_texture = mlx_xpm_file_to_image(data.mlx_ptr,
-		"textures/Border.xpm", player_width_ptr, player_height_ptr);
-	data.game.collectable_texture = mlx_xpm_file_to_image(data.mlx_ptr,
-		"textures/Tablet.xpm", player_width_ptr, player_height_ptr);
-	data.game.empty_texture = mlx_xpm_file_to_image(data.mlx_ptr,
-		"textures/Empty.xpm", player_width_ptr, player_height_ptr);
-	data.game.exit_texture = mlx_xpm_file_to_image(data.mlx_ptr,
-		"textures/Spaceship.xpm", player_width_ptr, player_height_ptr);
+	data.game.textures.player = init_animated_sprite(data, "textures/Player/Player");
+	data.game.textures.collectible = init_animated_sprite(data, "textures/Collectible/Collectible");
+	data.game.textures.wall = init_animated_sprite(data, "textures/Wall/SpaceRocks");
+	data.game.textures.exit = init_animated_sprite(data, "textures/Exit");
+	data.game.textures.empty = init_animated_sprite(data, "textures/Empty");
 	data.game.moves = 0;
-	data.game.player.direction = KEY_W;
-	// render_map(&data);
 	render_map(&data);
-	mlx_put_image_to_window(data.mlx_ptr, data.win_ptr, data.game.player_up_texture, 20, 20);
 	// Handle keypress and close window events
 	mlx_hook(data.win_ptr, 17, 1L << 2, handle_destroy, &data);
 	// For Linux
 	mlx_hook(data.win_ptr, 2, 1L<<0, handle_keypress, &data);
+	mlx_loop_hook(data.mlx_ptr, render_map, &data);
 	// mlx_key_hook(data.win_ptr, handle_keypress, &data);
 	// Loop infinitely to avoid closing window until specified by user
 	mlx_loop(data.mlx_ptr);

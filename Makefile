@@ -4,20 +4,23 @@ MLX_FLAGS = -framework OpenGL -framework AppKit
 NAME = so_long
 C_FLAGS = -Wall -Werror -Wextra
 MLX_MAC = ./mlx_mac
-SRCS = so_long.c DFS.c utils.c get_next_line.c map.c
+SRCS = DFS.c utils.c get_next_line.c map.c init_sprite_animated.c
 
-LINUX_COMPILE = cc $(C_FLAGS) $(SRCS) ./mlx_linux/libmlx.a -lX11 -I X11 -lXext -o so_long -g
-COMPILE_ARGS = cc $(C_FLAGS) $(SRCS) $(MLX_FLAGS) -o $(NAME) libmlx.dylib -g
+LINUX_COMPILE = $(SRCS) ./mlx_linux/libmlx.a -lX11 -I X11 -lXext
+COMPILE_ARGS = $(SRCS) $(MLX_FLAGS) libmlx.dylib
 UNAME = $(shell uname)
 
 ifeq ($(UNAME), Linux)
 	COMPILE_ARGS = $(LINUX_COMPILE)
 endif
 
+# test :
+# 	cc $(C_FLAGS) init_sprite_animated.c $(COMPILE_ARGS) -g
+
 all :
 	make -C $(MLX_MAC)
 	cp $(MLX_MAC)/libmlx.dylib .
-	$(COMPILE_ARGS)
+	cc $(C_FLAGS) $(NAME).c $(COMPILE_ARGS) -g -o $(NAME)
 	./$(NAME) maps/1.ber
 
 DFS : re

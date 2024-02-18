@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:04 by maabdull          #+#    #+#             */
-/*   Updated: 2024/02/17 11:44:05 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/02/18 21:17:12 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # define EMPTY '0'
 # define EXIT 'E'
 # define PLAYER 'P'
-# define COLLECTABLE 'C'
+# define COLLECTIBLE 'C'
 
 # ifdef __linux__
 // Linux keycodes
@@ -77,7 +77,6 @@ typedef struct s_player
 {
 	int			x;
 	int			y;
-	int			direction;
 }				t_player;
 
 typedef struct s_map
@@ -90,31 +89,39 @@ typedef struct s_map
 	int			columns;
 }				t_map;
 
-typedef struct s_collectable
+typedef struct	s_collectable
 {
-	int	collected;
-	int	total;
-}		t_collectables;
+	int			collected;
+	int			total;
+}				t_collectables;
+
+typedef struct					s_sprite_animated
+{
+	void						*texture;
+	struct s_sprite_animated	*next;
+}								t_sprite_animated;
+
+typedef struct			s_textures
+{
+	t_sprite_animated	*collectible;
+	t_sprite_animated	*player;
+	t_sprite_animated	*wall;
+	t_sprite_animated	*empty;
+	t_sprite_animated	*exit;
+}						t_textures;
 
 /**
  * @brief Structure that holds all the variables related to the game
  * 
  */
-typedef struct s_game
+typedef struct		s_game
 {
-	void		*player_up_texture;
-	void		*player_down_texture;
-	void		*player_left_texture;
-	void		*player_right_texture;
-	void		*empty_texture;
-	void		*wall_texture;
-	void		*collectable_texture;
-	void		*exit_texture;
+	t_textures		textures;
 	t_collectables	collectables;
-	t_player	player;
-	t_map		map;
-	int			moves;
-}				t_game;
+	t_player		player;
+	t_map			map;
+	int				moves;
+}					t_game;
 
 typedef struct s_data
 {
@@ -136,5 +143,6 @@ void	print_arr(char **arr, int rows, int cols);
 char	*ft_itoa(int n);
 bool	check_path(char **map);
 int		ft_strcmp(const char *s1, const char *s2);
+t_sprite_animated	*init_animated_sprite(t_data data, char *sprite_textures_dir);
 
 #endif
