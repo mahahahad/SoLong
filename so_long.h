@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:04 by maabdull          #+#    #+#             */
-/*   Updated: 2024/02/19 00:01:13 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/02/24 22:12:02 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@
 # include <string.h>
 # include <unistd.h>
 # include <stdbool.h>
+# include <time.h>
 
 # ifdef __linux__
 #  include "mlx_linux/mlx.h"
@@ -109,6 +110,8 @@ typedef struct			s_textures
 	t_sprite_animated	*empty;
 	t_sprite_animated	*exit;
 	t_sprite_animated	*border;
+	t_sprite_animated	*asteroid_1;
+	t_sprite_animated	*asteroid_2;
 }						t_textures;
 
 /**

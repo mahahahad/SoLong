@@ -114,72 +114,74 @@ int	render_map(t_data *data)
 {
 	int	x;
 	int	y;
-	static bool	walls_rendered;
+	int	offset_x;
+	int	offset_y;
 
 	x = 0;
 	y = 0;
+	offset_x = 64;
+	offset_y = 64;
+	mlx_clear_window(data->mlx_ptr, data->win_ptr);
 	while (y < data->game.map.rows)
 	{
 		while (x < data->game.map.columns)
 		{
 			// ft_putstr("Printing a row\n");
-			if (data->game.map.full[y][x] == WALL && !walls_rendered)
+			if (data->game.map.full[y][x] == WALL)
 			{
-				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.border->texture, x * PLAYER_WIDTH, y  * PLAYER_HEIGHT);
+				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.border->texture, x * PLAYER_WIDTH + offset_x, y * PLAYER_HEIGHT + offset_y);
 				if (y > 0)
 				{
 					if (y == data->game.map.rows - 1)
-						mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.border->next->next->texture, x * PLAYER_WIDTH, y  * PLAYER_HEIGHT);
+						mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.border->next->next->texture, x * PLAYER_WIDTH + offset_x, y * PLAYER_HEIGHT + offset_y);
 					else if (x == 0)
-						mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.border->next->next->next->texture, x * PLAYER_WIDTH, y  * PLAYER_HEIGHT);
+						mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.border->next->next->next->texture, x * PLAYER_WIDTH + offset_x, y * PLAYER_HEIGHT + offset_y);
 					else if (x == data->game.map.columns - 1)
-						mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.border->next->texture, x * PLAYER_WIDTH, y  * PLAYER_HEIGHT);
+						mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.border->next->texture, x * PLAYER_WIDTH + offset_x, y * PLAYER_HEIGHT + offset_y);
 					else
 					{
 
-						if ((rand() % 10) <= 5)
-							data->game.textures.wall = data->game.textures.wall->next;
-						else if ((rand() % 3) <= 1)
-							data->game.textures.wall = data->game.textures.wall->next->next;
+						if ((x % 2) == 0)
+							mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.asteroid_2->texture, x * PLAYER_WIDTH + offset_x, y * PLAYER_HEIGHT + offset_y);
 						else
-							data->game.textures.wall = data->game.textures.wall->next->next;
-						mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.wall->next->texture, x * PLAYER_WIDTH, y  * PLAYER_HEIGHT);
+							mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.asteroid_1->texture, x * PLAYER_WIDTH + offset_x, y * PLAYER_HEIGHT + offset_y);
 					}
 				}
 				if ((x == 0 && y == 0) || \
 					(x == data->game.map.columns - 1 && y == data->game.map.rows - 1) || \
 					(x == 0 && y == data->game.map.rows - 1) || \
 					(x == data->game.map.columns - 1 && y == 0))
-					mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.border->next->next->next->next->texture, x * PLAYER_WIDTH, y  * PLAYER_HEIGHT);
+					mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.border->next->next->next->next->texture, x * PLAYER_WIDTH + offset_x, y * PLAYER_HEIGHT + offset_y);
 			}
 			if (data->game.map.full[y][x] == EMPTY)
 				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-					data->game.textures.empty->texture, x * PLAYER_WIDTH, y
-					* PLAYER_HEIGHT);
+					data->game.textures.empty->texture, x * PLAYER_WIDTH + offset_x, y * PLAYER_HEIGHT + offset_y);
 			if (data->game.map.full[y][x] == COLLECTIBLE)
 			{
 				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-					data->game.textures.collectible->texture, x * PLAYER_WIDTH, y
-					* PLAYER_HEIGHT);
+					data->game.textures.collectible->texture, x * PLAYER_WIDTH + offset_x, y * PLAYER_HEIGHT + offset_y);
 			}
 			if (data->game.map.full[y][x] == PLAYER)
 			{
 				data->game.player.x = x;
 				data->game.player.y = y;
 				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-					data->game.textures.player->texture, x * PLAYER_WIDTH, y
-					* PLAYER_HEIGHT);
+					data->game.textures.player->texture, x * PLAYER_WIDTH + offset_x, y
+					* PLAYER_HEIGHT + offset_y);
 			}
 			if (data->game.map.full[y][x] == EXIT)
 				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-					data->game.textures.exit->texture, x * PLAYER_WIDTH, y
-					* PLAYER_HEIGHT);
+					data->game.textures.exit->texture, x * PLAYER_WIDTH + offset_x, y
+					* PLAYER_HEIGHT + offset_y);
 			x++;
 		}
 		y++;
 		x = 0;
 	}
-	walls_rendered = true;
+	char	*str = ft_strjoin("Moves: ", ft_itoa(data->game.moves));
+	mlx_string_put(data->mlx_ptr, data->win_ptr, 32, 32, 0xFFFFFF, str);
+	mlx_do_sync(data->mlx_ptr);
+	free(str);
 	// usleep(166667);
 	// data->game.textures.player = data->game.textures.player->next;
 	// data->game.textures.collectible = data->game.textures.collectible->next;
@@ -189,15 +191,28 @@ int	render_map(t_data *data)
 int	update_map(t_data *data)
 {
 	static int	frame;
-	if ((frame % 1667) == 0)
+	int	time_val;
+
+	if (!frame)
+		frame = clock();
+	time_val = clock();
+	if (time_val - frame > 50000)
 	{
 		data->game.textures.collectible = data->game.textures.collectible->next;
+		data->game.textures.asteroid_1 = data->game.textures.asteroid_1->next;
+		data->game.textures.asteroid_2 = data->game.textures.asteroid_2->next;
 		data->game.textures.player = data->game.textures.player->next;
+		frame = time_val;
 	}
+	// if ((frame % 720) == 0)
+	// {
+	// }
+	// if ((frame % 2000) == 0)
+	// {
+	// }
 	// else
 		// frame = 0;
 	render_map(data);
-	frame++;
 	return (0);
 }
 
@@ -246,9 +261,6 @@ int	move_to(t_data *data, int new_x, int new_y)
 	data->game.map.full[new_y][new_x] = 'P';
 	data->game.moves++;
 	// render_map(data);
-	char	*str = ft_strjoin("Moves: ", ft_itoa(data->game.moves));
-	mlx_string_put(data->mlx_ptr, data->win_ptr, 24, 24, 16, str);
-	free(str);
 	ft_putstr("You have made ");
 	ft_putnbr(data->game.moves);
 	ft_putstr(" moves so far\n");
@@ -335,8 +347,10 @@ int	main(int argc, char *argv[])
 	data.mlx_ptr = mlx_init();
 	if (!data.mlx_ptr)
 		return (1);
-	data.win_ptr = mlx_new_window(data.mlx_ptr, data.game.map.columns
-		* PLAYER_WIDTH, data.game.map.rows * PLAYER_HEIGHT - 1, "so_long");
+	int	screen_x;
+	int	screen_y;
+	mlx_get_screen_size(data.mlx_ptr, &screen_x, &screen_y);
+	data.win_ptr = mlx_new_window(data.mlx_ptr, (data.game.map.columns + 2) * PLAYER_WIDTH, (data.game.map.rows + 2) * PLAYER_HEIGHT, "so_long");
 	if (!data.win_ptr)
 		return (free(data.mlx_ptr), 1);
 	// Initalize Texture pointers
@@ -346,8 +360,9 @@ int	main(int argc, char *argv[])
 	data.game.textures.exit = init_animated_sprite(data, "textures/Exit");
 	data.game.textures.empty = init_animated_sprite(data, "textures/Empty");
 	data.game.textures.border = init_animated_sprite(data, "textures/Border");
+	data.game.textures.asteroid_1 = init_animated_sprite(data, "textures/Asteroid1/Asteroid1");
+	data.game.textures.asteroid_2 = init_animated_sprite(data, "textures/Asteroid2/Asteroid2");
 	data.game.moves = 0;
-	render_map(&data);
 	// Handle keypress and close window events
 	mlx_hook(data.win_ptr, 17, 1L << 2, handle_destroy, &data);
 	// For Linux
