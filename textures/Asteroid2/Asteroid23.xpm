@@ -1,5 +1,5 @@
 /* XPM */
-static char *Asteroid21[] = {
+static char *Asteroid23[] = {
 /* columns rows colors chars-per-pixel */
 "64 64 4 1 ",
 "  c black",
@@ -7,7 +7,6 @@ static char *Asteroid21[] = {
 "X c #8D8D8D",
 "o c white",
 /* pixels */
-"                                                                ",
 "                                                                ",
 "                                                                ",
 "                                                                ",
@@ -63,6 +62,7 @@ static char *Asteroid21[] = {
 "                    .oooooo..ooooooooooXXooo..                  ",
 "                    ....ooooooooooooooooooo..                   ",
 "                       ....................                     ",
+"                                                                ",
 "                                                                ",
 "                                                                ",
 "                                                                ",

@@ -27,8 +27,7 @@ DFS : re
 	@rm -f DFS
 	@cc $(C_FLAGS) DFS.c utils.c map.c get_next_line.c -g -o DFS
 
-re :
-	@rm -rf $(NAME)
+re : fclean all
 
 .c.o :
 	cc $(C_FLAGS) -c -o $@ $< $(INCLUDES)
@@ -37,6 +36,9 @@ $(NAME) : $(OBJS)
 	cc $(C_FLAGS) -o $(NAME) $(OBJS) $(MLX_FLAGS)
 
 clean :
+	rm -rf *.o
+
+fclean : clean
 	rm -rf $(NAME)
 
-.PHONY : $(NAME) test all clean re fclean
+.PHONY : test all clean re fclean

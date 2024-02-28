@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:04 by maabdull          #+#    #+#             */
-/*   Updated: 2024/02/24 22:12:02 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/02/28 22:11:55 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ typedef struct			s_textures
 	t_sprite_animated	*border;
 	t_sprite_animated	*asteroid_1;
 	t_sprite_animated	*asteroid_2;
+	t_sprite_animated	*alien;
 }						t_textures;
 
 /**

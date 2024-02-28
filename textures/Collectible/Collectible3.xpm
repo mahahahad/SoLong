@@ -1,9 +1,9 @@
 /* XPM */
-static char *result[] = {
+static char *Collectible3[] = {
 /* columns rows colors chars-per-pixel */
 "64 64 3 1 ",
 "  c black",
-". c #11DFFF",
+". c #9EEE15",
 "X c white",
 /* pixels */
 "                                                                ",

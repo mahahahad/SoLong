@@ -110,6 +110,52 @@ int	check_map(t_data *data)
 	return (0);
 }
 
+int	get_exit_coordinates(t_data *data, int *x, int *y)
+{
+	int	j;
+	int	i;
+
+	j = 0;
+	i = 0;
+	while (data->game.map.full[j])
+	{
+		i = 0;
+		while (data->game.map.full[j][i])
+		{
+			if (data->game.map.full[j][i] == EXIT)
+			{
+				*x = i;
+				*y = j;
+				return (0);
+			}
+			i++;
+		}
+		j++;
+	}
+	return (1);
+}
+
+int	get_free_space(t_data *data, int x, int y)
+{
+	if (data->game.map.full[y - 1][x] == EMPTY)
+	{
+		if (data->game.map.full[y - 1][x - 1] == EMPTY)
+			mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.alien->texture, (x) * PLAYER_WIDTH, (y) * PLAYER_HEIGHT);
+	}
+	return (0);
+}
+
+int	display_enemy(t_data *data)
+{
+	int	exit_x;
+	int	exit_y;
+
+	if (get_exit_coordinates(data, &exit_x, &exit_y) != 0)
+		return (1);
+	get_free_space(data, exit_x, exit_y);
+	return (0);
+}
+
 int	render_map(t_data *data)
 {
 	int	x;
@@ -170,21 +216,21 @@ int	render_map(t_data *data)
 					* PLAYER_HEIGHT + offset_y);
 			}
 			if (data->game.map.full[y][x] == EXIT)
+			{
 				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
 					data->game.textures.exit->texture, x * PLAYER_WIDTH + offset_x, y
 					* PLAYER_HEIGHT + offset_y);
+			}
 			x++;
 		}
 		y++;
 		x = 0;
 	}
+	display_enemy(data);
 	char	*str = ft_strjoin("Moves: ", ft_itoa(data->game.moves));
 	mlx_string_put(data->mlx_ptr, data->win_ptr, 32, 32, 0xFFFFFF, str);
 	mlx_do_sync(data->mlx_ptr);
 	free(str);
-	// usleep(166667);
-	// data->game.textures.player = data->game.textures.player->next;
-	// data->game.textures.collectible = data->game.textures.collectible->next;
 	return (0);
 }
 
@@ -198,20 +244,13 @@ int	update_map(t_data *data)
 	time_val = clock();
 	if (time_val - frame > 50000)
 	{
+		data->game.textures.alien = data->game.textures.alien->next;
 		data->game.textures.collectible = data->game.textures.collectible->next;
 		data->game.textures.asteroid_1 = data->game.textures.asteroid_1->next;
 		data->game.textures.asteroid_2 = data->game.textures.asteroid_2->next;
 		data->game.textures.player = data->game.textures.player->next;
 		frame = time_val;
 	}
-	// if ((frame % 720) == 0)
-	// {
-	// }
-	// if ((frame % 2000) == 0)
-	// {
-	// }
-	// else
-		// frame = 0;
 	render_map(data);
 	return (0);
 }
@@ -362,6 +401,7 @@ int	main(int argc, char *argv[])
 	data.game.textures.border = init_animated_sprite(data, "textures/Border");
 	data.game.textures.asteroid_1 = init_animated_sprite(data, "textures/Asteroid1/Asteroid1");
 	data.game.textures.asteroid_2 = init_animated_sprite(data, "textures/Asteroid2/Asteroid2");
+	data.game.textures.alien = init_animated_sprite(data, "textures/Alien/Alien");
 	data.game.moves = 0;
 	// Handle keypress and close window events
 	mlx_hook(data.win_ptr, 17, 1L << 2, handle_destroy, &data);
