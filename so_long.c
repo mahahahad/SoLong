@@ -216,7 +216,8 @@ int	render_map(t_data *data)
 		y++;
 		x = 0;
 	}
-	display_enemy(data);
+	if (data->game.alien.path)
+		display_enemy(data);
 	char	*str = ft_strjoin("Moves: ", ft_itoa(data->game.moves));
 	mlx_string_put(data->mlx_ptr, data->win_ptr, 32, 32, 0xFFFFFF, str);
 	mlx_do_sync(data->mlx_ptr);
@@ -284,7 +285,8 @@ int	move_to(t_data *data, int new_x, int new_y)
 		else
 			return (1);
 	}
-	else if (new_y == data->game.alien.path->current_tile.y && \
+	else if (data->game.alien.path && \
+	new_y == data->game.alien.path->current_tile.y && \
 	new_x == data->game.alien.path->current_tile.x)
 		return (ft_putstr("You died bruh\n"), handle_destroy(data), 0);
 	data->game.map.full[data->game.player.y][data->game.player.x] = '0';
@@ -321,7 +323,8 @@ int	handle_keypress(int keysym, t_data *data)
 		return (handle_destroy(data), 0);
 	else
 	{
-		move_enemy(data);
+		if (data->game.alien.path)
+			move_enemy(data);
 		if (keysym == KEY_W || keysym == KEY_ARROW_UP)
 			move_to(data, data->game.player.x, data->game.player.y - 1);
 		else if (keysym == KEY_A || keysym == KEY_ARROW_LEFT)
@@ -423,6 +426,7 @@ int	populate_path(t_path *path, t_tile tiles[], int size)
 	// t_path *temp;
 
 	i = 0;
+	// path = (t_path *)malloc(sizeof(t_path *));
 	path->prev_tile = NULL;
 	path->next_tile = NULL;
 	while (i < size)
@@ -462,10 +466,11 @@ t_path	*initialize_enemy_path(t_data *data)
 	// empty.x = 0;
 	// empty.y = 0;
 	path = (t_path *)malloc(sizeof(t_path *));
+	// path = NULL;
 	if (get_exit_coordinates(data, &exit_x, &exit_y) != 0)
-		return (path);
+		return (NULL);
 	if (get_free_space(data, exit_x, exit_y, free_space_tiles, &size) != 0)
-		return (path);
+		return (NULL);
 	populate_path(path, free_space_tiles, size);
 	return (path);
 }
