@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:04 by maabdull          #+#    #+#             */
-/*   Updated: 2024/02/29 15:27:20 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/02/29 18:18:53 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,11 +165,13 @@ char	*ft_strdup(const char *str);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strjoin(char *s1, char const *s2);
 char	**ft_split(char const *s, char c);
-char	*read_map(t_data *data);
+int		read_map(t_data *data);
 void	print_arr(char **arr, int rows, int cols);
 char	*ft_itoa(int n);
 bool	check_path(char **map);
 int		ft_strcmp(const char *s1, const char *s2);
-t_sprite_animated	*init_animated_sprite(t_data data, char *sprite_textures_dir);
+t_sprite_animated	*init_animated_sprite(t_data data,char *sprite_textures_dir);
+int		ft_error(char *msg);
+void	ft_putstr_endl(char *str, int fd);
 
 #endif

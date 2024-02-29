@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 13:50:08 by maabdull          #+#    #+#             */
-/*   Updated: 2023/11/12 13:29:07by maabdull         ###   ########.fr       */
+/*   Updated: 2024/02/29 18:26:56 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,38 +26,6 @@ static bool	is_ext_valid(char *file)
 	return (false);
 }
 
-/// @brief Count the number of columns in the provided map
-/// @param map The map to count
-/// @return The number of columns INCLUDING THE NEWLINE CHARACTER
-// static int	count_columns(char *map)
-// {
-// 	int	columns;
-
-// 	columns = 0;
-// 	while (map[columns] != '\n')
-// 		columns++;
-// 	return (++columns);
-// }
-
-/// @brief Gets the width and height of the provided map
-/// @param map The map to measure
-/// @param height The variable that will contain the height
-/// @param width The variable that will contain the width
-// void	get_map_size(t_data *data)
-// {
-// 	int	columns;
-// 	int	rows;
-
-// 	columns = 0;
-// 	rows = 0;
-// 	while (data.game.map.full[columns] != '\n')
-// 		columns++;
-// 	while (map[rows] != '\0')
-// 		rows += columns + 1;
-// 	data.game.map.height = columns;
-// 	data.game.map.width = rows / columns;
-// }
-
 /// @brief Check if the provided map is valid or not
 /// @param data
 // 	The data structure containing all the relevant game variables
@@ -65,11 +33,10 @@ static bool	is_ext_valid(char *file)
 // 	Boolean if map is valid (0) or invalid (1)
 int	check_map(t_data *data)
 {
-
 	int 	y;
 	int 	x;
-	int	exit_count;
-	int	player_count;
+	int		exit_count;
+	int		player_count;
 
 	y = 0;
 	exit_count = 0;
@@ -77,36 +44,41 @@ int	check_map(t_data *data)
 	while (y < data->game.map.rows)
 	{
 		x = 0;
-		if (data->game.map.full[y][0] != '1' || data->game.map.full[y][data->game.map.columns-1] != '1')
-			return (ft_putstr("Error\nMap must be surrounded by walls\n"), exit(1), 1);
+		if (data->game.map.full[y][0] != '1' || \
+			data->game.map.full[y][data->game.map.columns-1] != '1')
+			return (ft_error("Map must be surrounded by walls"));
 		while (x < data->game.map.columns)
 		{
-			if ((y == 0 || y == data->game.map.rows - 1) && data->game.map.full[y][x] != '1')
-				return (ft_putstr("Error\nMap must be surrounded by walls\n"), exit(1), 1);
+			if ((y == 0 || y == data->game.map.rows - 1) && \
+				data->game.map.full[y][x] != '1')
+				return (ft_error("Map must be surrounded by walls"));
 			else if (data->game.map.full[y][x] == 'C')
 				data->game.collectables.total++;
 			else if (data->game.map.full[y][x] == 'E')
 				exit_count++;
 			else if (data->game.map.full[y][x] == 'P')
 				player_count++;
-			else if (data->game.map.full[y][x] != '0' && data->game.map.full[y][x] != '1')
-				return (ft_putstr("Error\nInvalid character detected in map\n"), write(1, &data->game.map.full[y][x], 1), exit(1), 1);
-
+			else if (data->game.map.full[y][x] != '0' && \
+					data->game.map.full[y][x] != '1')
+			{
+				ft_error("Invalid character detected in map: ");
+				write(1, &data->game.map.full[y][x], 1);
+				ft_putstr("\n");
+				exit(1);
+				return (1);
+			}
 			x++;
 		}
 		y++;
 	}
 	if (data->game.collectables.total == 0)
-		return (ft_putstr("Error\nPlease have at least one collectable in the map\n"), exit(1), 1);
+		return (ft_error("At least one collectible must be present"));
 	if (exit_count != 1)
-		return (ft_putstr("Error\nOnly one exit must be present in the map\n"), exit(1), 1);
+		return (ft_error("Only one exit can be present"));
 	if (player_count != 1)
-		return (ft_putstr("Error\nOnly one player must be present in the map\n"), exit(1), 1);
-	// map_width = count_columns(map);
-	// if (ft_strlen(map) % map_width == 0)
-	// 	is_valid = 0;
-	// else
-	// 	is_valid = 1;
+		return (ft_error("Only one player can be present"));
+	if (check_path(data->game.map.full) == false)
+		return (ft_error("Player cannot reach the exit"));
 	return (0);
 }
 
@@ -140,9 +112,14 @@ int	display_enemy(t_data *data)
 	int	x;
 	int	y;
 
+	if (!data->game.alien.path)
+		return (1);
 	x = data->game.alien.path->current_tile.x;
 	y = data->game.alien.path->current_tile.y;
-	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.alien->texture, (x + 1) * PLAYER_WIDTH, (y + 1) * PLAYER_HEIGHT);
+	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,\
+							data->game.textures.alien->texture,\
+							(x + 1) * PLAYER_WIDTH,\
+							(y + 1) * PLAYER_HEIGHT);
 	return (0);
 }
 
@@ -165,51 +142,80 @@ int	render_map(t_data *data)
 			// ft_putstr("Printing a row\n");
 			if (data->game.map.full[y][x] == WALL)
 			{
-				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.border->texture, x * PLAYER_WIDTH + offset_x, y * PLAYER_HEIGHT + offset_y);
+				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,\
+				data->game.textures.border->texture,\
+				x * PLAYER_WIDTH + offset_x,\
+				y * PLAYER_HEIGHT + offset_y);
 				if (y > 0)
 				{
 					if (y == data->game.map.rows - 1)
-						mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.border->next->next->texture, x * PLAYER_WIDTH + offset_x, y * PLAYER_HEIGHT + offset_y);
+						mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,\
+						data->game.textures.border->next->next->texture,\
+						x * PLAYER_WIDTH + offset_x,\
+						y * PLAYER_HEIGHT + offset_y);
 					else if (x == 0)
-						mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.border->next->next->next->texture, x * PLAYER_WIDTH + offset_x, y * PLAYER_HEIGHT + offset_y);
+						mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,\
+						data->game.textures.border->next->next->next->texture,\
+						x * PLAYER_WIDTH + offset_x,\
+						y * PLAYER_HEIGHT + offset_y);
 					else if (x == data->game.map.columns - 1)
-						mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.border->next->texture, x * PLAYER_WIDTH + offset_x, y * PLAYER_HEIGHT + offset_y);
+						mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,\
+						data->game.textures.border->next->texture,\
+						x * PLAYER_WIDTH + offset_x,\
+						y * PLAYER_HEIGHT + offset_y);
 					else
 					{
-
 						if ((x % 2) == 0)
-							mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.asteroid_2->texture, x * PLAYER_WIDTH + offset_x, y * PLAYER_HEIGHT + offset_y);
+							mlx_put_image_to_window(data->mlx_ptr,\
+							data->win_ptr,\
+							data->game.textures.asteroid_2->texture,\
+							x * PLAYER_WIDTH + offset_x,\
+							y * PLAYER_HEIGHT + offset_y);
 						else
-							mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.asteroid_1->texture, x * PLAYER_WIDTH + offset_x, y * PLAYER_HEIGHT + offset_y);
+							mlx_put_image_to_window(data->mlx_ptr,\
+							data->win_ptr,\
+							data->game.textures.asteroid_1->texture,\
+							x * PLAYER_WIDTH + offset_x,\
+							y * PLAYER_HEIGHT + offset_y);
 					}
 				}
 				if ((x == 0 && y == 0) || \
-					(x == data->game.map.columns - 1 && y == data->game.map.rows - 1) || \
+					(x == data->game.map.columns - 1 && \
+					 y == data->game.map.rows - 1) || \
 					(x == 0 && y == data->game.map.rows - 1) || \
 					(x == data->game.map.columns - 1 && y == 0))
-					mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->game.textures.border->next->next->next->next->texture, x * PLAYER_WIDTH + offset_x, y * PLAYER_HEIGHT + offset_y);
+					mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,\
+				data->game.textures.border->next->next->next->next->texture,\
+				x * PLAYER_WIDTH + offset_x,\
+				y * PLAYER_HEIGHT + offset_y);
 			}
 			if (data->game.map.full[y][x] == EMPTY)
-				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-					data->game.textures.empty->texture, x * PLAYER_WIDTH + offset_x, y * PLAYER_HEIGHT + offset_y);
+				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,\
+				data->game.textures.empty->texture,\
+				x * PLAYER_WIDTH + offset_x,\
+				y * PLAYER_HEIGHT + offset_y);
 			if (data->game.map.full[y][x] == COLLECTIBLE)
 			{
-				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-					data->game.textures.collectible->texture, x * PLAYER_WIDTH + offset_x, y * PLAYER_HEIGHT + offset_y);
+				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,\
+				data->game.textures.collectible->texture,\
+				x * PLAYER_WIDTH + offset_x,\
+				y * PLAYER_HEIGHT + offset_y);
 			}
 			if (data->game.map.full[y][x] == PLAYER)
 			{
 				data->game.player.x = x;
 				data->game.player.y = y;
-				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-					data->game.textures.player->texture, x * PLAYER_WIDTH + offset_x, y
-					* PLAYER_HEIGHT + offset_y);
+				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,\
+				data->game.textures.player->texture,\
+				x * PLAYER_WIDTH + offset_x,\
+				y * PLAYER_HEIGHT + offset_y);
 			}
 			if (data->game.map.full[y][x] == EXIT)
 			{
-				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-					data->game.textures.exit->texture, x * PLAYER_WIDTH + offset_x, y
-					* PLAYER_HEIGHT + offset_y);
+				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,\
+				data->game.textures.exit->texture,\
+				x * PLAYER_WIDTH + offset_x,\
+				y * PLAYER_HEIGHT + offset_y);
 			}
 			x++;
 		}
@@ -228,7 +234,7 @@ int	render_map(t_data *data)
 int	update_map(t_data *data)
 {
 	static int	frame;
-	int	time_val;
+	int			time_val;
 
 	if (!frame)
 		frame = clock();
@@ -246,21 +252,6 @@ int	update_map(t_data *data)
 	return (0);
 }
 
-/// @brief Checks if a move is valid based on the key code provided
-/// @param keycode The move to check is valid
-/// @param data The data structure holding all the information related to the game including the map
-/// @return 0 or 1 if it is valid or invalid respectively.
-// int	is_move_valid(int keycode, t_data *data)
-// {
-// 	if (keycode == KEY_W)
-// 	{
-// 		if (data.game.map.full[data.game.player.index - (data.game.map.width
-// 				/ PLAYER_WIDTH) + 1] == '1')
-// 			return (1);
-// 	}
-// 	return (0);
-// }
-
 int	handle_destroy(t_data *data)
 {
 	mlx_destroy_window(data->mlx_ptr, data->win_ptr);
@@ -272,8 +263,6 @@ int	handle_destroy(t_data *data)
 
 int	move_to(t_data *data, int new_x, int new_y)
 {
-	// write(1, &data.game.map.full[new_y][new_x], 1);
-	// write(1, "\n", 1);
 	if (data->game.map.full[new_y][new_x] == '1')
 		return (1);
 	else if (data->game.map.full[new_y][new_x] == 'C')
@@ -281,25 +270,30 @@ int	move_to(t_data *data, int new_x, int new_y)
 	else if (data->game.map.full[new_y][new_x] == 'E')
 	{
 		if (data->game.collectables.collected == data->game.collectables.total)
-			return (ft_putstr("W's in the shaaaat!!!\n"), handle_destroy(data), 0);
+		{
+			ft_putstr("W's in the shaaaat!!!\n");
+			handle_destroy(data);
+			return (0);
+		}
 		else
 			return (1);
 	}
 	else if (data->game.alien.path && \
 	new_y == data->game.alien.path->current_tile.y && \
 	new_x == data->game.alien.path->current_tile.x)
-		return (ft_putstr("You died bruh\n"), handle_destroy(data), 0);
+	{
+		ft_putstr("You died bruh\n");
+		handle_destroy(data);
+		return (0);
+	}
 	data->game.map.full[data->game.player.y][data->game.player.x] = '0';
 	data->game.player.x = new_x;
 	data->game.player.y = new_y;
 	data->game.map.full[new_y][new_x] = 'P';
 	data->game.moves++;
-	// render_map(data);
 	ft_putstr("You have made ");
 	ft_putnbr(data->game.moves);
 	ft_putstr(" moves so far\n");
-	// if (data.game.map.full[new_y][new_x] == '0')
-	// 	return (data.game.map.full[new_y][new_x] = 'P', render_map(data), 0);
 	return (0);
 }	
 
@@ -307,6 +301,8 @@ void	move_enemy(t_data *data)
 {
 	static bool	backwards;
 	
+	if (!data->game.alien.path)
+		return ;
 	if (!data->game.alien.path->prev_tile)
 		backwards = false;
 	if (!data->game.alien.path->next_tile)
@@ -385,11 +381,9 @@ int	get_free_space(t_data *data, int x, int y, t_tile free_space[], int *size)
 	int	i;
 	int	new_y;
 	int	new_x;
-	int	j;
 	t_tile	free_tile;
 	
 	i = 0;
-	j = 0;
 	free_tiles_found = 0;
 	while (i < 8)
 	{
@@ -399,11 +393,18 @@ int	get_free_space(t_data *data, int x, int y, t_tile free_space[], int *size)
 		{
 			free_tile.x = new_x;
 			free_tile.y = new_y;
-			free_space[j++] = free_tile;
+			free_space[free_tiles_found] = free_tile;
 			free_tiles_found++;
 		}
-		else if (free_tiles_found)
-			break ;
+		else
+		{
+			if (free_tiles_found >= 2)
+				break ;
+			else
+			{
+				free_tiles_found = 0;
+			}
+		}
 		i++;
 	}
 	*size = free_tiles_found;
@@ -477,56 +478,47 @@ t_path	*initialize_enemy_path(t_data *data)
 
 int	main(int argc, char *argv[])
 {
-	char		*map_full;
-	int		is_map_invalid;
 	t_data		data;
-	// int		*player_height_ptr;
-	// int		*player_width_ptr;
-	// int		player_height;
-	// int		player_width;
 
-	// player_height = PLAYER_HEIGHT;
-	// player_width = PLAYER_WIDTH;
 	if (argc != 2)
-		return (ft_putstr("Error\nPlease enter the map you would like to use\n"),
-			1);
+		return (ft_error("Please enter the map you would like to use"));
 	if (!is_ext_valid(argv[1]))
-		return (ft_putstr("Error\nPlease input a map with a .ber file format\n"),
-			1);
+		return (ft_error("Please input a map with a .ber file format"));
 	data.game.map.fd = open(argv[1], O_RDONLY);
-	map_full = read_map(&data);
-	if (map_full == NULL)
-		return (ft_putstr("Something went wrong while cooking. Your map couldn't be opened\n"),
-				1);
-	free(map_full);
-	// Initialize collectables
+	if (read_map(&data))
+		return (ft_error("Your map couldn't be opened"));
 	data.game.collectables.total = 0;
 	data.game.collectables.collected = 0;
-	is_map_invalid = check_map(&data);
-	if (is_map_invalid)
+	if (check_map(&data))
 		return (ft_putstr("Your map is not valid"), 1);
-	is_map_invalid = check_path(data.game.map.full);
-	if (!is_map_invalid)
-		return (ft_putstr("There is no path to the exit"), 1);
 	data.mlx_ptr = mlx_init();
 	if (!data.mlx_ptr)
 		return (1);
 	int	screen_x;
 	int	screen_y;
 	mlx_get_screen_size(data.mlx_ptr, &screen_x, &screen_y);
-	data.win_ptr = mlx_new_window(data.mlx_ptr, (data.game.map.columns + 2) * PLAYER_WIDTH, (data.game.map.rows + 2) * PLAYER_HEIGHT, "so_long");
+	data.win_ptr = mlx_new_window(data.mlx_ptr,\
+	(data.game.map.columns + 2) * PLAYER_WIDTH,\
+	(data.game.map.rows + 2) * PLAYER_HEIGHT,\
+	"so_long");
 	if (!data.win_ptr)
 		return (free(data.mlx_ptr), 1);
 	// Initalize Texture pointers
-	data.game.textures.player = init_animated_sprite(data, "textures/Player/Player");
-	data.game.textures.collectible = init_animated_sprite(data, "textures/Collectible/Collectible");
-	data.game.textures.wall = init_animated_sprite(data, "textures/Wall/SpaceRocks");
+	data.game.textures.player = init_animated_sprite(data,\
+	"textures/Player/Player");
+	data.game.textures.collectible = init_animated_sprite(data,\
+	"textures/Collectible/Collectible");
+	data.game.textures.wall = init_animated_sprite(data,\
+	"textures/Wall/SpaceRocks");
 	data.game.textures.exit = init_animated_sprite(data, "textures/Exit");
 	data.game.textures.empty = init_animated_sprite(data, "textures/Empty");
 	data.game.textures.border = init_animated_sprite(data, "textures/Border");
-	data.game.textures.asteroid_1 = init_animated_sprite(data, "textures/Asteroid1/Asteroid1");
-	data.game.textures.asteroid_2 = init_animated_sprite(data, "textures/Asteroid2/Asteroid2");
-	data.game.textures.alien = init_animated_sprite(data, "textures/Alien/Alien");
+	data.game.textures.asteroid_1 = init_animated_sprite(data,\
+	"textures/Asteroid1/Asteroid1");
+	data.game.textures.asteroid_2 = init_animated_sprite(data,\
+	"textures/Asteroid2/Asteroid2");
+	data.game.textures.alien = init_animated_sprite(data,\
+	"textures/Alien/Alien");
 	data.game.moves = 0;
 	data.game.alien.path = initialize_enemy_path(&data);
 	// Handle keypress and close window events
