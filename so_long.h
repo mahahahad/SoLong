@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:04 by maabdull          #+#    #+#             */
-/*   Updated: 2024/02/28 22:11:55 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/02/29 15:27:20 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,27 @@ typedef struct			s_textures
 	t_sprite_animated	*alien;
 }						t_textures;
 
+typedef struct		s_tile
+{
+	int				x;
+	int				y;
+}					t_tile;
+
+typedef struct	s_path
+{
+	t_tile	current_tile;
+	struct s_path	*next_tile;
+	struct s_path	*prev_tile;
+}				t_path;
+
+typedef struct	s_alien
+{
+	int			x;
+	int			y;
+	t_path		*path;
+}				t_alien;
+
+
 /**
  * @brief Structure that holds all the variables related to the game
  * 
@@ -125,6 +146,7 @@ typedef struct		s_game
 	t_collectables	collectables;
 	t_player		player;
 	t_map			map;
+	t_alien			alien;
 	int				moves;
 }					t_game;
 
