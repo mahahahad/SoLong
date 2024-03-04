@@ -18,9 +18,9 @@ int	read_map(t_data *data)
 	str = NULL;
 	temp = NULL;
 	map_full = NULL;
-	fd = data->game.map.fd;
-	data->game.map.rows = 0;
-	data->game.map.columns = 0;
+	fd = data->game->map->fd;
+	data->game->map->rows = 0;
+	data->game->map->columns = 0;
 	str = get_next_line(fd);
 	prev_columns = ft_strlen(str);
 	map_full = malloc(1);
@@ -36,7 +36,7 @@ int	read_map(t_data *data)
 			return (free(str),
 					free(map_full),
 					ft_error("Your map is not rectangular"));
-		data->game.map.rows++;
+		data->game->map->rows++;
 		if (str == NULL)
 			break ;
 		temp = map_full;
@@ -46,8 +46,8 @@ int	read_map(t_data *data)
 	}
 	free(str);
 	str = NULL;
-	data->game.map.full = ft_split(map_full, '\n');
-	data->game.map.columns = ft_strlen(data->game.map.full[0]);
+	data->game->map->full = ft_split(map_full, '\n');
+	data->game->map->columns = ft_strlen(data->game->map->full[0]);
 	free(map_full);
 	return (close(fd), 0);
 }

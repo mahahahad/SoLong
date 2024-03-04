@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:04 by maabdull          #+#    #+#             */
-/*   Updated: 2024/02/29 18:18:53 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/03 16:08:11 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,15 +123,13 @@ typedef struct		s_tile
 
 typedef struct	s_path
 {
-	t_tile	current_tile;
+	t_tile			*current_tile;
 	struct s_path	*next_tile;
 	struct s_path	*prev_tile;
 }				t_path;
 
 typedef struct	s_alien
 {
-	int			x;
-	int			y;
 	t_path		*path;
 }				t_alien;
 
@@ -142,11 +140,11 @@ typedef struct	s_alien
  */
 typedef struct		s_game
 {
-	t_textures		textures;
-	t_collectables	collectables;
-	t_player		player;
-	t_map			map;
-	t_alien			alien;
+	t_textures		*textures;
+	t_collectables	*collectables;
+	t_player		*player;
+	t_map			*map;
+	t_alien			*alien;
 	int				moves;
 }					t_game;
 
@@ -154,7 +152,7 @@ typedef struct s_data
 {
 	void		*mlx_ptr;
 	void		*win_ptr;
-	t_game		game;
+	t_game		*game;
 }				t_data;
 
 char	*get_next_line(int fd);

@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 16:28:02 by maabdull          #+#    #+#             */
-/*   Updated: 2024/02/18 20:59:21 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/04 11:37:53 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,11 @@ t_sprite_animated	*init_animated_sprite(t_data data, char *sprite_textures_dir)
 	{
 		if (i == 0)
 		{
-			sprite = (t_sprite_animated *) malloc(sizeof(t_sprite_animated *));
+			sprite = malloc(sizeof(t_sprite_animated));
 			sprite_head = sprite;
 		}
 		sprite->texture = texture;
-		sprite->next = (t_sprite_animated *) malloc(sizeof(t_sprite_animated *));
+		sprite->next = malloc(sizeof(t_sprite_animated));
 		sprite = sprite->next;
 		file_name = create_file_name(sprite_textures_dir, ++i);
 		texture = mlx_xpm_file_to_image(data.mlx_ptr, file_name, &width, &height);
