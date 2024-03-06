@@ -6,12 +6,18 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 19:39:36 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/04 21:53:14 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/06 18:10:27 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long.h"
 
+/**
+ * @brief Get the size of a 2d arr. Relies on NULL Terminator
+ *
+ * @param tab The 2d arr who's size is to be found
+ * @return int The size
+ */
 static int	get_tab_size(char **tab)
 {
 	int	i;
@@ -20,62 +26,6 @@ static int	get_tab_size(char **tab)
 	while (tab[i])
 		i++;
 	return (i);
-}
-
-/**
- * @brief Creates a 2d array of size row and col.
- * Initializes it with fill_char
- *
- * @param col
- * @param row
- * @param fill_char
- * @return char**
- */
-char	**ft_make_2d_arr(int col, int row, char fill_char)
-{
-	char	**dup_arr;
-	char	*string;
-	int		i;
-	int		j;
-
-	i = 0;
-	string = NULL;
-	dup_arr = malloc((row + 1) * sizeof(char *));
-	while (i < row)
-	{
-		string = malloc(col + 1);
-		j = 0;
-		while (j < col)
-		{
-			string[j] = fill_char;
-			j++;
-		}
-		string[j] = '\0';
-		dup_arr[i] = string;
-		i++;
-	}
-	dup_arr[i] = NULL;
-	return (dup_arr);
-}
-
-/**
- * @brief Frees each string inside the 2d array provided to the function,
- * followed by freeing the entire array itself
- *
- * @param arr
- */
-void	ft_free_2d_arr(char **arr)
-{
-	int	i;
-
-	i = 0;
-	while (arr[i])
-	{
-		free(arr[i]);
-		arr[i] = NULL;
-		i++;
-	}
-	free(arr);
 }
 
 void	get_player_pos(char **map, int *x, int *y)

@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 19:49:14 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/05 14:59:31 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/06 18:10:12 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,7 @@ void	ft_putnbr(int n);
 void	ft_putstr(char *str);
 int		ft_error(char *msg);
 char	*get_next_line(int fd);
+char	**ft_make_2d_arr(int col, int row, char fill_char);
+void	ft_free_2d_arr(char **arr);
 
 #endif
