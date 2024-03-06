@@ -6,11 +6,11 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 18:09:09 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/06 18:09:35 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/06 18:19:24 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "../includes/utils.h"
 
 /**
  * @brief Creates a 2d array of size row and col.
