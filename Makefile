@@ -1,44 +1,49 @@
-INCLUDES = -I/usr/include -Imlx
-# MLX_FLAGS = -Lmlx_linux -lmlx_Linux -L/usr/lib/X11 -Imlx_linux -lXext -lX11 -lm -lz
-MLX_FLAGS = -framework OpenGL -framework AppKit
 NAME = so_long
+MLX_FLAGS = -Lmlx -lmlx -lXext -lX11 -I.
 C_FLAGS = -Wall -Werror -Wextra
-MLX_MAC = ./mlx_mac
-SRCS = DFS.c utils.c get_next_line.c map.c init_sprite_animated.c
 
-LINUX_COMPILE = $(SRCS) ./mlx_linux/libmlx.a -lX11 -I X11 -lXext
-COMPILE_ARGS = $(SRCS) $(MLX_FLAGS) libmlx.dylib
-UNAME = $(shell uname)
+SRCS_DIR = src/
+SRCS = args.c map.c render.c DFS.c enemy.c enemy_utils.c free.c init_sprite_animated.c handlers.c movement.c so_long.c
 
-ifeq ($(UNAME), Linux)
-	COMPILE_ARGS = $(LINUX_COMPILE)
+OBJS_DIR = $(SRCS_DIR)objs/
+OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
+
+UTILS_DIR = ./utils/
+UTILS = $(addprefix $(UTILS_DIR), utils.a)
+
+UNAME = $(shell uname -s)
+
+ifeq ($(UNAME), Darwin)
+	MLX_FLAGS += -framework OpenGL -framework AppKit 
 endif
 
-# test :
-# 	cc $(C_FLAGS) init_sprite_animated.c $(COMPILE_ARGS) -g
+all : $(NAME)
 
-all :
-	make -C $(MLX_MAC)
-	cp $(MLX_MAC)/libmlx.dylib .
-	cc $(C_FLAGS) $(NAME).c $(COMPILE_ARGS) -g -o $(NAME)
-	./$(NAME) maps/1.ber
+$(NAME) : $(OBJS) $(UTILS)
+	@echo ''
+	cc $(C_FLAGS) $(OBJS) $(UTILS) $(MLX_FLAGS) mlx/libmlx.a -g3 -o $(NAME) 
 
-DFS : re
-	@rm -f DFS
-	@cc $(C_FLAGS) DFS.c utils.c map.c get_next_line.c -g -o DFS
+debug : re $(UTILS)
+	@echo ''
+	cc $(C_FLAGS) -fsanitize=address $(addprefix $(SRCS_DIR), $(SRCS)) $(UTILS) $(MLX_FLAGS) -g3 -o $(NAME)
+
+$(UTILS) :
+	@make -C $(UTILS_DIR)
+
+$(OBJS_DIR)%.o : $(SRCS_DIR)%.c
+	@mkdir -p $(OBJS_DIR)
+	@cc $(C_FLAGS) -c $< $(MLX_FLAGS) -o $@
+	@echo -n '.'
 
 re : fclean all
 
-.c.o :
-	cc $(C_FLAGS) -c -o $@ $< $(INCLUDES)
-
-$(NAME) : $(OBJS)
-	cc $(C_FLAGS) -o $(NAME) $(OBJS) $(MLX_FLAGS)
-
 clean :
-	rm -rf *.o
+	@rm -rf *.o
+	@rm -rf $(OBJS_DIR)
+	@make -C $(UTILS_DIR) clean
 
 fclean : clean
-	rm -rf $(NAME)
+	@rm -rf $(NAME)
+	@make -C $(UTILS_DIR) fclean 
 
-.PHONY : test all clean re fclean
+.PHONY : all re clean fclean debug
