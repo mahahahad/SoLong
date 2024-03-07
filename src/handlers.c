@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 14:23:27 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/05 14:24:28 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/06 18:59:54 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,3 @@ int	handle_keypress(int keysym, t_data *data)
 	}
 	return (0);
 }
-

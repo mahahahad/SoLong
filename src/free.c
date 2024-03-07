@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 14:52:29 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/06 17:58:39 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/06 21:50:46 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,6 @@ void	free_alien_path(t_data *data)
 	current->current_tile = NULL;
 	free(current);
 	current = NULL;
-	// if (data->game->alien->path)
-	// {
-	// 	free(data->game->alien->path);
-	// 	data->game->alien->path = NULL;
-	// }
 }
 
 // static void	free_animated_sprite(t_data *data, t_sprite_animated *sprite)
@@ -80,7 +75,7 @@ static void	free_sprite(t_data *data, t_sprite_animated *sprite_head)
 	free(current);
 }
 
-static void	free_textures(t_data *data)
+void	free_textures(t_data *data)
 {
 	if (data->game->textures->alien->texture)
 	{
@@ -97,26 +92,10 @@ static void	free_textures(t_data *data)
 	free(data->game->textures);
 }
 
-static void	free_map(char **map)
-{
-	int	i;
-
-	i = 0;
-	if (!map)
-		return ;
-	while (map[i])
-	{
-		free(map[i]);
-		map[i] = NULL;
-		i++;
-	}
-	free(map);
-}
-
 void	free_data_struct(t_data *data)
 {
 	free(data->game->collectables);
-	free_map(data->game->map->full);
+	ft_free_2d_arr(data->game->map->full);
 	free(data->game->map);
 	free(data->game->player);
 	free_textures(data);

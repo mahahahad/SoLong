@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 19:39:36 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/06 18:10:27 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/07 10:12:13 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	get_tab_size(char **tab)
 	return (i);
 }
 
-void	get_player_pos(char **map, int *x, int *y)
+void	get_player_pos(t_data *data, char **map)
 {
 	int	i;
 	int	j;
@@ -45,8 +45,8 @@ void	get_player_pos(char **map, int *x, int *y)
 		{
 			if (map[i][j] == 'P')
 			{
-				*x = j;
-				*y = i;
+				data->game->player->x = j;
+				data->game->player->y = i;
 				break ;
 			}
 			j++;
@@ -91,18 +91,17 @@ bool	check_tile(char **map, char **visited, int x, int y)
  * @return true if there is a valid path from start to finish.
  * @return false otherwise
  */
-bool	check_path(char **map)
+bool	check_path(t_data *data, char **map)
 {
 	char	**visited;
-	int		player_x;
-	int		player_y;
 	bool	res;
 
-	player_x = 0;
-	player_y = 0;
 	visited = ft_make_2d_arr(ft_strlen(map[0]), get_tab_size(map), '0');
-	get_player_pos(map, &player_x, &player_y);
-	res = check_tile(map, visited, player_x, player_y);
+	get_player_pos(data, map);
+	if (!data->game->player->x)
+		return (ft_free_2d_arr(visited), false);
+	res = check_tile(map, visited, data->game->player->x,
+			data->game->player->y);
 	return (ft_free_2d_arr(visited), res);
 }
 

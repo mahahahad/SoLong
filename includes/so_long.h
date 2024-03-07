@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:04 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/05 21:49:11 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/07 15:54:46 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,6 @@ typedef struct s_player
 typedef struct s_map
 {
 	int							fd;
-	int							height;
-	int							width;
 	char						**full;
 	int							rows;
 	int							columns;
@@ -148,24 +146,31 @@ typedef struct s_data
 	t_game						*game;
 }								t_data;
 
-int					check_map(t_data *data);
+int					parse_args(int argc, char *argv[]);
 int					read_map(t_data *data);
+int					check_map(t_data *data);
+bool				check_path(t_data *data, char **map);
+void				*check_wall_texture(t_data *data, int x, int y);
+void				*check_texture(t_data *data, int x, int y);
+void				display_moves(t_data *data);
+void				render_texture(t_data *data, void *texture, int x, int y);
 int					render_map(t_data *data);
 int					update_map(t_data *data);
-bool				check_path(char **map);
-t_sprite_animated	*init_animated_sprite(t_data data,
-						char *sprite_textures_dir);
-int					parse_args(int argc, char *argv[]);
-void				free_data_struct(t_data *data);
-void				free_alien_path(t_data *data);
 int					get_exit_coordinates(t_data *data, int *x, int *y);
 int					get_free_space(t_data *data, int x, int y,
 						t_tile *free_space[]);
+t_path				*initialize_enemy_path(t_data *data);
+void				free_alien_path(t_data *data);
 int					display_enemy(t_data *data);
 void				move_enemy(t_data *data);
-t_path				*initialize_enemy_path(t_data *data);
+int					move_to(t_data *data, int new_x, int new_y);
 int					handle_keypress(int keysym, t_data *data);
 int					handle_destroy(t_data *data);
-int					move_to(t_data *data, int new_x, int new_y);
+t_sprite_animated	*init_animated_sprite(t_data data,
+						char *sprite_textures_dir);
+int					init_map_struct(t_data *data);
+int					init_data_struct(t_data *data);
+void				free_data_struct(t_data *data);
+void				free_textures(t_data *data);
 
 #endif

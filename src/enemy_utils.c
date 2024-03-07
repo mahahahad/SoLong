@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 15:04:56 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/05 22:08:22 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/06 18:36:09 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,34 @@ void	reset_free_tiles(t_tile *tiles[], int *free_tiles_found)
 	int	i;
 
 	i = 0;
+	if (*free_tiles_found > 1)
+		return ;
 	while (i < *free_tiles_found)
 		free(tiles[i++]);
 	*free_tiles_found = 0;
+}
+
+/**
+ * @brief Creates a new t_tile struct and assigns it the provided
+ * x and y coordinates and appends this tile to the tiles list
+ *
+ * @param tiles The list of tiles to append to
+ * @param x The x coordinate of the new tile
+ * @param y The y coordinate of the new tile
+ */
+void	append_tile(t_tile *tiles[], int x, int y, int *free_tiles_found)
+{
+	t_tile	*free_tile;
+
+	free_tile = malloc(sizeof(t_tile));
+	if (!free_tile)
+	{
+		ft_error("Could not allocate space");
+		return ;
+	}
+	free_tile->x = x;
+	free_tile->y = y;
+	tiles[(*free_tiles_found)++] = free_tile;
 }
 
 /**
@@ -101,31 +126,17 @@ int	get_free_space(t_data *data, int x, int y, t_tile *free_space[])
 	int		dy[8];
 	int		free_tiles_found;
 	int		i;
-	t_tile	*free_tile;
 
 	i = 0;
 	free_tiles_found = 0;
-	free_tile = NULL;
 	set_delta_values(dx, 'x');
 	set_delta_values(dy, 'y');
 	while (i < 8)
 	{
 		if (data->game->map->full[y + dy[i]][x + dx[i]] == EMPTY)
-		{
-			free_tile = malloc(sizeof(t_tile));
-			if (!free_tile)
-				return (ft_error("Could not allocate space"));
-			free_tile->x = x + dx[i];
-			free_tile->y = y + dy[i];
-			free_space[free_tiles_found++] = free_tile;
-		}
+			append_tile(free_space, x + dx[i], y + dy[i], &free_tiles_found);
 		else
-		{
-			if (free_tiles_found >= 2)
-				break ;
-			else
-				reset_free_tiles(free_space, &free_tiles_found);
-		}
+			reset_free_tiles(free_space, &free_tiles_found);
 		i++;
 	}
 	if (free_tiles_found < 2)
