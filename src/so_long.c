@@ -81,10 +81,9 @@ int	main(int argc, char *argv[])
 	init_data_struct(data);
 	data->game->map->fd = open(argv[1], O_RDONLY);
 	if (read_map(data))
-		return (free_data_struct(data),
-			ft_error("Your map could not be opened"));
+		return (free_data_struct(data), 1);
 	if (check_map(data))
-		return (free_data_struct(data), ft_error("Your map is not valid"));
+		return (free_data_struct(data), 1);
 	create_window(data);
 	initialize_enemy_path(data);
 	mlx_hook(data->win_ptr, 17, 1L << 2, handle_destroy, data);
