@@ -21,6 +21,10 @@
 #  define PLAYER_WIDTH 64
 # endif
 
+# ifndef OFFSET
+#  define OFFSET 64
+# endif
+
 # define WALL '1'
 # define EMPTY '0'
 # define EXIT 'E'
