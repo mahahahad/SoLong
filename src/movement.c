@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 14:34:03 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/07 16:12:13 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/07 16:18:13 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ bool	can_exit(t_data *data)
 	{
 		ft_putstr("You won in ");
 		ft_putnbr(++data->game->move_count);
-		ft_putstr_endl(" moves!", 1);	
+		ft_putstr_endl(" moves!", 1);
 		handle_destroy(data);
 		return (0);
 	}
