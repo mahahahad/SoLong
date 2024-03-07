@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:04 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/07 15:54:46 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/07 16:29:37 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ typedef struct s_textures
 {
 	t_sprite_animated			*collectible;
 	t_sprite_animated			*player;
-	t_sprite_animated			*wall;
 	t_sprite_animated			*empty;
 	t_sprite_animated			*exit;
 	t_sprite_animated			*border;

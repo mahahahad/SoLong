@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 21:04:33 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/06 22:17:16 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/07 16:29:16 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ int	init_textures_struct(t_data *data)
 			"textures/Player/Player");
 	data->game->textures->collectible = init_animated_sprite(*data,
 			"textures/Collectible/Collectible");
-	data->game->textures->wall = init_animated_sprite(*data,
-			"textures/Wall/SpaceRocks");
 	data->game->textures->exit = init_animated_sprite(*data, "textures/Exit");
 	data->game->textures->empty = init_animated_sprite(*data, "textures/Empty");
 	data->game->textures->border = init_animated_sprite(*data,

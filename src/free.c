@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 14:52:29 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/06 21:50:46 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/07 16:29:20 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ void	free_textures(t_data *data)
 		free_sprite(data, data->game->textures->empty);
 		free_sprite(data, data->game->textures->exit);
 		free_sprite(data, data->game->textures->player);
-		free_sprite(data, data->game->textures->wall);
 	}
 	free(data->game->textures);
 }
