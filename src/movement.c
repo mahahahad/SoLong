@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 14:34:03 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/06 17:56:10 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/07 16:12:13 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ void	move_player(t_data *data, int new_x, int new_y)
 	data->game->player->x = new_x;
 	data->game->player->y = new_y;
 	data->game->map->full[new_y][new_x] = 'P';
-	data->game->moves++;
+	data->game->move_count++;
 	ft_putstr("You have made ");
-	ft_putnbr(data->game->moves);
+	ft_putnbr(data->game->move_count);
 	ft_putstr(" moves so far\n");
 }
 
@@ -28,7 +28,9 @@ bool	can_exit(t_data *data)
 {
 	if (data->game->collectables->collected == data->game->collectables->total)
 	{
-		ft_putstr_endl("Ws in the shaaaat!!!!", 1);
+		ft_putstr("You won in ");
+		ft_putnbr(++data->game->move_count);
+		ft_putstr_endl(" moves!", 1);	
 		handle_destroy(data);
 		return (0);
 	}

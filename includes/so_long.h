@@ -132,7 +132,9 @@ typedef struct s_game
 	t_player					*player;
 	t_map						*map;
 	t_alien						*alien;
-	int							moves;
+	int							move_count;
+	int							exit_count;
+	int							player_count;
 }								t_game;
 
 typedef struct s_data
