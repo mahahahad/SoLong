@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 14:54:01 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/05 22:12:05 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/07 16:08:33 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ int	display_enemy(t_data *data)
 	x = data->game->alien->path->current_tile->x;
 	y = data->game->alien->path->current_tile->y;
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-		data->game->textures->alien->texture, (x + 1) * PLAYER_WIDTH, (y + 1)
-		* PLAYER_HEIGHT);
+		data->game->textures->alien->texture, x * PLAYER_WIDTH + OFFSET, y
+		* PLAYER_HEIGHT + OFFSET);
 	return (0);
 }
 
