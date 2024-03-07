@@ -21,9 +21,9 @@ all : $(NAME)
 
 $(NAME) : $(OBJS) $(UTILS)
 	@echo ''
-	cc $(C_FLAGS) $(OBJS) $(UTILS) $(MLX_FLAGS) mlx/libmlx.a -g3 -o $(NAME) 
+	cc $(C_FLAGS) $(OBJS) $(UTILS) $(MLX_FLAGS) -o $(NAME) 
 
-debug : re $(UTILS)
+debug : fclean $(UTILS)
 	@echo ''
 	cc $(C_FLAGS) -fsanitize=address $(addprefix $(SRCS_DIR), $(SRCS)) $(UTILS) $(MLX_FLAGS) -g3 -o $(NAME)
 
