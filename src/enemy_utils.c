@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 15:04:56 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/06 18:36:09 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/09 15:26:26 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,16 +72,17 @@ void	set_delta_values(int delta[], char axis)
 	}
 }
 
-void	reset_free_tiles(t_tile *tiles[], int *free_tiles_found)
+bool	reset_free_tiles(t_tile *tiles[], int *free_tiles_found)
 {
 	int	i;
 
 	i = 0;
 	if (*free_tiles_found > 1)
-		return ;
+		return (false);
 	while (i < *free_tiles_found)
 		free(tiles[i++]);
 	*free_tiles_found = 0;
+	return (true);
 }
 
 /**
@@ -136,11 +137,12 @@ int	get_free_space(t_data *data, int x, int y, t_tile *free_space[])
 		if (data->game->map->full[y + dy[i]][x + dx[i]] == EMPTY)
 			append_tile(free_space, x + dx[i], y + dy[i], &free_tiles_found);
 		else
-			reset_free_tiles(free_space, &free_tiles_found);
+			if (!reset_free_tiles(free_space, &free_tiles_found))
+				break ;
 		i++;
 	}
 	if (free_tiles_found < 2)
-		return (reset_free_tiles(free_space, &free_tiles_found), 1);
+		return (reset_free_tiles(free_space, &free_tiles_found));
 	free_space[free_tiles_found] = NULL;
 	return (0);
 }
