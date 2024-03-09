@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 15:53:20 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/07 15:53:49 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/09 12:04:19 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,25 @@ void	render_texture(t_data *data, void *texture, int x, int y)
 // Check which wall texture is supposed to be rendered in this position
 void	*check_wall_texture(t_data *data, int x, int y)
 {
-	void	*corner;
-
-	corner = data->game->textures->border->next->next->next->next->texture;
 	if (y == 0)
-		if (x == 0 || x == data->game->map->columns - 1)
-			return (corner);
-	else
-		return (data->game->textures->border->texture);
-	else if (y == data->game->map->rows - 1)
-		if (x == 0 || x == data->game->map->columns - 1)
-			return (corner);
-	else
-		return (data->game->textures->border->next->next->texture);
-	else if (x == 0)
-		return (data->game->textures->border->next->next->next->texture);
+		if (x == 0)
+			return (data->game->textures->border_0->texture);
 	else if (x == data->game->map->columns - 1)
-		return (data->game->textures->border->next->texture);
-	if (x % 2 == 0)
-		return (data->game->textures->asteroid_2->texture);
-	return (data->game->textures->asteroid_1->texture);
+		return (data->game->textures->border_2->texture);
+	else
+		return (data->game->textures->border_1->texture);
+	else if (y == data->game->map->rows - 1)
+		if (x == 0)
+			return (data->game->textures->border_6->texture);
+	else if (x == data->game->map->columns - 1)
+		return (data->game->textures->border_4->texture);
+	else
+		return (data->game->textures->border_5->texture);
+	else if (x == 0)
+		return (data->game->textures->border_7->texture);
+	else if (x == data->game->map->columns - 1)
+		return (data->game->textures->border_3->texture);
+	return (data->game->textures->wall->texture);
 }
 
 void	*check_texture(t_data *data, int x, int y)
@@ -66,4 +65,16 @@ void	display_moves(t_data *data)
 	mlx_string_put(data->mlx_ptr, data->win_ptr, 32, 32, 0xFFFFFF, str);
 	free(str);
 	free(moves);
+}
+
+void	display_next_borders(t_data *data)
+{
+	data->game->textures->border_0 = data->game->textures->border_0->next;
+	data->game->textures->border_1 = data->game->textures->border_1->next;
+	data->game->textures->border_2 = data->game->textures->border_2->next;
+	data->game->textures->border_3 = data->game->textures->border_3->next;
+	data->game->textures->border_4 = data->game->textures->border_4->next;
+	data->game->textures->border_5 = data->game->textures->border_5->next;
+	data->game->textures->border_6 = data->game->textures->border_6->next;
+	data->game->textures->border_7 = data->game->textures->border_7->next;
 }

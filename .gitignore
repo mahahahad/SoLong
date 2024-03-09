@@ -5,3 +5,5 @@ so_long
 .vscode
 *.o
 */obj*/
+*.a
+*/*.a

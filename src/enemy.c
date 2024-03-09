@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 14:54:01 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/07 16:08:33 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/09 11:18:56 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,16 @@ void	move_enemy(t_data *data)
 {
 	static bool	backwards;
 
-	if (!data->game->alien)
+	if (!data->game->enemy)
 		return ;
-	if (!data->game->alien->path->prev_tile)
+	if (!data->game->enemy->path->prev_tile)
 		backwards = false;
-	if (!data->game->alien->path->next_tile)
+	if (!data->game->enemy->path->next_tile)
 		backwards = true;
 	if (backwards)
-		data->game->alien->path = data->game->alien->path->prev_tile;
+		data->game->enemy->path = data->game->enemy->path->prev_tile;
 	else
-		data->game->alien->path = data->game->alien->path->next_tile;
+		data->game->enemy->path = data->game->enemy->path->next_tile;
 }
 
 int	display_enemy(t_data *data)
@@ -33,12 +33,12 @@ int	display_enemy(t_data *data)
 	int	x;
 	int	y;
 
-	if (!data->game->alien->path)
+	if (!data->game->enemy->path)
 		return (1);
-	x = data->game->alien->path->current_tile->x;
-	y = data->game->alien->path->current_tile->y;
+	x = data->game->enemy->path->current_tile->x;
+	y = data->game->enemy->path->current_tile->y;
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-		data->game->textures->alien->texture, x * PLAYER_WIDTH + OFFSET, y
+		data->game->textures->enemy->texture, x * PLAYER_WIDTH + OFFSET, y
 		* PLAYER_HEIGHT + OFFSET);
 	return (0);
 }
@@ -109,7 +109,7 @@ t_path	*initialize_enemy_path(t_data *data)
 		return (NULL);
 	path = malloc(sizeof(t_path));
 	populate_path(path, free_space_tiles);
-	data->game->alien = malloc(sizeof(t_alien));
-	data->game->alien->path = path;
+	data->game->enemy = malloc(sizeof(t_enemy));
+	data->game->enemy->path = path;
 	return (path);
 }

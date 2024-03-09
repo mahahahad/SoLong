@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 21:04:33 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/07 16:29:16 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/09 11:18:46 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,19 @@ int	init_textures_struct(t_data *data)
 	if (!data->game->textures)
 		return (ft_error("The textures struct could not be created"));
 	data->game->textures->player = init_animated_sprite(*data,
-			"textures/Player/Player");
+			"textures/Player/");
 	data->game->textures->collectible = init_animated_sprite(*data,
-			"textures/Collectible/Collectible");
-	data->game->textures->exit = init_animated_sprite(*data, "textures/Exit");
-	data->game->textures->empty = init_animated_sprite(*data, "textures/Empty");
-	data->game->textures->border = init_animated_sprite(*data,
-			"textures/Border");
-	data->game->textures->asteroid_1 = init_animated_sprite(*data,
-			"textures/Asteroid1/Asteroid1");
-	data->game->textures->asteroid_2 = init_animated_sprite(*data,
-			"textures/Asteroid2/Asteroid2");
-	data->game->textures->alien = init_animated_sprite(*data,
-			"textures/Alien/Alien");
+			"textures/Collectible/");
+	data->game->textures->exit = init_animated_sprite(*data,
+			"textures/Exit/");
+	data->game->textures->empty = init_animated_sprite(*data,
+			"textures/Empty/");
+	data->game->textures->wall = init_animated_sprite(*data,
+			"textures/Wall/");
+	data->game->textures->enemy = init_animated_sprite(*data,
+			"textures/Enemy/");
+	load_borders(data);
+	have_textures_loaded(data);
 	return (0);
 }
 
@@ -87,6 +87,6 @@ int	init_data_struct(t_data *data)
 		return (free(data->game->player), free(data->game->collectables),
 			free_textures(data), free(data->game), free(data->mlx_ptr), exit(1),
 			1);
-	data->game->alien = NULL;
+	data->game->enemy = NULL;
 	return (0);
 }

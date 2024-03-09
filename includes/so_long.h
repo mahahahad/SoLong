@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:04 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/07 16:29:37 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/09 12:06:41 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,10 @@
 #  define KEY_ARROW_RIGHT 124
 # endif
 
+# include "../mlx/mlx.h"
+# include "utils.h"
+# include <X11/Xlib.h>
+# include <X11/keysym.h>
 # include <fcntl.h>
 # include <limits.h>
 # include <stdbool.h>
@@ -65,85 +69,87 @@
 # include <string.h>
 # include <time.h>
 # include <unistd.h>
-# include "../mlx/mlx.h"
-# include <X11/Xlib.h>
-# include <X11/keysym.h>
-# include "utils.h"
 
 typedef struct s_player
 {
-	int							x;
-	int							y;
-}								t_player;
+	int				x;
+	int				y;
+}					t_player;
 
 typedef struct s_map
 {
-	int							fd;
-	char						**full;
-	int							rows;
-	int							columns;
-}								t_map;
+	int				fd;
+	char			**full;
+	int				rows;
+	int				columns;
+}					t_map;
 
 typedef struct s_collectable
 {
-	int							collected;
-	int							total;
-}								t_collectables;
+	int				collected;
+	int				total;
+}					t_collectables;
 
-typedef struct s_sprite_animated
+typedef struct s_sprite
 {
-	void						*texture;
-	struct s_sprite_animated	*next;
-}								t_sprite_animated;
+	void			*texture;
+	struct s_sprite	*next;
+}					t_sprite;
 
 typedef struct s_textures
 {
-	t_sprite_animated			*collectible;
-	t_sprite_animated			*player;
-	t_sprite_animated			*empty;
-	t_sprite_animated			*exit;
-	t_sprite_animated			*border;
-	t_sprite_animated			*asteroid_1;
-	t_sprite_animated			*asteroid_2;
-	t_sprite_animated			*alien;
-}								t_textures;
+	t_sprite		*border_0;
+	t_sprite		*border_1;
+	t_sprite		*border_2;
+	t_sprite		*border_3;
+	t_sprite		*border_4;
+	t_sprite		*border_5;
+	t_sprite		*border_6;
+	t_sprite		*border_7;
+	t_sprite		*player;
+	t_sprite		*collectible;
+	t_sprite		*exit;
+	t_sprite		*wall;
+	t_sprite		*enemy;
+	t_sprite		*empty;
+}					t_textures;
 
 typedef struct s_tile
 {
-	int							x;
-	int							y;
-}								t_tile;
+	int				x;
+	int				y;
+}					t_tile;
 
 typedef struct s_path
 {
-	t_tile						*current_tile;
-	struct s_path				*next_tile;
-	struct s_path				*prev_tile;
-}								t_path;
+	t_tile			*current_tile;
+	struct s_path	*next_tile;
+	struct s_path	*prev_tile;
+}					t_path;
 
-typedef struct s_alien
+typedef struct s_enemy
 {
-	t_path						*path;
-}								t_alien;
+	t_path			*path;
+}					t_enemy;
 
 typedef struct s_game
 {
-	t_textures					*textures;
-	t_collectables				*collectables;
-	t_player					*player;
-	t_map						*map;
-	t_alien						*alien;
-	int							move_count;
-	int							exit_count;
-	int							player_count;
-}								t_game;
+	t_textures		*textures;
+	t_collectables	*collectables;
+	t_player		*player;
+	t_map			*map;
+	t_enemy			*enemy;
+	int				move_count;
+	int				exit_count;
+	int				player_count;
+}					t_game;
 
 typedef struct s_data
 {
-	void						*mlx_ptr;
-	void						*win_ptr;
-	t_game						*game;
-}								t_data;
+	void			*mlx_ptr;
+	void			*win_ptr;
+	t_game			*game;
+}					t_data;
 
 int					parse_args(int argc, char *argv[]);
 int					read_map(t_data *data);
@@ -159,17 +165,20 @@ int					get_exit_coordinates(t_data *data, int *x, int *y);
 int					get_free_space(t_data *data, int x, int y,
 						t_tile *free_space[]);
 t_path				*initialize_enemy_path(t_data *data);
-void				free_alien_path(t_data *data);
+void				free_enemy_path(t_data *data);
 int					display_enemy(t_data *data);
 void				move_enemy(t_data *data);
 int					move_to(t_data *data, int new_x, int new_y);
 int					handle_keypress(int keysym, t_data *data);
 int					handle_destroy(t_data *data);
-t_sprite_animated	*init_animated_sprite(t_data data,
+bool				have_textures_loaded(t_data *data);
+t_sprite			*init_animated_sprite(t_data data,
 						char *sprite_textures_dir);
 int					init_map_struct(t_data *data);
 int					init_data_struct(t_data *data);
 void				free_data_struct(t_data *data);
 void				free_textures(t_data *data);
+void				display_next_borders(t_data *data);
+void				load_borders(t_data *data);
 
 #endif

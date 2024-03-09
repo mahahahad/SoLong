@@ -3,7 +3,7 @@ MLX_FLAGS = -Lmlx -lmlx -lXext -lX11 -I.
 C_FLAGS = -Wall -Werror -Wextra
 
 SRCS_DIR = src/
-SRCS = args.c map.c render_utils.c render.c DFS.c enemy.c enemy_utils.c free.c init_sprite_animated.c init_structs.c handlers.c movement.c so_long.c
+SRCS = args.c map.c render_utils.c render.c DFS.c enemy.c enemy_utils.c free.c init_sprite_animated.c init_textures.c init_structs.c handlers.c movement.c so_long.c
 
 OBJS_DIR = $(SRCS_DIR)objs/
 OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))

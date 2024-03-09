@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 16:28:02 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/05 21:20:25 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/09 12:04:47 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ char	*create_file_name(char *dir, int i)
 	return (file_name);
 }
 
-t_sprite_animated	*append_to_list(t_sprite_animated *head, void *texture)
+t_sprite	*append_to_list(t_sprite *head, void *texture)
 {
-	t_sprite_animated	*new_node;
-	t_sprite_animated	*temp;
+	t_sprite	*new_node;
+	t_sprite	*temp;
 
-	new_node = malloc(sizeof(t_sprite_animated));
+	new_node = malloc(sizeof(t_sprite));
 	new_node->texture = texture;
 	if (!head)
 	{
@@ -65,17 +65,17 @@ void	*create_texture(t_data data, char *file_name)
  * @param data The data structure containing mlx_ptr and game strucs
  * @param sprite_textures_dir The directory containing this sprites texture
  * files. Expects numbered frames in the format: `dir/prefix` resulting in
- * `dir/prefix(0).xpm`
+ * `dir/prefix/(0).xpm`
  * @return t_sprite_animated* The animated sprite containing the current frames
  * texture and the next frames' textures for easy animating
  */
-t_sprite_animated	*init_animated_sprite(t_data data,
+t_sprite	*init_animated_sprite(t_data data,
 		char *sprite_textures_dir)
 {
-	void				*texture;
-	char				*file_name;
-	int					i;
-	t_sprite_animated	*sprite_head;
+	void		*texture;
+	char		*file_name;
+	int			i;
+	t_sprite	*sprite_head;
 
 	i = -1;
 	sprite_head = NULL;

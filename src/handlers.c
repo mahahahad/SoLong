@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 14:23:27 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/06 18:59:54 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/09 11:18:45 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	handle_keypress(int keysym, t_data *data)
 		return (handle_destroy(data), 0);
 	else
 	{
-		if (data->game->alien)
+		if (data->game->enemy)
 			move_enemy(data);
 		if (keysym == KEY_W || keysym == KEY_ARROW_UP)
 			move_to(data, data->game->player->x, data->game->player->y - 1);

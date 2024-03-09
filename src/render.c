@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 14:56:49 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/07 15:56:35 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/09 12:01:49 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	render_map(t_data *data)
 			render_texture(data, check_texture(data, x, y), x, y);
 		y++;
 	}
-	if (data->game->alien)
+	if (data->game->enemy)
 		display_enemy(data);
 	display_moves(data);
 	mlx_do_sync(data->mlx_ptr);
@@ -41,16 +41,15 @@ int	update_map(t_data *data)
 	if (!frame)
 		frame = clock();
 	time_val = clock();
-	if (time_val - frame > 50000)
+	if (time_val - frame > 35000)
 	{
-		data->game->textures->alien = data->game->textures->alien->next;
+		data->game->textures->player = data->game->textures->player->next;
+		data->game->textures->enemy = data->game->textures->enemy->next;
 		data->game->textures->collectible
 			= data->game->textures->collectible->next;
-		data->game->textures->asteroid_1
-			= data->game->textures->asteroid_1->next;
-		data->game->textures->asteroid_2
-			= data->game->textures->asteroid_2->next;
-		data->game->textures->player = data->game->textures->player->next;
+		data->game->textures->wall = data->game->textures->wall->next;
+		data->game->textures->exit = data->game->textures->exit->next;
+		display_next_borders(data);
 		frame = time_val;
 	}
 	render_map(data);

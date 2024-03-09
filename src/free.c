@@ -6,18 +6,18 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 14:52:29 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/07 16:29:20 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/09 11:18:43 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long.h"
 
-void	free_alien_path(t_data *data)
+void	free_enemy_path(t_data *data)
 {
 	t_path	*current;
 
-	current = data->game->alien->path;
-	if (!data->game->alien)
+	current = data->game->enemy->path;
+	if (!data->game->enemy)
 		return ;
 	while (current && current->next_tile)
 		current = current->next_tile;
@@ -52,10 +52,10 @@ void	free_alien_path(t_data *data)
 // 	free(first);
 // }
 
-static void	free_sprite(t_data *data, t_sprite_animated *sprite_head)
+static void	free_sprite(t_data *data, t_sprite *sprite_head)
 {
-	t_sprite_animated	*current;
-	t_sprite_animated	*next;
+	t_sprite	*current;
+	t_sprite	*next;
 
 	current = sprite_head;
 	if (!current)
@@ -77,12 +77,18 @@ static void	free_sprite(t_data *data, t_sprite_animated *sprite_head)
 
 void	free_textures(t_data *data)
 {
-	if (data->game->textures->alien->texture)
+	if (data->game->textures->enemy->texture)
 	{
-		free_sprite(data, data->game->textures->alien);
-		free_sprite(data, data->game->textures->asteroid_1);
-		free_sprite(data, data->game->textures->asteroid_2);
-		free_sprite(data, data->game->textures->border);
+		free_sprite(data, data->game->textures->enemy);
+		free_sprite(data, data->game->textures->wall);
+		free_sprite(data, data->game->textures->border_0);
+		free_sprite(data, data->game->textures->border_1);
+		free_sprite(data, data->game->textures->border_2);
+		free_sprite(data, data->game->textures->border_3);
+		free_sprite(data, data->game->textures->border_4);
+		free_sprite(data, data->game->textures->border_5);
+		free_sprite(data, data->game->textures->border_6);
+		free_sprite(data, data->game->textures->border_7);
 		free_sprite(data, data->game->textures->collectible);
 		free_sprite(data, data->game->textures->empty);
 		free_sprite(data, data->game->textures->exit);
@@ -98,11 +104,11 @@ void	free_data_struct(t_data *data)
 	free(data->game->map);
 	free(data->game->player);
 	free_textures(data);
-	if (data->game->alien)
+	if (data->game->enemy)
 	{
-		free_alien_path(data);
-		free(data->game->alien);
-		data->game->alien = NULL;
+		free_enemy_path(data);
+		free(data->game->enemy);
+		data->game->enemy = NULL;
 	}
 	free(data->game);
 	free(data->mlx_ptr);
