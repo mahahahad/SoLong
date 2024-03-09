@@ -5,6 +5,7 @@ C_FLAGS = -Wall -Werror -Wextra
 BGREEN = \033[1;32m
 BYELLOW = \033[1;33m
 BRED = \033[1;31m
+BGGREEN = \033[0;102m
 RESET = \033[0m\033[K
 
 SRCS_DIR = src/
@@ -32,7 +33,8 @@ $(NAME) : $(UTILS) $(OBJS)
 	@echo "$(BGREEN)Created $(NAME)!$(RESET)"
 
 debug : fclean $(UTILS)
-	cc $(C_FLAGS) -DOFFSET=$(PADDING) -fsanitize=address $(addprefix $(SRCS_DIR), $(SRCS)) $(UTILS) $(MLX_FLAGS) -g3 -o $(NAME)
+	@cc $(C_FLAGS) -fsanitize=address $(addprefix $(SRCS_DIR), $(SRCS)) $(UTILS) $(MLX_FLAGS) -g3 -o $(NAME)
+	@echo "$(BGREEN)Created $(BGGREEN)$(BYELLOW)DEBUG$(RESET) $(BGREEN)$(NAME)!$(RESET)"
 
 $(UTILS) :
 	@printf "$(BYELLOW)Compiling Utils Library\n\r$(RESET)"
