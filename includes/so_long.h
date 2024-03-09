@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:04 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/09 12:06:41 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/09 13:40:09 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # endif
 
 # ifndef OFFSET
-#  define OFFSET 64
+#  define OFFSET 32
 # endif
 
 # define WALL '1'
@@ -160,7 +160,8 @@ void				*check_texture(t_data *data, int x, int y);
 void				display_moves(t_data *data);
 void				render_texture(t_data *data, void *texture, int x, int y);
 int					render_map(t_data *data);
-int					update_map(t_data *data);
+int					update_textures(t_data *data);
+int					calculate_frame(t_data *data);
 int					get_exit_coordinates(t_data *data, int *x, int *y);
 int					get_free_space(t_data *data, int x, int y,
 						t_tile *free_space[]);

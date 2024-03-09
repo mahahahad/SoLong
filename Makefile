@@ -25,7 +25,7 @@ $(NAME) : $(OBJS) $(UTILS)
 
 debug : fclean $(UTILS)
 	@echo ''
-	cc $(C_FLAGS) -DOFFSET=0 -fsanitize=address $(addprefix $(SRCS_DIR), $(SRCS)) $(UTILS) $(MLX_FLAGS) -g3 -o $(NAME)
+	cc $(C_FLAGS) -DOFFSET=$(PADDING) -fsanitize=address $(addprefix $(SRCS_DIR), $(SRCS)) $(UTILS) $(MLX_FLAGS) -g3 -o $(NAME)
 
 $(UTILS) :
 	@make -C $(UTILS_DIR)
