@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 14:34:03 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/09 11:18:47 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/09 12:11:38 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	move_to(t_data *data, int new_x, int new_y)
 		&& new_y == data->game->enemy->path->current_tile->y
 		&& new_x == data->game->enemy->path->current_tile->x)
 	{
-		ft_putstr("You died bruh\n");
+		ft_putstr_endl("You died bruh", 1);
 		handle_destroy(data);
 		return (0);
 	}

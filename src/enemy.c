@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 14:54:01 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/09 11:18:56 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/09 12:11:47 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,13 @@ void	move_enemy(t_data *data)
 		data->game->enemy->path = data->game->enemy->path->prev_tile;
 	else
 		data->game->enemy->path = data->game->enemy->path->next_tile;
+	if (data->game->enemy->path->current_tile->x == data->game->player->x
+		&& data->game->enemy->path->current_tile->y == data->game->player->y)
+	{
+		ft_putstr_endl("You died bruh", 1);
+		handle_destroy(data);
+		return ;
+	}
 }
 
 int	display_enemy(t_data *data)
