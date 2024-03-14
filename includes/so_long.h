@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:04 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/09 15:12:38 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/14 13:36:04 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@
 
 # include "../mlx/mlx.h"
 # include "utils.h"
-# include <X11/Xlib.h>
-# include <X11/keysym.h>
 # include <fcntl.h>
 # include <limits.h>
 # include <stdbool.h>
@@ -69,6 +67,10 @@
 # include <string.h>
 # include <time.h>
 # include <unistd.h>
+# ifdef __linux__
+# include <X11/Xlib.h>
+# include <X11/keysym.h>
+# endif
 
 typedef struct s_player
 {
