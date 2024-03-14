@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:04 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/14 13:51:11 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/14 15:40:48 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ int					check_map(t_data *data);
 bool				check_path(t_data *data, char **map);
 void				*check_wall_texture(t_data *data, int x, int y);
 void				*check_texture(t_data *data, int x, int y);
+void	*create_texture(t_data data, char *file_name);
 void				render_texture(t_data *data, void *texture, int x, int y);
 int					render_map(t_data *data);
 int					calculate_frame(t_data *data);

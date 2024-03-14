@@ -6,20 +6,20 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 14:52:29 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/14 15:36:57 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/14 15:39:15 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long.h"
 
-void	free_sprite(t_data *data, void *mlx_image)
+void free_sprite(t_data *data, void *mlx_image)
 {
 	mlx_destroy_image(data->mlx_ptr, mlx_image);
 }
 
 void free_textures(t_data *data)
 {
-	if (data->game->textures->enemy->texture)
+	if (have_textures_loaded(data))
 	{
 		free_sprite(data, data->game->textures->enemy);
 		free_sprite(data, data->game->textures->wall);
@@ -46,12 +46,6 @@ void free_data_struct(t_data *data)
 	free(data->game->map);
 	free(data->game->player);
 	free_textures(data);
-	if (data->game->enemy)
-	{
-		free_enemy_path(data);
-		free(data->game->enemy);
-		data->game->enemy = NULL;
-	}
 	free(data->game);
 	free(data->mlx_ptr);
 	free(data);
