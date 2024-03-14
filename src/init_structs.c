@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 21:04:33 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/14 14:08:48 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:08:17 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,5 @@ int init_data_struct(t_data *data)
 		return (free(data->game->player), free(data->game->collectables),
 				free_textures(data), free(data->game), free(data->mlx_ptr), exit(1),
 				1);
-	return (0);
+	return (EXIT_SUCCESS);
 }

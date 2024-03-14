@@ -6,11 +6,11 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 15:53:50 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/14 13:39:27 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/14 21:01:14 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/so_long.h"
+#include "../includes/so_long_bonus.h"
 
 bool	have_textures_loaded(t_data *data)
 {

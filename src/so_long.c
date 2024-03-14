@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 13:50:08 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/14 15:42:41 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:08:40 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	main(int argc, char *argv[])
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (ft_error("Could not allocate enough space"));
-	if (!init_data_struct(data))
+	if (init_data_struct(data) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	data->game->map->fd = open(argv[1], O_RDONLY);
 	if (read_map(data))
@@ -46,9 +46,9 @@ int	main(int argc, char *argv[])
 	if (check_map(data))
 		return (free_data_struct(data), 1);
 	create_window(data);
-	// mlx_hook(data->win_ptr, 17, 1L << 2, handle_destroy, data);
-	// mlx_hook(data->win_ptr, 2, 1L << 0, handle_keypress, data);
-	// mlx_loop_hook(data->mlx_ptr, render_map, data);
-	// mlx_loop(data->mlx_ptr);
+	mlx_hook(data->win_ptr, 17, 1L << 2, handle_destroy, data);
+	mlx_hook(data->win_ptr, 2, 1L << 0, handle_keypress, data);
+	mlx_loop_hook(data->mlx_ptr, render_map, data);
+	mlx_loop(data->mlx_ptr);
 	return (0);
 }

@@ -6,11 +6,11 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 14:52:29 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/09 11:18:43 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/14 21:00:51 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/so_long.h"
+#include "../includes/so_long_bonus.h"
 
 void	free_enemy_path(t_data *data)
 {

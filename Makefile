@@ -9,11 +9,14 @@ BGGREEN = \033[0;102m
 RESET = \033[0m\033[K
 
 SRCS_DIR = src/
-SRCS = args.c map.c render_utils.c render.c DFS.c enemy.c enemy_utils.c free.c init_sprite_animated.c init_textures.c init_structs.c handlers.c movement.c so_long.c
-SRCS_BONUS = so_long_bonus.c
+SRCS_BONUS_DIR = src_bonus/
+SRCS = args.c map.c render_utils.c render.c DFS.c free.c init_textures.c init_structs.c handlers.c movement.c so_long.c
+SRCS_BONUS = args.c map.c render_utils.c render.c DFS.c enemy.c enemy_utils.c free.c init_sprite_animated.c init_textures.c init_structs.c handlers.c movement.c so_long_bonus.c
 
 OBJS_DIR = $(SRCS_DIR)objs/
+OBJS_BONUS_DIR = $(SRCS_BONUS_DIR)objs/
 OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
+OBJS_BONUS = $(addprefix $(OBJS_BONUS_DIR), $(SRCS_BONUS:.c=.o))
 
 UTILS_DIR = utils/
 UTILS = $(addprefix $(UTILS_DIR), utils.a)
@@ -49,6 +52,14 @@ $(OBJS_DIR)%.o : $(SRCS_DIR)%.c
 	@printf "%c\r" "—"
 	@printf "%c\r" "\\"
 
+$(OBJS_BONUS_DIR)%.o : $(SRCS_BONUS_DIR)%.c
+	@mkdir -p $(OBJS_BONUS_DIR)
+	@cc $(C_FLAGS) -c $< -o $@
+	@printf "%c\r" "|"
+	@printf "%c\r" "/"
+	@printf "%c\r" "—"
+	@printf "%c\r" "\\"
+
 re : fclean all
 
 clean :
@@ -61,6 +72,7 @@ fclean : clean
 	@make -C $(UTILS_DIR) -s fclean
 	@rm -rf $(NAME)
 
-bonus: $(OBJS)
+bonus: $(UTILS) $(OBJS_BONUS)
+	cc $(C_FLAGS) $(OBJS_BONUS) $(UTILS) $(MLX_FLAGS) -o $(NAME)_bonus
 
 .PHONY : all re clean fclean debug bonus

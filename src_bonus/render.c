@@ -6,11 +6,11 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 14:56:49 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/09 15:10:49 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/14 21:00:31 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/so_long.h"
+#include "../includes/so_long_bonus.h"
 
 int	render_map(t_data *data)
 {

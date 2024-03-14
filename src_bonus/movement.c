@@ -6,11 +6,11 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 14:34:03 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/09 12:11:38 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/14 21:01:19 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/so_long.h"
+#include "../includes/so_long_bonus.h"
 
 void	move_player(t_data *data, int new_x, int new_y)
 {

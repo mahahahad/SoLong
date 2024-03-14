@@ -2,6 +2,7 @@ mlx*
 so_long
 *.out
 *.dSYM
+*.dylib
 .vscode
 *.o
 */obj*/

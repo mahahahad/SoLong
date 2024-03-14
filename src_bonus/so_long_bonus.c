@@ -6,11 +6,11 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 13:47:59 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/14 13:48:03 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/14 21:00:28 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/so_long.h"
+#include "../includes/so_long_bonus.h"
 
 int	create_window(t_data *data)
 {
