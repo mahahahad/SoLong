@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   so_long.c                                          :+:      :+:    :+:   */
+/*   so_long_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/09 13:50:08 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/14 14:02:18 by maabdull         ###   ########.fr       */
+/*   Created: 2024/03/14 13:47:59 by maabdull          #+#    #+#             */
+/*   Updated: 2024/03/14 13:48:03 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,17 @@ int	main(int argc, char *argv[])
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (ft_error("Could not allocate enough space"));
-	if (!init_data_struct(data))
-		return (EXIT_FAILURE);
+	init_data_struct(data);
 	data->game->map->fd = open(argv[1], O_RDONLY);
 	if (read_map(data))
 		return (free_data_struct(data), 1);
 	if (check_map(data))
 		return (free_data_struct(data), 1);
 	create_window(data);
+	initialize_enemy_path(data);
 	mlx_hook(data->win_ptr, 17, 1L << 2, handle_destroy, data);
 	mlx_hook(data->win_ptr, 2, 1L << 0, handle_keypress, data);
-	mlx_loop_hook(data->mlx_ptr, render_map, data);
+	mlx_loop_hook(data->mlx_ptr, calculate_frame, data);
 	mlx_loop(data->mlx_ptr);
 	return (0);
 }

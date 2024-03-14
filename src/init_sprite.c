@@ -1,31 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render.c                                           :+:      :+:    :+:   */
+/*   init_sprite.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/04 14:56:49 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/14 14:02:45 by maabdull         ###   ########.fr       */
+/*   Created: 2024/02/18 16:28:02 by maabdull          #+#    #+#             */
+/*   Updated: 2024/03/14 14:06:05 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long.h"
 
-int	render_map(t_data *data)
+void	*create_texture(t_data data, char *file_name)
 {
-	int	x;
-	int	y;
+	void	*texture;
+	int		height;
+	int		width;
 
-	y = 0;
-	mlx_clear_window(data->mlx_ptr, data->win_ptr);
-	while (y < data->game->map->rows)
-	{
-		x = -1;
-		while (++x < data->game->map->columns)
-			render_texture(data, check_texture(data, x, y), x, y);
-		y++;
-	}
-	mlx_do_sync(data->mlx_ptr);
-	return (0);
+	height = PLAYER_HEIGHT;
+	width = PLAYER_WIDTH;
+	texture = mlx_xpm_file_to_image(data.mlx_ptr, file_name, &width, &height);
+	return (texture);
 }

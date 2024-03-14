@@ -1,5 +1,5 @@
 NAME = so_long
-MLX_FLAGS = -Lmlx -lmlx 
+MLX_FLAGS = -Lmlx -lmlx
 C_FLAGS = -Wall -Werror -Wextra
 
 BGREEN = \033[1;32m
@@ -10,6 +10,7 @@ RESET = \033[0m\033[K
 
 SRCS_DIR = src/
 SRCS = args.c map.c render_utils.c render.c DFS.c enemy.c enemy_utils.c free.c init_sprite_animated.c init_textures.c init_structs.c handlers.c movement.c so_long.c
+SRCS_BONUS = so_long_bonus.c
 
 OBJS_DIR = $(SRCS_DIR)objs/
 OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
@@ -20,16 +21,16 @@ UTILS = $(addprefix $(UTILS_DIR), utils.a)
 UNAME = $(shell uname -s)
 
 ifeq ($(UNAME), Darwin)
-	MLX_FLAGS += -framework OpenGL -framework AppKit 
+	MLX_FLAGS += -framework OpenGL -framework AppKit
 else
 	MLX_FLAGS += -lX11 -lXext
 endif
 
 all : $(NAME)
 
-$(NAME) : $(UTILS) $(OBJS) 
+$(NAME) : $(UTILS) $(OBJS)
 	@printf "$(BYELLOW)Compiling $(NAME)\r$(RESET)"
-	@cc $(C_FLAGS) $(OBJS) $(UTILS) $(MLX_FLAGS) -o $(NAME) 
+	@cc $(C_FLAGS) $(OBJS) $(UTILS) $(MLX_FLAGS) -o $(NAME)
 	@echo "$(BGREEN)Created $(NAME)!$(RESET)"
 
 debug : fclean $(UTILS)
@@ -57,7 +58,9 @@ clean :
 
 fclean : clean
 	@echo "$(BRED)Removing executable$(RESET)"
-	@make -C $(UTILS_DIR) -s fclean 
+	@make -C $(UTILS_DIR) -s fclean
 	@rm -rf $(NAME)
 
-.PHONY : all re clean fclean debug
+bonus: $(OBJS)
+
+.PHONY : all re clean fclean debug bonus
