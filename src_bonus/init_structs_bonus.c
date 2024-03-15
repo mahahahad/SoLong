@@ -6,11 +6,11 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 21:04:33 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/15 16:14:59 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/15 15:41:05 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 int	init_map_struct(t_data *data)
 {
@@ -29,17 +29,20 @@ int	init_textures_struct(t_data *data)
 	data->game->textures = malloc(sizeof(t_textures));
 	if (!data->game->textures)
 		return (ft_error("The textures struct could not be created"));
-	data->game->textures->player = create_texture(*data,
-			"textures/Player/0.xpm");
-	data->game->textures->collectible = create_texture(*data,
-			"textures/Collectible/0.xpm");
-	data->game->textures->exit = create_texture(*data, "textures/Exit/0.xpm");
-	data->game->textures->empty = create_texture(*data, "textures/Empty/0.xpm");
-	data->game->textures->wall = create_texture(*data, "textures/Wall/0.xpm");
-	data->game->textures->enemy = create_texture(*data, "textures/Enemy/0.xpm");
+	data->game->textures->player = init_animated_sprite(*data,
+			"textures/Player/");
+	data->game->textures->collectible = init_animated_sprite(*data,
+			"textures/Collectible/");
+	data->game->textures->exit = init_animated_sprite(*data,
+			"textures/Exit/");
+	data->game->textures->empty = init_animated_sprite(*data,
+			"textures/Empty/");
+	data->game->textures->wall = init_animated_sprite(*data,
+			"textures/Wall/");
+	data->game->textures->enemy = init_animated_sprite(*data,
+			"textures/Enemy/");
 	load_borders(data);
-	if (!have_textures_loaded(data))
-		return (ft_error("The textures could not be loaded"));
+	have_textures_loaded(data);
 	return (0);
 }
 
@@ -68,7 +71,6 @@ int	init_data_struct(t_data *data)
 	data->mlx_ptr = mlx_init();
 	if (!data->mlx_ptr)
 		return (ft_error("MLX could not be initialized"));
-	data->win_ptr = NULL;
 	data->game = malloc(sizeof(t_game));
 	data->game->move_count = 0;
 	data->game->player_count = 0;
@@ -85,5 +87,6 @@ int	init_data_struct(t_data *data)
 		return (free(data->game->player), free(data->game->collectables),
 			free_textures(data), free(data->game), free(data->mlx_ptr), exit(1),
 			1);
-	return (EXIT_SUCCESS);
+	data->game->enemy = NULL;
+	return (0);
 }

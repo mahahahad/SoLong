@@ -6,11 +6,11 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 14:34:03 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/15 15:41:26 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/15 15:41:05 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 void	move_player(t_data *data, int new_x, int new_y)
 {
@@ -45,6 +45,14 @@ int	move_to(t_data *data, int new_x, int new_y)
 		++data->game->collectables->collected;
 	else if (data->game->map->full[new_y][new_x] == 'E')
 		return (can_exit(data));
+	else if (data->game->enemy
+		&& new_y == data->game->enemy->path->current_tile->y
+		&& new_x == data->game->enemy->path->current_tile->x)
+	{
+		ft_putstr_endl("You died bruh", 1);
+		handle_destroy(data);
+		return (0);
+	}
 	move_player(data, new_x, new_y);
 	return (0);
 }

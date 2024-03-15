@@ -6,11 +6,11 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 19:39:36 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/15 15:41:26 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/15 15:41:05 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 /**
  * @brief Get the size of a 2d arr. Relies on NULL Terminator
@@ -104,3 +104,18 @@ bool	check_path(t_data *data, char **map)
 			data->game->player->y);
 	return (ft_free_2d_arr(visited), res);
 }
+
+// int main(int argc, char *argv[])
+// {
+// 	t_data	data;
+
+// 	if (argc != 2)
+// 		return (1);
+// 	data.game.map.fd = open(argv[1], O_RDONLY);
+// 	read_map(&data);
+//     if (check_path(data.game.map.full))
+//         printf("You have reached the exit\nThere is indeed a valid path.\n");
+//     else
+//         printf("All paths checked. No path to exit found\n");
+//     return (0);
+// }

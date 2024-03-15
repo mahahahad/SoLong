@@ -1,7 +1,8 @@
 mlx*
-so_long
+so_long*
 *.out
 *.dSYM
+*.dylib
 .vscode
 *.o
 */obj*/

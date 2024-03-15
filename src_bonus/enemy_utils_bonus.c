@@ -6,11 +6,11 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 15:04:56 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/09 15:26:26 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/15 15:41:05 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/so_long.h"
+#include "so_long_bonus.h"
 
 /**
  * @brief Get the coordinates of the exit from the map string double pointer

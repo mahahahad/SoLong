@@ -6,11 +6,11 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 14:23:27 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/15 15:41:26 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/15 15:41:05 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 int	handle_destroy(t_data *data)
 {
