@@ -6,11 +6,11 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 14:51:29 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/07 10:17:00 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/15 15:41:26 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/so_long.h"
+#include "so_long.h"
 
 int	check_char(t_data *data, int x, int y)
 {

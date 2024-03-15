@@ -1,6 +1,6 @@
 NAME = so_long
 MLX_FLAGS = -Lmlx -lmlx
-C_FLAGS = -Wall -Werror -Wextra
+C_FLAGS = -Wall -Werror -Wextra -Iincludes
 
 BGREEN = \033[1;32m
 BYELLOW = \033[1;33m
@@ -11,7 +11,7 @@ RESET = \033[0m\033[K
 SRCS_DIR = src/
 SRCS_BONUS_DIR = src_bonus/
 SRCS = args.c map.c render_utils.c render.c DFS.c free.c init_textures.c init_structs.c handlers.c movement.c so_long.c
-SRCS_BONUS = args.c map.c render_utils.c render.c DFS.c enemy.c enemy_utils.c free.c init_sprite_animated.c init_textures.c init_structs.c handlers.c movement.c so_long_bonus.c
+SRCS_BONUS = DFS_bonus.c args_bonus.c enemy_bonus.c enemy_utils_bonus.c free_bonus.c handlers_bonus.c init_sprite_animated_bonus.c init_structs_bonus.c init_textures_bonus.c map_bonus.c movement_bonus.c render_bonus.c render_utils_bonus.c so_long_bonus.c
 
 OBJS_DIR = $(SRCS_DIR)objs/
 OBJS_BONUS_DIR = $(SRCS_BONUS_DIR)objs/
@@ -65,14 +65,18 @@ re : fclean all
 clean :
 	@echo "$(BRED)Removing object files$(RESET)"
 	@rm -rf $(OBJS_DIR)
+	@rm -rf $(OBJS_BONUS_DIR)
 	@make -C $(UTILS_DIR) -s clean
 
 fclean : clean
 	@echo "$(BRED)Removing executable$(RESET)"
 	@make -C $(UTILS_DIR) -s fclean
 	@rm -rf $(NAME)
+	@rm -rf $(NAME)_bonus
 
 bonus: $(UTILS) $(OBJS_BONUS)
-	cc $(C_FLAGS) $(OBJS_BONUS) $(UTILS) $(MLX_FLAGS) -o $(NAME)_bonus
+	@printf "$(BYELLOW)Compiling $(NAME)_bonus\r$(RESET)"
+	@cc $(C_FLAGS) $(OBJS_BONUS) $(UTILS) $(MLX_FLAGS) -o $(NAME)_bonus
+	@echo "$(BGREEN)Created $(NAME)$(BGGREEN)_bonus!$(RESET)"
 
 .PHONY : all re clean fclean debug bonus

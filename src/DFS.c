@@ -6,11 +6,11 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 19:39:36 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/14 17:36:03 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/15 15:41:26 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/so_long.h"
+#include "so_long.h"
 
 /**
  * @brief Get the size of a 2d arr. Relies on NULL Terminator

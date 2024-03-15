@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:04 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/14 15:40:48 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/15 16:08:02 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@
 # include <time.h>
 # include <unistd.h>
 # ifdef __linux__
-# include <X11/Xlib.h>
-# include <X11/keysym.h>
+#  include <X11/Xlib.h>
+#  include <X11/keysym.h>
 # endif
 
 typedef struct s_player
@@ -94,20 +94,20 @@ typedef struct s_collectable
 
 typedef struct s_textures
 {
-	void		*border_0;
-	void		*border_1;
-	void		*border_2;
-	void		*border_3;
-	void		*border_4;
-	void		*border_5;
-	void		*border_6;
-	void		*border_7;
-	void		*player;
-	void		*collectible;
-	void		*exit;
-	void		*wall;
-	void		*enemy;
-	void		*empty;
+	void			*border_0;
+	void			*border_1;
+	void			*border_2;
+	void			*border_3;
+	void			*border_4;
+	void			*border_5;
+	void			*border_6;
+	void			*border_7;
+	void			*player;
+	void			*collectible;
+	void			*exit;
+	void			*wall;
+	void			*enemy;
+	void			*empty;
 }					t_textures;
 
 typedef struct s_game
@@ -134,7 +134,7 @@ int					check_map(t_data *data);
 bool				check_path(t_data *data, char **map);
 void				*check_wall_texture(t_data *data, int x, int y);
 void				*check_texture(t_data *data, int x, int y);
-void	*create_texture(t_data data, char *file_name);
+void				*create_texture(t_data data, char *file_name);
 void				render_texture(t_data *data, void *texture, int x, int y);
 int					render_map(t_data *data);
 int					calculate_frame(t_data *data);

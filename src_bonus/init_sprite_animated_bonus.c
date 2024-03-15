@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_sprite_animated.c                             :+:      :+:    :+:   */
+/*   init_sprite_animated_bonus.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 16:28:02 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/14 21:00:56 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/15 16:15:55 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/so_long_bonus.h"
+#include "so_long_bonus.h"
 
 char	*create_file_name(char *dir, int i)
 {
@@ -46,18 +46,6 @@ t_sprite	*append_to_list(t_sprite *head, void *texture)
 	return (head);
 }
 
-void	*create_texture(t_data data, char *file_name)
-{
-	void	*texture;
-	int		height;
-	int		width;
-
-	height = PLAYER_HEIGHT;
-	width = PLAYER_WIDTH;
-	texture = mlx_xpm_file_to_image(data.mlx_ptr, file_name, &width, &height);
-	return (texture);
-}
-
 /**
  * @brief Initializes a linked list containing all the texture frames of the
  * sprite
@@ -69,8 +57,7 @@ void	*create_texture(t_data data, char *file_name)
  * @return t_sprite_animated* The animated sprite containing the current frames
  * texture and the next frames' textures for easy animating
  */
-t_sprite	*init_animated_sprite(t_data data,
-		char *sprite_textures_dir)
+t_sprite	*init_animated_sprite(t_data data, char *sprite_textures_dir)
 {
 	void		*texture;
 	char		*file_name;

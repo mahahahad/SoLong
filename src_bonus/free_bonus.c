@@ -6,11 +6,11 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 14:52:29 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/14 21:00:51 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/15 15:41:05 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/so_long_bonus.h"
+#include "so_long_bonus.h"
 
 void	free_enemy_path(t_data *data)
 {
@@ -77,7 +77,7 @@ static void	free_sprite(t_data *data, t_sprite *sprite_head)
 
 void	free_textures(t_data *data)
 {
-	if (data->game->textures->enemy->texture)
+	if (have_textures_loaded(data))
 	{
 		free_sprite(data, data->game->textures->enemy);
 		free_sprite(data, data->game->textures->wall);

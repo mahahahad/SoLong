@@ -6,18 +6,18 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 14:52:29 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/14 17:36:27 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/15 16:14:50 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/so_long.h"
+#include "so_long.h"
 
-void free_sprite(t_data *data, void *mlx_image)
+void	free_sprite(t_data *data, void *mlx_image)
 {
 	mlx_destroy_image(data->mlx_ptr, mlx_image);
 }
 
-void free_textures(t_data *data)
+void	free_textures(t_data *data)
 {
 	if (have_textures_loaded(data))
 	{
@@ -38,7 +38,7 @@ void free_textures(t_data *data)
 	free(data->game->textures);
 }
 
-void free_data_struct(t_data *data)
+void	free_data_struct(t_data *data)
 {
 	free(data->game->collectables);
 	ft_free_2d_arr(data->game->map->full);

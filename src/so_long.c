@@ -6,19 +6,25 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 13:50:08 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/14 17:08:40 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/15 16:07:09 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/so_long.h"
+#include "so_long.h"
 
 int	create_window(t_data *data)
 {
 	int	width;
 	int	height;
+	int	screen_x;
+	int	screen_y;
 
 	width = data->game->map->columns * PLAYER_WIDTH + (OFFSET * 2);
 	height = data->game->map->rows * PLAYER_HEIGHT + (OFFSET * 2);
+	mlx_get_screen_size(data->mlx_ptr, &screen_x, &screen_y);
+	if (width > screen_x || height > screen_y)
+		return (free_data_struct(data), ft_error("Map is too large"), exit(1),
+			1);
 	data->win_ptr = mlx_new_window(data->mlx_ptr, width, height, "so_long");
 	if (!data->win_ptr)
 	{
