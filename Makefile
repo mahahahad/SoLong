@@ -74,7 +74,9 @@ fclean : clean
 	@rm -rf $(NAME)
 	@rm -rf $(NAME)_bonus
 
-bonus: $(UTILS) $(OBJS_BONUS)
+bonus: $(NAME)_bonus
+
+$(NAME)_bonus: $(UTILS) $(OBJS_BONUS)
 	@printf "$(BYELLOW)Compiling $(NAME)_bonus\r$(RESET)"
 	@cc $(C_FLAGS) $(OBJS_BONUS) $(UTILS) $(MLX_FLAGS) -o $(NAME)_bonus
 	@echo "$(BGREEN)Created $(NAME)$(BGGREEN)_bonus!$(RESET)"

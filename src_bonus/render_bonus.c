@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render.c                                           :+:      :+:    :+:   */
+/*   render_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 14:56:49 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/15 15:41:05 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/16 11:23:57 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	update_enemy_location(t_data *data)
 	if (!frame)
 		frame = clock();
 	time_val = clock();
-	if (time_val - frame > 100000)
+	if (time_val - frame > 250000)
 	{
 		move_enemy(data);
 		frame = time_val;
@@ -57,7 +57,7 @@ int	update_textures(t_data *data)
 	if (!frame)
 		frame = clock();
 	time_val = clock();
-	if (time_val - frame > 35000)
+	if (time_val - frame > 65000)
 	{
 		data->game->textures->player = data->game->textures->player->next;
 		data->game->textures->enemy = data->game->textures->enemy->next;
