@@ -10,7 +10,7 @@ RESET = \033[0m\033[K
 
 SRCS_DIR = src/
 SRCS_BONUS_DIR = src_bonus/
-SRCS = args.c map.c render_utils.c render.c DFS.c free.c init_textures.c init_structs.c handlers.c movement.c so_long.c
+SRCS = args.c map.c render_utils.c render.c flood_fill.c free.c init_textures.c init_structs.c handlers.c movement.c so_long.c 
 SRCS_BONUS = DFS_bonus.c args_bonus.c enemy_bonus.c enemy_utils_bonus.c free_bonus.c handlers_bonus.c init_sprite_animated_bonus.c init_structs_bonus.c init_textures_bonus.c map_bonus.c movement_bonus.c render_bonus.c render_utils_bonus.c so_long_bonus.c
 
 OBJS_DIR = $(SRCS_DIR)objs/

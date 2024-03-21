@@ -1,34 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   ft_get_tab_size.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/04 19:54:47 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/21 11:44:07 by maabdull         ###   ########.fr       */
+/*   Created: 2024/03/21 11:43:37 by maabdull          #+#    #+#             */
+/*   Updated: 2024/03/21 11:45:46 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+/**
+ * @brief Get the size of a 2d arr. Relies on NULL Terminator
+ *
+ * @param tab The 2d arr who's size is to be found
+ * @return int The size
+ */
+int	ft_get_tab_size(char **tab)
 {
-	size_t	i;
-	char	*substr;
+	int	i;
 
 	i = 0;
-	if (!s)
-		return (NULL);
-	if ((size_t)start >= ft_strlen(s))
-		len = 0;
-	if (len > ft_strlen(s + start))
-		len = ft_strlen(s + start);
-	substr = malloc((len + 1) * sizeof(char));
-	if (!substr)
-		return (NULL);
-	while (i != len)
-		substr[i++] = s[start++];
-	substr[len] = '\0';
-	return (substr);
+	while (tab[i])
+		i++;
+	return (i);
 }

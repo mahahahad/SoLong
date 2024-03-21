@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:04 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/15 16:08:02 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/21 13:47:29 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,17 +131,11 @@ typedef struct s_data
 int					parse_args(int argc, char *argv[]);
 int					read_map(t_data *data);
 int					check_map(t_data *data);
-bool				check_path(t_data *data, char **map);
 void				*check_wall_texture(t_data *data, int x, int y);
 void				*check_texture(t_data *data, int x, int y);
 void				*create_texture(t_data data, char *file_name);
 void				render_texture(t_data *data, void *texture, int x, int y);
 int					render_map(t_data *data);
-int					calculate_frame(t_data *data);
-int					get_exit_coordinates(t_data *data, int *x, int *y);
-void				free_enemy_path(t_data *data);
-int					display_enemy(t_data *data);
-void				move_enemy(t_data *data);
 int					move_to(t_data *data, int new_x, int new_y);
 int					handle_keypress(int keysym, t_data *data);
 int					handle_destroy(t_data *data);
@@ -151,5 +145,6 @@ int					init_data_struct(t_data *data);
 void				free_data_struct(t_data *data);
 void				free_textures(t_data *data);
 void				load_borders(t_data *data);
+int					fill_map(t_data *data);
 
 #endif

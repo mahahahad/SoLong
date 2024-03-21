@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 19:49:14 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/06 18:10:12 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/21 12:46:00 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <limits.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdio.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
@@ -38,5 +39,8 @@ int		ft_error(char *msg);
 char	*get_next_line(int fd);
 char	**ft_make_2d_arr(int col, int row, char fill_char);
 void	ft_free_2d_arr(char **arr);
+char	**ft_tabdup(char **tab);
+int		ft_get_tab_size(char **tab);
+void	ft_get_char_pos(char **tab, char c, int *x, int *y);
 
 #endif

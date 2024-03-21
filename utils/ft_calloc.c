@@ -6,11 +6,11 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 21:32:30 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/04 22:35:27 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/21 11:44:07 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/utils.h"
+#include "utils.h"
 
 void	*ft_calloc(size_t count, size_t size)
 {

@@ -6,11 +6,11 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 19:48:02 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/04 22:35:30 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/21 11:44:07 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/utils.h"
+#include "utils.h"
 
 size_t	ft_strlen(const char *str)
 {

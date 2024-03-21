@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 14:51:29 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/15 15:41:26 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/21 13:39:33 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	check_char(t_data *data, int x, int y)
 		return (ft_error("Invalid character detected in map"));
 	if (data->game->player_count > 1 || data->game->exit_count > 1)
 		return (ft_error("Only one player and exit can be present in the map"));
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 /// @brief Check if the provided map is valid or not
@@ -54,7 +54,7 @@ int	check_map(t_data *data)
 		while (x < data->game->map->columns)
 		{
 			res = check_char(data, x++, y);
-			if (res)
+			if (res == EXIT_FAILURE)
 				return (res);
 		}
 		y++;
@@ -63,9 +63,9 @@ int	check_map(t_data *data)
 		|| !data->game->player_count)
 		return (ft_error("At least one collectible, player, \
 and exit must be present"));
-	if (check_path(data, data->game->map->full) == false)
-		return (ft_error("Player cannot reach the exit"));
-	return (res);
+	if (fill_map(data) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
 /**
@@ -102,5 +102,5 @@ int	read_map(t_data *data)
 	data->game->map->full = ft_split(map_full, '\n');
 	data->game->map->columns = ft_strlen(data->game->map->full[0]);
 	free(map_full);
-	return (close(data->game->map->fd), 0);
+	return (close(data->game->map->fd), EXIT_SUCCESS);
 }

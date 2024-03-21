@@ -6,7 +6,7 @@
 /*   By: maabdull <maabdull@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 13:50:08 by maabdull          #+#    #+#             */
-/*   Updated: 2024/03/15 16:07:09 by maabdull         ###   ########.fr       */
+/*   Updated: 2024/03/21 13:38:24 by maabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,12 @@ int	main(int argc, char *argv[])
 	if (init_data_struct(data) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	data->game->map->fd = open(argv[1], O_RDONLY);
-	if (read_map(data))
+	if (read_map(data) == EXIT_FAILURE)
 		return (free_data_struct(data), 1);
-	if (check_map(data))
+	if (check_map(data) == EXIT_FAILURE)
 		return (free_data_struct(data), 1);
+	ft_get_char_pos(data->game->map->full, PLAYER, &data->game->player->x,
+		&data->game->player->y);
 	create_window(data);
 	mlx_hook(data->win_ptr, 17, 1L << 2, handle_destroy, data);
 	mlx_hook(data->win_ptr, 2, 1L << 0, handle_keypress, data);
